@@ -8,7 +8,7 @@ export const routes: RouteRecordRaw[] = [
         path: '/',
         component: Layout,
         children: [
-            { path: '/', redirect: '/words' },
+            { path: '/', redirect: '/words' },//當/ 導向到/words
             { path: 'words', component: WordsPage },
         ]
     }
