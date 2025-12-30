@@ -5,6 +5,11 @@ import tailwindcss from '@tailwindcss/vite'
 import Components from 'unplugin-vue-components/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Icons from 'unplugin-icons/vite'
+import { resolve } from 'path'
+
+function pathResolve(dir: string) {
+  return resolve(__dirname, ".", dir)
+}
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue(), vueDevTools(), tailwindcss(),
@@ -19,5 +24,12 @@ export default defineConfig({
       }),
     ],
   })],
+  base: './',
+  resolve: {
+    alias: {
+      '@': pathResolve("src"),
+    },
+    extensions: ['.js', '.ts', '.json', '.vue']
+  },
 
 })
