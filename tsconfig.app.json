@@ -2,15 +2,27 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "types": ["vite/client"],
-
+    "types": [
+      "vite/client", //讓 TypeScript 「讀懂」Vite 項目中一些特有的語法和功能Ex:import.meta.env，import logo from './assets/logo.png'
+      "unplugin-vue-components/types", //讓TS識別自動導入組件
+    ],
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": { //確保 TypeScript 現在可以正確解析以 @/ 開頭的任何導入到您的 src/ 目錄，匹配您的 Vite 配置。
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
 }
