@@ -86,7 +86,8 @@ axiosInstance.interceptors.response.use(
 
 export type AxiosResponse<T> = { code: number, data: T, success: boolean, msg: string }
 
-async function request<T>(url, data = {}, params = {}, method): Promise<AxiosResponse<T>> {
+//加上對應的型別與預設值
+async function request<T>(url: string, data: any = {}, params: any = {}, method: string = 'GET'): Promise<AxiosResponse<T>> {
     return axiosInstance({
         url: url,
         method,
