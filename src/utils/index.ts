@@ -1,5 +1,11 @@
 import dayjs from 'dayjs' // 引入 dayjs 日期處理庫
-import { getDefaultSettingState } from "@/stores/setting.ts"; // 引入獲取預設設定狀態的函數
+import { getDefaultSettingState, type SettingState } from "@/stores/setting.ts"; // 引入獲取預設設定狀態的函數
+import { SAVE_SETTING_KEY, SAVE_DICT_KEY } from "@/config/env.ts";
+import { type BaseState, getDefaultBaseState } from "@/stores/base.ts";
+import { useRouter } from "vue-router";
+import { useRuntimeStore } from "@/stores/runtime.ts";
+import { type Dict, DictId } from "@/types/types.ts";
+import { getDefaultDict } from "@/types/func.ts";
 
 export function cloneDeep<T>(val: T) { // 深拷貝函數，泛型 T 確保類型安全
     return JSON.parse(JSON.stringify(val)) // 使用 JSON 序列化反序列化進行深拷貝 (注意：無法處理 Date, RegExp, Function 等)
@@ -41,7 +47,7 @@ export function checkAndUpgradeSaveSetting(val: any) { // 檢查並升級保存�
             let version = Number(data.version) // 獲取版本號
             if (version === SAVE_SETTING_KEY.version) { // 如果版本號匹配當前版本
                 checkRiskKey(defaultState.shortcutKeyMap, state.shortcutKeyMap) // 檢查快捷鍵設定的鍵名風險 (確保沒有多餘或缺失的鍵)
-                delete state.shortcutKeyMap // 刪除舊狀態中的快捷鍵 (因為上面已經同步過了? 或者依賴 merge) - 這裡邏輯似乎是想用 defaultState 的結構，但保留 state 的值
+                delete (state as any).shortcutKeyMap // 刪除舊狀態中的快捷鍵 (因為上面已經同步過了? 或者依賴 merge) - 這裡邏輯似乎是想用 defaultState 的結構，但保留 state 的值
                 // 修正邏輯推測：checkRiskKey 可能是將 state 中的值合併到 defaultState，或者是驗證結構
                 // 根據下方代碼，這裡 delete 後，下面 checkRiskKey(defaultState, state) 會再次合併其他屬性
                 checkRiskKey(defaultState, state) // 檢查並合併主狀態
@@ -53,7 +59,7 @@ export function checkAndUpgradeSaveSetting(val: any) { // 檢查並升級保存�
                 // 為了保持永遠是最新的快捷鍵選項列表，但保留住用戶的自定義設置，去掉無效的快捷鍵選項
                 // 例: 2版本，可能有快捷鍵A。3版本沒有了
                 checkRiskKey(defaultState.shortcutKeyMap, state.shortcutKeyMap) // 合併/檢查快捷鍵
-                delete state.shortcutKeyMap // 刪除舊狀態快捷鍵
+                delete (state as any).shortcutKeyMap // 刪除舊狀態快捷鍵
                 checkRiskKey(defaultState, state) // 合併其他狀態
                 return defaultState // 返回合併後的狀態
             }
@@ -126,7 +132,7 @@ export function useNav() { // 導航 Hook
     const router = useRouter() // 獲取 Router 實例
     const runtimeStore = useRuntimeStore() // 獲取 Runtime Store
 
-    function nav(path, query = {}, data?: any) { // 導航函數
+    function nav(path: string, query = {}, data?: any) { // 導航函數
         if (data) { // 如果有傳遞額外數據
             runtimeStore.routeData = cloneDeep(data) // 深拷貝存入 store
         }
