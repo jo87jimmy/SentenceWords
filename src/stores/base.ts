@@ -6,7 +6,7 @@ import { getDefaultDict } from "@/types/func";
 import { get, set } from 'idb-keyval'
 import { AppEnv, SAVE_DICT_KEY } from "@/config/env.ts";
 import { add2MyDict, dictListVersion, myDictList } from "@/apis";
-import Toast from "@/components/base/toast/Toast.ts";
+import Toast from "@/components/base/toast/Toast";
 
 export interface BaseState {
     simpleWords: string[],

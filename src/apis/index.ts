@@ -1,5 +1,5 @@
-import http, { axiosInstance, AxiosResponse } from "@/utils/http.ts";
-import { Dict } from "@/types/types.ts";
+import http, { axiosInstance, type AxiosResponse } from "@/utils/http.ts";
+import { type Dict } from "@/types/types.ts";
 import { cloneDeep } from "@/utils";
 
 function remove(data?: any) {
