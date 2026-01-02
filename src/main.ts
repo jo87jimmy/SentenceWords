@@ -8,6 +8,7 @@ import VueVirtualScroller from 'vue-virtual-scroller' // 引入虛擬捲動庫�
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css' // 引入虛擬捲動庫的 CSS 樣式
 import PrimeVue from 'primevue/config'; // 引入 PrimeVue UI 庫的配置
 import Aura from '@primeuix/themes/aura' // 引入 PrimeVue 的 Aura 主題
+import ConfirmationService from 'primevue/confirmationservice'; // 引入 PrimeVue 的確認服務
 
 const pinia = createPinia() // 創建 Pinia 實例
 const app = createApp(App) // 創建 Vue 應用實例
@@ -19,6 +20,7 @@ app.use(PrimeVue, { // 註冊 PrimeVue 插件並進行配置
         preset: Aura // 使用 Aura 主題預設
     }
 })
+app.use(ConfirmationService);
 app.mount('#app') // 將應用掛載到 DOM 中的 #app 元素上
 
 // 註冊 Service Worker (PWA 支持)

@@ -13,7 +13,18 @@ declare module 'vue' {
   export interface GlobalComponents {
     BasePage: typeof import('./src/components/BasePage.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    IconFluentAdd16Regular: typeof import('~icons/fluent/add16-regular')['default']
+    IconFluentArrowCircleRight16Regular: typeof import('~icons/fluent/arrow-circle-right16-regular')['default']
+    IconFluentArrowShuffle20Filled: typeof import('~icons/fluent/arrow-shuffle20-filled')['default']
+    IconFluentArrowSwap20Regular: typeof import('~icons/fluent/arrow-swap20-regular')['default']
+    IconFluentBookNumber20Filled: typeof import('~icons/fluent/book-number20-filled')['default']
+    IconFluentCheckmarkCircle20Filled: typeof import('~icons/fluent/checkmark-circle20-filled')['default']
+    IconFluentDismissCircle20Filled: typeof import('~icons/fluent/dismiss-circle20-filled')['default']
+    IconFluentErrorCircle20Filled: typeof import('~icons/fluent/error-circle20-filled')['default']
+    IconFluentSlideTextTitleEdit20Regular: typeof import('~icons/fluent/slide-text-title-edit20-regular')['default']
+    IconFluentStar20Filled: typeof import('~icons/fluent/star20-filled')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Toast: typeof import('./src/components/base/toast/Toast.vue')['default']
   }
 }
