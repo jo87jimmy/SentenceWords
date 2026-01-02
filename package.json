@@ -17,12 +17,15 @@
     "idb-keyval": "^6.2.2",
     "pinia": "^3.0.4",
     "primevue": "^4.5.4",
+    "sass-embedded": "^1.97.1",
     "tailwindcss": "^4.1.18",
+    "tailwindcss-primeui": "^0.6.1",
     "vue": "^3.5.24",
     "vue-router": "^4.6.4",
     "vue-virtual-scroller": "^2.0.0-beta.8"
   },
   "devDependencies": {
+    "@iconify-json/fluent": "^1.2.36",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
