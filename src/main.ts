@@ -1,5 +1,6 @@
 import { createApp } from 'vue' // 從 vue 引入 createApp 函數，用於創建應用實例
-import './style.css' // 引入全域樣式文件 style.css
+import '@/assets/style.css'
+import '@/assets/tailwind.css' // 引入全域樣式文件 style.css
 import App from './App.vue' // 引入根組件 App.vue
 import { createPinia } from 'pinia' // 從 pinia 引入 createPinia，用於狀態管理
 import router from '@/router' // 引入路由配置
