@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
-import { type Dict, DictId, type Word } from "@/types/types.ts"
-import { _getStudyProgress, checkAndUpgradeSaveDict, shakeCommonDict } from "@/utils";
+import { type Dict, DictId, type Word } from "@/types/types"
+import { _getStudyProgress, checkAndUpgradeSaveDict, shakeCommonDict } from "@/utils/index";
 import { shallowReactive } from "vue";
-import { getDefaultDict } from "@/types/func.ts";
+import { getDefaultDict } from "@/types/func";
 import { get, set } from 'idb-keyval'
 import { AppEnv, SAVE_DICT_KEY } from "@/config/env.ts";
 import { add2MyDict, dictListVersion, myDictList } from "@/apis";
