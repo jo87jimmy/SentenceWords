@@ -40,7 +40,8 @@ const updateToastPositions = () => {
 const removeToastContainer = (id: string) => {
   const index = toastContainers.findIndex(container => container.id === id)
   if (index > -1) {
-    const container = toastContainers[index]
+    const container = toastContainers[index] //TypeScript 的靜態分析無法確定 toastContainers[index] 是否一定存在。
+    if (!container) return //確保 container 一定有值
     // 延迟销毁，等待动画完成
     setTimeout(() => {
       render(null, container.container)
