@@ -16,39 +16,39 @@ export function dictListVersion() {
     return http<number>('dict/dictListVersion', null, null, 'get')
 }
 
-export function myDictList(params?) {
+export function myDictList(params?: any) {
     return http('dict/myDictList', null, params, 'get')
 }
 
-export function add2MyDict(data) {
+export function add2MyDict(data: any) {
     return http('dict/add2MyDict', remove(data), null, 'post')
 }
 
-export function addStat(data) {
+export function addStat(data: any) {
     return http('dict/addStat', data, null, 'post')
 }
 
-export function detail(params?, data?) {
+export function detail(params?: any, data?: any) {
     return http<Dict>('dict/detail', data, params, 'get')
 }
 
-export function setDictProp(params?, data?) {
+export function setDictProp(params?: any, data?: any) {
     return http<Dict>('dict/setDictProp', remove(data), remove(params), 'post')
 }
 
-export function syncSetting(params?, data?) {
+export function syncSetting(params?: any, data?: any) {
     return http<Dict>('dict/syncSetting', remove(data), remove(params), 'post')
 }
 
-export function getSetting(params?, data?) {
+export function getSetting(params?: any, data?: any) {
     return http<Dict>('dict/getSetting', remove(data), remove(params), 'get')
 }
 
-export function addDict(params?, data?) {
+export function addDict(params?: any, data?: any) {
     return http<Dict>('dict/addDict', remove(data), remove(params), 'post')
 }
 
-export function uploadImportData<T>(data, onUploadProgress): Promise<AxiosResponse<T>> {
+export function uploadImportData<T>(data: any, onUploadProgress: any): Promise<AxiosResponse<T>> {
     return axiosInstance({
         url: 'dict/uploadImportData',
         method: 'post',
@@ -61,7 +61,7 @@ export function uploadImportData<T>(data, onUploadProgress): Promise<AxiosRespon
     })
 }
 
-export function upload(data, onUploadProgress) {
+export function upload(data: any, onUploadProgress: any) {
     return axiosInstance({
         url: 'file/upload',
         method: 'post',
