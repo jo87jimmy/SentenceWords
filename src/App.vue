@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import ConfirmDialog from 'primevue/confirmdialog';
 // 使用 <script setup> 語法糖，啟用 TypeScript 支持
 </script>
 
 <template>
 <router-view></router-view>
-<ConfirmDialog />
 <!-- 路由出口組件，用於渲染當前路由匹配到的組件 -->
 </template>
 

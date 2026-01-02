@@ -3,6 +3,7 @@ import BasePage from '@/components/BasePage.vue'; // 引入基礎頁面組件
 import Button from 'primevue/button'; // 引入 PrimeVue 按鈕組件
 import ProgressBar from 'primevue/progressbar'; // 引入進度條組件
 import ConfirmPopup from 'primevue/confirmpopup'; // 引入確認彈窗組件
+import Card from 'primevue/card'; // 引入 PrimeVue 卡片組件
 import { useConfirm } from 'primevue/useconfirm'; // 引入確認框 Hook
 import { useRouter } from 'vue-router'; // 引入路由 Hook
 import { ref, computed } from 'vue'; // 引入 Vue 響應式 API
@@ -112,7 +113,9 @@ function startPractice() {
 
 <template>
     <BasePage>
-        <div class="card flex flex-col md:flex-row gap-8"> <!-- 卡片容器，響應式佈局 -->
+        <Card>
+            <template #content>
+            <div class="flex flex-col md:flex-row gap-8">
             <div class="flex-1 w-full flex flex-col justify-between"> <!-- 左側區域 -->
                 <div class="flex gap-3"> <!-- 標題區 -->
                     <div class="p-1 flex justify-center items-center rounded-full bg-white">
@@ -163,7 +166,10 @@ function startPractice() {
                 </div>
             </div>
 
-            <div class="flex-1 w-full mt-4 md:mt-0 transition-opacity duration-200"
+            <!-- 分隔線 -->
+            <div class="hidden md:block w-px bg-gray-300 dark:bg-gray-600 self-stretch"></div>
+            <!-- 右側區域 -->
+            <div class="flex-1 w-full transition-opacity duration-200"
                 :class="!store.sdict.id && 'opacity-30 cursor-not-allowed'"> <!-- 右側區域，無字典時變淡 -->
                 <div class="flex justify-between">
                     <div class="flex items-center gap-2">
@@ -224,7 +230,9 @@ function startPractice() {
                     </Button>
                 </div>
             </div>
-        </div>
+            </div>
+            </template>
+        </Card>
         <ConfirmPopup /> <!-- 確認彈窗組件 -->
     </BasePage>
 </template>
