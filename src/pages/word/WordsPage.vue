@@ -5,18 +5,24 @@ import ProgressBar from 'primevue/progressbar';
 import ConfirmPopup from 'primevue/confirmpopup';
 import { useConfirm } from 'primevue/useconfirm';
 import { useRouter } from 'vue-router';
+import { ref, computed } from 'vue';
+import { type DictResource, WordPracticeMode } from "@/types/types.ts";
+import { getDefaultDict } from "@/types/func.ts";
+import { _getAccomplishDate, useNav } from '@/utils/index.ts';
+import { useRuntimeStore } from "@/stores/runtime.ts";
+import { useBaseStore } from '@/stores/base.ts';
+import Toast from '@/components/base/toast/Toast.ts';
+import { useSettingStore } from "@/stores/setting.ts";
 
-// Please ensure you have the necessary store and logic definitions or imports here
-// The following variables are referenced in the template:
-// store, settingStore, isSaveData, loading, currentStudy, WordPracticeMode
-// progressTextLeft, progressTextRight, _getAccomplishDate
-// showChangeLastPracticeIndexDialog, showPracticeWordListDialog, showPracticeSettingDialog, showShufflePracticeSettingDialog
-// startPractice, goDictDetail, check
-
+const store = useBaseStore()
 const router = useRouter();
 const confirm = useConfirm();
+const {nav} = useNav()
+const runtimeStore = useRuntimeStore()
+const isSaveData = ref(false)
+const settingStore = useSettingStore()
+let loading = ref(true)
 
-// Helper to handle confirmation logic
 const handleConfirm = (event: Event, message: string, acceptCallback: () => void) => {
     confirm.require({
         target: event.currentTarget as HTMLElement,
@@ -33,6 +39,64 @@ const confirmAndExecute = (event: Event, condition: boolean, message: string, ac
         action();
     }
 };
+
+async function goDictDetail(val: DictResource) {
+  if (!val.id) return nav('dict-list')
+  runtimeStore.editDict = getDefaultDict(val)
+  nav('dict-detail', {})
+}
+
+const progressTextLeft = computed(() => {
+  if (store.sdict.complete) return '已學完，進入總複習階段'
+  return '已學習' + store.currentStudyProgress + '%'
+})
+const progressTextRight = computed(() => {
+  // if (store.sdict.complete) return store.sdict?.length
+  return store.sdict?.lastLearnIndex
+})
+
+function check(cb: Function) {
+  if (!store.sdict.id) {
+    Toast.warning('请先选择一本词典')
+  } else {
+    runtimeStore.editDict = getDefaultDict(store.sdict)
+    cb()
+  }
+}
+
+let showChangeLastPracticeIndexDialog = ref(false)
+let showPracticeWordListDialog = ref(false)
+let showPracticeSettingDialog = ref(false)
+let showShufflePracticeSettingDialog = ref(false)
+let currentStudy = ref({
+  new: [],
+  review: [],
+  write: [],
+  shuffle: [],
+})
+
+function startPractice() {
+  if (store.sdict.id) {
+    if (!store.sdict.words.length) {
+      return Toast.warning('没有单词可学习！')
+    }
+    window.umami?.track('startStudyWord', {
+      name: store.sdict.name,
+      index: store.sdict.lastLearnIndex,
+      perDayStudyNumber: store.sdict.perDayStudyNumber,
+      custom: store.sdict.custom,
+      complete: store.sdict.complete,
+      wordPracticeMode: settingStore.wordPracticeMode
+    })
+    //把是否是第一次设置为false
+    settingStore.first = false
+    nav('practice-words/' + store.sdict.id, {}, {taskWords: currentStudy})
+  } else {
+    window.umami?.track('no-dict')
+    Toast.warning('请先选择一本词典')
+  }
+}
+
 </script>
 
 <template>
