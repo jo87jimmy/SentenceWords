@@ -55,21 +55,23 @@ export const useBaseStore = defineStore('base', {
     },
     getters: {
         collectWord(): Dict {
-            return this.word.bookList[0]
+            //存取加上了預設值 ?? getDefaultDict()，確保即使取不到值也會回傳一個合法的Dict物件，滿足類型定義
+            return this.word.bookList[0] ?? getDefaultDict()
         },
         collectArticle(): Dict {
-            return this.article.bookList[0]
+            return this.article.bookList[0] ?? getDefaultDict()
         },
         wrong(): Dict {
-            return this.word.bookList[1]
+            return this.word.bookList[1] ?? getDefaultDict()
         },
         known(): Dict {
-            return this.word.bookList[2]
+            return this.word.bookList[2] ?? getDefaultDict()
         },
         knownWords(): string[] {
             return this.known.words.map((v: Word) => v.word.toLowerCase())
         },
-        allIgnoreWords() {
+        //TypeScript 編譯器在推斷 this 的類型時會發生循環依賴（Circular Dependency）。所以加上了明確的返回類型 : string[]
+        allIgnoreWords(): string[] {
             return this.known.words.map((v: Word) => v.word.toLowerCase()).concat(this.simpleWords.map((v: string) => v.toLowerCase()))
         },
         currentStudyWordDict(): Dict {
@@ -95,10 +97,10 @@ export const useBaseStore = defineStore('base', {
             return Math.ceil((this.sdict.length - this.sdict.lastLearnIndex) / this.sdict.perDayStudyNumber)
         },
         currentBook(): Dict {
-            return this.article.bookList[this.article.studyIndex] ?? {}
+            return this.article.bookList[this.article.studyIndex] ?? getDefaultDict()
         },
         sbook(): Dict {
-            return this.article.bookList[this.article.studyIndex] ?? {}
+            return this.article.bookList[this.article.studyIndex] ?? getDefaultDict()
         },
         currentBookProgress(): number {
             if (!this.sbook.length) return 0
@@ -123,7 +125,8 @@ export const useBaseStore = defineStore('base', {
         async init() {
             return new Promise(async resolve => {
                 try {
-                    let configStr: string = await get(SAVE_DICT_KEY.key)
+                    //idb-keyval 的 get方法可能會回傳 undefined 所以要加上 undefined 的處理
+                    let configStr: string | undefined = await get(SAVE_DICT_KEY.key)
                     let data = checkAndUpgradeSaveDict(configStr)
                     if (AppEnv.IS_OFFICIAL) {
                         let r = await dictListVersion()
@@ -165,9 +168,14 @@ export const useBaseStore = defineStore('base', {
             }
             if (rIndex > -1) {
                 this.word.studyIndex = rIndex
-                this.word.bookList[this.word.studyIndex].words = shallowReactive(val.words)
-                this.word.bookList[this.word.studyIndex].perDayStudyNumber = val.perDayStudyNumber
-                this.word.bookList[this.word.studyIndex].lastLearnIndex = val.lastLearnIndex
+                //TypeScript 的靜態分析無法確定 this.word.bookList[this.word.studyIndex] 是否一定存在。
+                const book = this.word.bookList[rIndex]
+                //先將該陣列元素賦值給一個變數 (例如 book)，並在存取其屬性前檢查該變數是否存在
+                if (book) {
+                    book.words = shallowReactive(val.words)
+                    book.perDayStudyNumber = val.perDayStudyNumber
+                    book.lastLearnIndex = val.lastLearnIndex
+                }
             } else {
                 this.word.bookList.push(getDefaultDict(val))
                 this.word.studyIndex = this.word.bookList.length - 1
@@ -190,7 +198,10 @@ export const useBaseStore = defineStore('base', {
             let rIndex = this.article.bookList.findIndex((v: Dict) => v.id === val.id)
             if (rIndex > -1) {
                 this.article.studyIndex = rIndex
-                this.article.bookList[this.article.studyIndex].articles = shallowReactive(val.articles)
+                const book = this.article.bookList[rIndex]
+                if (book) {
+                    book.articles = shallowReactive(val.articles)
+                }
             } else {
                 this.article.bookList.push(getDefaultDict(val))
                 this.article.studyIndex = this.article.bookList.length - 1
