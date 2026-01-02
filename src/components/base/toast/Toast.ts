@@ -1,21 +1,21 @@
-import { createVNode, render } from 'vue'
-import ToastComponent from '@/components/base/toast/Toast.vue'
-import type { ToastOptions, ToastInstance, ToastService } from '@/components/base/toast/type.ts'
+import { createVNode, render } from 'vue' // 引入 Vue 的 createVNode 和 render 函數
+import ToastComponent from '@/components/base/toast/Toast.vue' // 引入 Toast 組件
+import type { ToastOptions, ToastInstance, ToastService } from '@/components/base/toast/type.ts' // 引入類型定義
 
-interface ToastContainer {
-  id: string
-  container: HTMLElement
-  instance: ToastInstance
-  offset: number
+interface ToastContainer { // 定義 Toast 容器介面
+  id: string // 容器 ID
+  container: HTMLElement // DOM 元素
+  instance: ToastInstance // Toast 實例
+  offset: number // 垂直偏移量
 }
 
-let toastContainers: ToastContainer[] = []
-let toastIdCounter = 0
+let toastContainers: ToastContainer[] = [] // 存儲所有活躍的 Toast 容器
+let toastIdCounter = 0 // ID 計數器
 
-// 创建Toast容器
+// 創建 Toast 容器
 const createToastContainer = (): HTMLElement => {
-  const container = document.createElement('div')
-  container.className = 'toast-container'
+  const container = document.createElement('div') // 創建 div 元素
+  container.className = 'toast-container' // 設定 class
   container.style.cssText = `
     position: fixed;
     top: 20px;
@@ -23,61 +23,63 @@ const createToastContainer = (): HTMLElement => {
     transform: translateX(-50%);
     z-index: 9999;
     pointer-events: none;
-  `
-  return container
+  ` // 設定樣式：固定定位、居中、高層級
+  return container // 返回容器
 }
 
-// 更新所有Toast的位置
+// 更新所有 Toast 的位置
 const updateToastPositions = () => {
-  toastContainers.forEach((toastContainer, index) => {
-    const offset = index * 70 // 每个Toast之间的间距，从80px减少到50px
-    toastContainer.offset = offset
-    toastContainer.container.style.marginTop = `${offset}px`
+  toastContainers.forEach((toastContainer, index) => { // 遍歷所有容器
+    const offset = index * 70 // 計算偏移量，每個 Toast 之間的間距 70px
+    toastContainer.offset = offset // 更新偏移量屬性
+    toastContainer.container.style.marginTop = `${offset}px` // 應用 Margin Top
   })
 }
 
-// 移除Toast容器
+// 移除 Toast 容器
 const removeToastContainer = (id: string) => {
-  const index = toastContainers.findIndex(container => container.id === id)
+  const index = toastContainers.findIndex(container => container.id === id) // 查找容器索引
   if (index > -1) {
-    const container = toastContainers[index] //TypeScript 的靜態分析無法確定 toastContainers[index] 是否一定存在。
-    if (!container) return //確保 container 一定有值
-    // 延迟销毁，等待动画完成
+    const container = toastContainers[index] // 獲取容器物件
+    // TypeScript 的靜態分析無法確定 toastContainers[index] 是否一定存在。
+    if (!container) return // 確保 container 一定有值
+    // 延遲銷毀，等待動畫完成
     setTimeout(() => {
-      render(null, container.container)
-      container.container.remove()
-      const currentIndex = toastContainers.findIndex(c => c.id === id)
+      render(null, container.container) // 卸載 Vue 組件
+      container.container.remove() // 移除 DOM 元素
+      const currentIndex = toastContainers.findIndex(c => c.id === id) // 再次查找索引（防止異步期間變化）
       if (currentIndex > -1) {
-        toastContainers.splice(currentIndex, 1)
-        updateToastPositions()
+        toastContainers.splice(currentIndex, 1) // 從陣列中移除
+        updateToastPositions() // 重新計算位置
       }
-    }, 300) // 等待动画完成（0.3秒）
+    }, 300) // 等待動畫完成（0.3秒）
   }
 }
 
+// Toast 主函數
 const Toast: ToastService = (options: ToastOptions | string): ToastInstance => {
-  const toastOptions = typeof options === 'string' ? { message: options } : options
-  const id = `toast-${++toastIdCounter}`
+  const toastOptions = typeof options === 'string' ? { message: options } : options // 處理參數：字串轉物件
+  const id = `toast-${++toastIdCounter}` // 生成唯一 ID
 
-  // 创建Toast容器
+  // 創建 Toast 容器
   const container = createToastContainer()
-  document.body.appendChild(container)
+  document.body.appendChild(container) // 掛載到 Body
 
-  // 创建VNode
+  // 創建 VNode
   const vnode = createVNode(ToastComponent, {
-    ...toastOptions,
-    onClose: () => {
-      removeToastContainer(id)
+    ...toastOptions, // 傳入選項
+    onClose: () => { // 傳入關閉回調
+      removeToastContainer(id) // 移除容器
     }
   })
 
   // 渲染到容器
   render(vnode, container)
 
-  // 创建实例
+  // 創建實例
   const instance: ToastInstance = {
     close: () => {
-      vnode.component?.exposed?.close?.()
+      vnode.component?.exposed?.close?.() // 調用組件暴露的 close 方法
     }
   }
 
@@ -89,33 +91,36 @@ const Toast: ToastService = (options: ToastOptions | string): ToastInstance => {
     offset: 0
   }
 
-  toastContainers.push(toastContainer)
-  updateToastPositions()
+  toastContainers.push(toastContainer) // 加入列表
+  updateToastPositions() // 更新位置
 
-  return instance
+  return instance // 返回實例
 }
 
-// 添加类型方法
+// 添加類型方法：成功
 Toast.success = (message: string, options?: Omit<ToastOptions, 'message' | 'type'>) => {
   return Toast({ message, type: 'success', ...options })
 }
 
+// 添加類型方法：警告
 Toast.warning = (message: string, options?: Omit<ToastOptions, 'message' | 'type'>) => {
   return Toast({ message, type: 'warning', ...options })
 }
 
+// 添加類型方法：訊息
 Toast.info = (message: string, options?: Omit<ToastOptions, 'message' | 'type'>) => {
   return Toast({ message, type: 'info', ...options })
 }
 
+// 添加類型方法：錯誤
 Toast.error = (message: string, options?: Omit<ToastOptions, 'message' | 'type'>) => {
   return Toast({ message, type: 'error', ...options })
 }
 
-// 关闭所有消息
+// 關閉所有消息
 Toast.closeAll = () => {
-  toastContainers.forEach(container => container.instance.close())
-  toastContainers = []
+  toastContainers.forEach(container => container.instance.close()) // 遍歷關閉
+  toastContainers = [] // 清空列表
 }
 
-export default Toast
+export default Toast // 導出 Toast
