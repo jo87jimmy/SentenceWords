@@ -1,4 +1,4 @@
-import { Article, TaskWords, Word, WordPracticeMode } from "@/types/types.ts";
+import { type Article, type TaskWords, type Word, WordPracticeMode } from "@/types/types.ts";
 import { useBaseStore } from "@/stores/base.ts";
 import { useSettingStore } from "@/stores/setting.ts";
 import { getDefaultWord } from "@/types/func.ts";
@@ -87,19 +87,19 @@ export function useArticleOptions() {
 
 export function getCurrentStudyWord(): TaskWords {
   const store = useBaseStore()
-  let data = {new: [], review: [], write: [], shuffle: []}
+  let data: TaskWords = { new: [], review: [], write: [], shuffle: [] }
   let dict = store.sdict;
   let isTest = false
   let words = dict.words.slice()
   if (isTest) {
-    words = Array.from({length: 10}).map((v, i) => {
-      return getDefaultWord({word: String(i)})
+    words = Array.from({ length: 10 }).map((v, i) => {
+      return getDefaultWord({ word: String(i) })
     })
   }
   if (words?.length) {
     const settingStore = useSettingStore()
     //忽略时是否加上自定义的简单词
-    let ignoreList = [store.allIgnoreWords, store.knownWords][settingStore.ignoreSimpleWord ? 0 : 1]
+    let ignoreList = settingStore.ignoreSimpleWord ? store.allIgnoreWords : store.knownWords
     const perDay = dict.perDayStudyNumber;
     let start = dict.lastLearnIndex;
     let complete = dict.complete;
@@ -169,7 +169,7 @@ export function getCurrentStudyWord(): TaskWords {
       // console.log('groups', groups)
 
       // 分配数量，靠前组多，靠后组少，例如分配比例 [6,5,4,3,2,1]
-      const ratio = Array.from({length: days}, (_, i) => i + 1).reverse();
+      const ratio = Array.from({ length: days }, (_, i) => i + 1).reverse();
       const ratioSum = ratio.reduce((a, b) => a + b, 0);
       const realRatio = ratio.map(r => Math.round(r / ratioSum * totalNeed));
       // console.log(ratio, ratioSum, realRatio, realRatio.reduce((a, b) => a + b, 0))
@@ -177,7 +177,7 @@ export function getCurrentStudyWord(): TaskWords {
       // 按比例从每组随机取单词
       let writeWords: Word[] = [];
       groups.map((v, i) => {
-        writeWords = writeWords.concat(getRandomN(v, realRatio[i]))
+        writeWords = writeWords.concat(getRandomN(v, realRatio[i] || 0))
       })
       // console.log('writeWords', writeWords)
       data.write = writeWords;

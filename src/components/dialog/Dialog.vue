@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch } from "vue";
+import { onMounted, onUnmounted, watch,ref } from "vue";
 import Tooltip from "@/components/base/Tooltip.vue";
 import { useEventListener } from "@/hooks/event.ts";
 
@@ -42,12 +42,12 @@ const emit = defineEmits([
   'cancel',
 ])
 
-let confirmButtonLoading = $ref(false)
-let zIndex = $ref(999)
-let visible = $ref(false)
-let openTime = $ref(Date.now())
-let maskRef = $ref<HTMLDivElement>(null)
-let modalRef = $ref<HTMLDivElement>(null)
+let confirmButtonLoading = ref(false)
+let zIndex = ref(999)
+let visible = ref(false)
+let openTime = ref(Date.now())
+let maskRef = ref<HTMLDivElement | null>(null)
+let modalRef = ref<HTMLDivElement | null>(null)
 const runtimeStore = useRuntimeStore()
 let id = Date.now()
 
@@ -61,21 +61,21 @@ async function close() {
     }
   }
   //记录停留时间，避免时间太短，弹框闪烁
-  let stayTime = Date.now() - openTime;
+  let stayTime = Date.now() - openTime.value;
   let closeTime = 300;
   if (stayTime < 500) {
     closeTime += 500 - stayTime;
   }
   return new Promise((resolve) => {
     setTimeout(() => {
-      maskRef?.classList.toggle('bounce-out');
-      modalRef?.classList.toggle('bounce-out');
+      maskRef.value?.classList.toggle('bounce-out');
+      modalRef.value?.classList.toggle('bounce-out');
     }, 500 - stayTime);
 
     setTimeout(() => {
       emit('update:modelValue', false)
       emit('close')
-      visible = false
+      visible.value = false
       resolve(true)
       let rIndex = runtimeStore.modalList.findIndex(item => item.id === id)
       if (rIndex > -1) {
@@ -90,8 +90,8 @@ watch(() => props.modelValue, n => {
   if (n) {
     id = Date.now()
     runtimeStore.modalList.push({id, close})
-    zIndex = 999 + runtimeStore.modalList.length
-    visible = true
+    zIndex.value = 999 + runtimeStore.modalList.length
+    visible.value = true
   } else {
     close()
   }
@@ -99,16 +99,16 @@ watch(() => props.modelValue, n => {
 
 onMounted(() => {
   if (props.modelValue === undefined) {
-    visible = true
+    visible.value = true
     id = Date.now()
     runtimeStore.modalList.push({id, close})
-    zIndex = 999 + runtimeStore.modalList.length
+    zIndex.value = 999 + runtimeStore.modalList.length
   }
 })
 
 onUnmounted(() => {
   if (props.modelValue === undefined) {
-    visible = false
+    visible.value = false
     let rIndex = runtimeStore.modalList.findIndex(item => item.id === id)
     if (rIndex > -1) {
       runtimeStore.modalList.splice(rIndex, 1)
@@ -116,7 +116,8 @@ onUnmounted(() => {
   }
 })
 
-useEventListener('keyup', async (e: KeyboardEvent) => {
+useEventListener('keyup', async (evt: Event) => {
+  const e = evt as KeyboardEvent
   if (e.key === 'Escape' && props.keyboard) {
     let lastItem = runtimeStore.modalList[runtimeStore.modalList.length - 1]
     if (lastItem?.id === id) {
@@ -127,9 +128,9 @@ useEventListener('keyup', async (e: KeyboardEvent) => {
 
 async function ok() {
   if (props.confirm) {
-    confirmButtonLoading = true
+    confirmButtonLoading.value = true
     await props.confirm()
-    confirmButtonLoading = false
+    confirmButtonLoading.value = false
   }
   emit('ok')
   await close()

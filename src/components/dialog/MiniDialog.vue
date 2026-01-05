@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {nextTick, onMounted, watch} from "vue";
+import {nextTick, ref, watch} from "vue";
 
 interface IProps {
   modelValue?: boolean,
@@ -10,16 +10,16 @@ let props = withDefaults(defineProps<IProps>(), {
   modelValue: true,
   width: '180rem'
 })
-let modalRef = $ref(null)
-let style = $ref({top: '2.4rem', bottom: 'unset'})
+let modalRef = ref(null)
+let style = ref({top: '2.4rem', bottom: 'unset'})
 
 watch(() => props.modelValue, (n) => {
   if (n)
     nextTick(() => {
-      if (modalRef) {
-        const modal = modalRef as HTMLElement
+      if (modalRef.value) {
+        const modal = modalRef.value as HTMLElement
         if (modal.getBoundingClientRect().bottom > window.innerHeight) {
-          style = {top: 'unset', 'bottom': '2.5rem'}
+          style.value = {top: 'unset', 'bottom': '2.5rem'}
         }
       }
     })

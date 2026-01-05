@@ -186,36 +186,42 @@ const showBookDetail = computed(() => {
 })
 
 onMounted(async () => {
-  if (route.query?.isAdd) {
-    isAdd.value = true
-    runtimeStore.editDict = getDefaultDict()
-  } else {
-    if (!runtimeStore.editDict.id) {
-      router.push("/word")
+  try {
+    if (route.query?.isAdd) {
+      isAdd.value = true
+      runtimeStore.editDict = getDefaultDict()
     } else {
-      if (!runtimeStore.editDict.words.length
-          && !runtimeStore.editDict.custom
-          && ![DictId.wordCollect, DictId.wordWrong, DictId.wordKnown].includes(runtimeStore.editDict.en_name || runtimeStore.editDict.id)
-      ) {
-        loading.value = true
-        let r = await _getDictDataByUrl(runtimeStore.editDict)
-        runtimeStore.editDict = r
-      }
+      if (!runtimeStore.editDict.id) {
+        router.push("/word")
+      } else {
+        if (!runtimeStore.editDict.words.length
+            && !runtimeStore.editDict.custom
+            && ![DictId.wordCollect, DictId.wordWrong, DictId.wordKnown].includes(runtimeStore.editDict.en_name || runtimeStore.editDict.id)
+        ) {
+          loading.value = true
+          let r = await _getDictDataByUrl(runtimeStore.editDict)
+          runtimeStore.editDict = r
+        }
 
-      const book = base.word.bookList.find(book => book.id === runtimeStore.editDict.id)
-      if (book) {
-        if (AppEnv.CAN_REQUEST) {
-          let res = await detail({id: runtimeStore.editDict.id})
-          if (res.success) {
-            runtimeStore.editDict.statistics = res.data.statistics
-            if (res.data.words.length) {
-              runtimeStore.editDict.words = res.data.words
+        const book = base.word.bookList.find(book => book.id === runtimeStore.editDict.id)
+        if (book) {
+          if (AppEnv.CAN_REQUEST) {
+            let res = await detail({id: runtimeStore.editDict.id})
+            if (res.success) {
+              runtimeStore.editDict.statistics = res.data.statistics
+              if (res.data.words.length) {
+                runtimeStore.editDict.words = res.data.words
+              }
             }
           }
         }
+        loading.value = false
       }
-      loading.value = false
     }
+  } catch (e: any) {
+    console.error(e)
+    Toast.error('載入失敗: ' + e.message)
+    loading.value = false
   }
 })
 
