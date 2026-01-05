@@ -26,16 +26,16 @@ interface Props { // 定義 Props 介面
 }
 
 const props = withDefaults(defineProps<Props>(), { // 定義 Props 並設定預設值
-  type: 'info',
+  type: 'info', // 預設類型為資訊
   duration: 3000, // 預設 3 秒
-  showClose: false
+  showClose: false // 預設不顯示關閉按鈕
 })
 
 const emit = defineEmits(['close']) // 定義發送的事件
 const visible = ref(false) // 控制顯示隱藏的響應式變量
-let timer = null // 定時器變量
+let timer: NodeJS.Timeout | null = null // 定時器變量 (修正類型)
 
-const style = computed(() => ({
+const style = computed(() => ({ // 計算樣式
   // 移除 offset，現在由父層容器管理位置
 }))
 

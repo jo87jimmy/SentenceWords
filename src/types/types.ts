@@ -124,26 +124,26 @@ export enum ShortcutKey { // 快捷鍵枚舉
 }
 
 export const DefaultShortcutKeyMap = { // 預設快捷鍵映射表
-    [ShortcutKey.EditArticle]: 'Ctrl+E',
-    [ShortcutKey.ShowWord]: 'Escape',
-    [ShortcutKey.Previous]: 'Alt+⬅',
-    [ShortcutKey.Next]: 'Tab',
-    [ShortcutKey.ToggleSimple]: '`',
-    [ShortcutKey.ToggleCollect]: 'Enter',
-    [ShortcutKey.PreviousChapter]: 'Ctrl+⬅',
-    [ShortcutKey.NextChapter]: 'Ctrl+➡',
-    [ShortcutKey.RepeatChapter]: 'Ctrl+Enter',
-    [ShortcutKey.DictationChapter]: 'Alt+Enter',
-    [ShortcutKey.PlayWordPronunciation]: 'Ctrl+P',
-    [ShortcutKey.ToggleShowTranslate]: 'Ctrl+Z',
-    [ShortcutKey.ToggleDictation]: 'Ctrl+I',
-    [ShortcutKey.ToggleTheme]: 'Ctrl+Q',
-    [ShortcutKey.ToggleConciseMode]: 'Ctrl+M',
-    [ShortcutKey.TogglePanel]: 'Ctrl+L',
-    [ShortcutKey.RandomWrite]: 'Ctrl+R',
-    [ShortcutKey.NextRandomWrite]: 'Ctrl+Shift+R',
-    [ShortcutKey.KnowWord]: '1',
-    [ShortcutKey.UnknownWord]: '2',
+    [ShortcutKey.EditArticle]: 'Ctrl+E', // 編輯文章
+    [ShortcutKey.ShowWord]: 'Escape', // 顯示單字
+    [ShortcutKey.Previous]: 'Alt+⬅', // 上一個
+    [ShortcutKey.Next]: 'Tab', // 下一個
+    [ShortcutKey.ToggleSimple]: '`', // 切換簡單模式
+    [ShortcutKey.ToggleCollect]: 'Enter', // 切換收藏
+    [ShortcutKey.PreviousChapter]: 'Ctrl+⬅', // 上一章
+    [ShortcutKey.NextChapter]: 'Ctrl+➡', // 下一章
+    [ShortcutKey.RepeatChapter]: 'Ctrl+Enter', // 重複章節
+    [ShortcutKey.DictationChapter]: 'Alt+Enter', // 默寫章節
+    [ShortcutKey.PlayWordPronunciation]: 'Ctrl+P', // 播放單字發音
+    [ShortcutKey.ToggleShowTranslate]: 'Ctrl+Z', // 顯示/隱藏翻譯
+    [ShortcutKey.ToggleDictation]: 'Ctrl+I', // 切換默寫模式
+    [ShortcutKey.ToggleTheme]: 'Ctrl+Q', // 切換主題
+    [ShortcutKey.ToggleConciseMode]: 'Ctrl+M', // 切換簡潔模式
+    [ShortcutKey.TogglePanel]: 'Ctrl+L', // 切換面板
+    [ShortcutKey.RandomWrite]: 'Ctrl+R', // 隨機寫
+    [ShortcutKey.NextRandomWrite]: 'Ctrl+Shift+R', // 下一個隨機寫
+    [ShortcutKey.KnowWord]: '1', // 標記為認識
+    [ShortcutKey.UnknownWord]: '2', // 標記為不認識
 }
 
 export enum TranslateEngine { // 翻譯引擎枚舉
@@ -225,7 +225,7 @@ export enum WordPracticeMode {
 
 // 練習類型
 export enum WordPracticeType {
-    FollowWrite,// 跟寫
+    FollowWrite, // 跟寫
     Spell, // 拼寫
     Identify, // 辨識
     Listen, // 聽寫

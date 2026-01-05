@@ -1,84 +1,84 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; /* 設定全局字體系列 */
+  line-height: 1.5; /* 設定行高 */
+  font-weight: 400; /* 設定字體粗細 */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: light dark; /* 啟用淺色和深色模式 */
+  color: rgba(255, 255, 255, 0.87); /* 設定文字顏色 */
+  background-color: #242424; /* 設定背景顏色 */
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none; /* 禁用字體合成 */
+  text-rendering: optimizeLegibility; /* 優化文字渲染 */
+  -webkit-font-smoothing: antialiased; /* 抗鋸齒 (WebKit) */
+  -moz-osx-font-smoothing: grayscale; /* 抗鋸齒 (OS X) */
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  font-weight: 500; /* 連結字體粗細 */
+  color: #646cff; /* 連結顏色 */
+  text-decoration: inherit; /* 繼承文字裝飾 */
 }
 
 a:hover {
-  color: #535bf2;
+  color: #535bf2; /* 連結懸停顏色 */
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  margin: 0; /* 清除外邊距 */
+  display: flex; /* 彈性佈局 */
+  place-items: center; /* 居中對齊 */
+  min-width: 320px; /* 最小寬度 */
+  min-height: 100vh; /* 最小高度為視口高度 */
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 3.2em; /* 標題字體大小 */
+  line-height: 1.1; /* 標題行高 */
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  border-radius: 8px; /* 按鈕圓角 */
+  border: 1px solid transparent; /* 按鈕邊框 */
+  padding: 0.6em 1.2em; /* 按鈕內邊距 */
+  font-size: 1em; /* 按鈕字體大小 */
+  font-weight: 500; /* 按鈕字體粗細 */
+  font-family: inherit; /* 繼承字體 */
+  background-color: #1a1a1a; /* 按鈕背景色 */
+  cursor: pointer; /* 鼠標手勢 */
+  transition: border-color 0.25s; /* 邊框顏色過渡效果 */
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: #646cff; /* 按鈕懸停邊框顏色 */
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 4px auto -webkit-focus-ring-color; /* 聚焦時的輪廓 */
 }
 
 .card {
-  padding: 2em;
+  padding: 2em; /* 卡片內邊距 */
 }
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  max-width: 1280px; /* 應用最大寬度 */
+  margin: 0 auto; /* 居中 */
+  padding: 2rem; /* 內邊距 */
+  text-align: center; /* 文字居中 */
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #213547; /* 淺色模式文字顏色 */
+    background-color: #ffffff; /* 淺色模式背景顏色 */
   }
 
   a:hover {
-    color: #747bff;
+    color: #747bff; /* 淺色模式連結懸停顏色 */
   }
 
   button {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; /* 淺色模式按鈕背景色 */
   }
 }
