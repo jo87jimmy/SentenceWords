@@ -6,7 +6,7 @@ import { isMobile } from "@/utils";
 
 export function useWindowClick(cb: (e: PointerEvent) => void) {
   onMounted(() => {
-    emitter.on(EventKey.closeOther, cb)
+    emitter.on(EventKey.closeOther, cb as any)
     window.addEventListener('click', cb)
   })
   onUnmounted(() => {
@@ -33,10 +33,12 @@ export function useEventListener(type: string, listener: EventListenerOrEventLis
     const performCleanup = () => {
       while (cleanupFns.length) {
         const fn = cleanupFns.pop()
-        try {
-          fn()
-        } catch (err) {
-          console.warn('[useEventListener] cleanup error', err)
+        if (fn) {
+          try {
+            fn()
+          } catch (err) {
+            console.warn('[useEventListener] cleanup error', err)
+          }
         }
       }
     }
@@ -125,7 +127,8 @@ export function useEventListener(type: string, listener: EventListenerOrEventLis
         hiddenInput.value = ''
       }
 
-      const handleInput = (event: InputEvent) => {
+      const handleInput = (e: Event) => {
+        const event = e as InputEvent
         if (isComposing) return
         const target = event.target as HTMLInputElement | null
         const value = target?.value ?? ''
@@ -251,7 +254,8 @@ export function useStartKeyboardEventListener() {
   const runtimeStore = useRuntimeStore()
   const settingStore = useSettingStore()
 
-  useEventListener('keydown', (e: KeyboardEvent) => {
+  useEventListener('keydown', (evt: Event) => {
+    const e = evt as KeyboardEvent
     if (!runtimeStore.disableEventListener) {
 
       // 检查当前单词是否包含空格，如果包含，则空格键应该被视为输入
@@ -276,8 +280,7 @@ export function useStartKeyboardEventListener() {
 
       let list = Object.entries(settingStore.shortcutKeyMap)
       let shortcutEvent = ''
-      for (let i = 0; i < list.length; i++) {
-        let [k, v] = list[i]
+      for (const [k, v] of list) {
         if (v === shortcutKey) {
           // console.log('快捷键', k)
           shortcutEvent = k
@@ -324,7 +327,8 @@ export function useStartKeyboardEventListener() {
 
     }
   })
-  useEventListener('keyup', (e: KeyboardEvent) => {
+  useEventListener('keyup', (evt: Event) => {
+    const e = evt as KeyboardEvent
     if (!runtimeStore.disableEventListener) {
       emitter.emit(EventKey.keyup, e)
     }
@@ -333,12 +337,12 @@ export function useStartKeyboardEventListener() {
 
 export function useOnKeyboardEventListener(onKeyDown: (e: KeyboardEvent) => void, onKeyUp: (e: KeyboardEvent) => void) {
   onMounted(() => {
-    emitter.on(EventKey.keydown, onKeyDown)
-    emitter.on(EventKey.keyup, onKeyUp)
+    emitter.on(EventKey.keydown, onKeyDown as any)
+    emitter.on(EventKey.keyup, onKeyUp as any)
   })
   onUnmounted(() => {
-    emitter.off(EventKey.keydown, onKeyDown)
-    emitter.off(EventKey.keyup, onKeyUp)
+    emitter.off(EventKey.keydown, onKeyDown as any)
+    emitter.off(EventKey.keyup, onKeyUp as any)
   })
 }
 

@@ -2,7 +2,7 @@ import * as VueRouter from 'vue-router'; // 引入 VueRouter 的所有導出模�
 import type { RouteRecordRaw } from 'vue-router'; // 引入 RouteRecordRaw 類型定義，用於定義路由規則
 import Layout from "@/pages/layout.vue"; // 引入佈局組件 Layout
 import WordsPage from "@/pages/word/WordsPage.vue"; // 引入單字頁面組件 WordsPage
-
+import DictList from "@/pages/word/DictList.vue"; // 引入字典列表組件 DictList
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
         path: '/', // 定義根路徑
@@ -10,6 +10,7 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
         children: [ // 定義子路由
             { path: '/', redirect: '/words' }, // 當訪問根路徑時，重定向到 /words
             { path: 'words', component: WordsPage }, // 定義 /words 路徑，對應 WordsPage 組件
+            { path: 'dict-list', component: DictList }, // 定義 /dict-list 路徑，對應 DictList 組件
         ]
     }
 ]

@@ -11,7 +11,7 @@ import BackIcon from "@/components/BackIcon.vue";
 import DictGroup from "@/components/list/DictGroup.vue";
 import { useBaseStore } from "@/stores/base.ts";
 import { useRouter } from "vue-router";
-import { computed, watch } from "vue";
+import { computed, watch,ref } from "vue";
 import { getDefaultDict } from "@/types/func.ts";
 import { useFetch } from "@vueuse/core";
 import { DICT_LIST, LIB_JS_URL, TourConfig } from "@/config/env.ts";
@@ -24,7 +24,7 @@ const settingStore = useSettingStore()
 const store = useBaseStore()
 const router = useRouter()
 
-function selectDict(e) {
+function selectDict(e:{dict: DictResource}) {
   console.log(e.dict)
   getDictDetail(e.dict)
 }
@@ -50,25 +50,25 @@ function groupByDictTags(dictList: DictResource[]) {
 
 const {data: dict_list, isFetching} = useFetch(resourceWrap(DICT_LIST.WORD.ALL)).json()
 
-const groupedByCategoryAndTag = $computed(() => {
-  let data = []
+const groupedByCategoryAndTag = computed(() => {
+  let data = [] as any[]
   if (!dict_list.value) return data
   const groupByCategory = groupBy(dict_list.value, 'category')
   for (const [key, value] of Object.entries(groupByCategory)) {
-    data.push([key, groupByDictTags(value)])
+    data.push([key, groupByDictTags(value as DictResource[])])
   }
   [data[2], data[3]] = [data[3], data[2]];
   console.log('data', data)
   return data
 })
 
-let showSearchInput = $ref(false)
-let searchKey = $ref('')
+let showSearchInput = ref(false)
+let searchKey = ref('')
 
 const searchList = computed<any[]>(() => {
-  if (searchKey) {
-    let s = searchKey.toLowerCase()
-    return dict_list.value.filter((item) => {
+  if (searchKey.value) {
+    let s = searchKey.value.toLowerCase()
+    return dict_list.value.filter((item:any) => {
       return item.id.toLowerCase().includes(s)
           || item.name.toLowerCase().includes(s)
           || item.category.toLowerCase().includes(s)
@@ -81,7 +81,7 @@ const searchList = computed<any[]>(() => {
 
 watch(dict_list, (val) => {
   if (!val.length) return
-  let cet4 = val.find(v => v.id === 'cet4')
+  let cet4 = val.find((v:any) => v.id === 'cet4')
   if (!cet4) return
   _nextTick(async () => {
     const Shepherd = await loadJsLib('Shepherd', LIB_JS_URL.SHEPHERD);
