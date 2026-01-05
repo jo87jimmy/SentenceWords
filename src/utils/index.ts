@@ -17,7 +17,26 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
-
+export function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, wait);
+    };
+}
+export function reverse<T>(array: T[]): T[] {
+    return array.slice().reverse();
+}
+export function shuffle<T>(array: T[]): T[] {
+    const result = array.slice(); // 复制数组，避免修改原数组
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1)); // 生成 0 ~ i 的随机索引
+        [result[i] as T, result[j] as T] = [result[j] as T, result[i] as T]; // 交换元素
+    }
+    return result;
+}
 //从字符串里面转换为Word格式
 export function convertToWord(raw: any) {
     const safeString = (str: string) => (typeof str === 'string' ? str.trim() : '');
