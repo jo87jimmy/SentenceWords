@@ -11,7 +11,15 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    BackIcon: typeof import('./src/components/BackIcon.vue')['default']
+    BaseButton: typeof import('./src/components/BaseButton.vue')['default']
+    BaseIcon: typeof import('./src/components/BaseIcon.vue')['default']
     BasePage: typeof import('./src/components/BasePage.vue')['default']
+    Book: typeof import('./src/components/Book.vue')['default']
+    Checkbox: typeof import('./src/components/base/checkbox/Checkbox.vue')['default']
+    DictGroup: typeof import('./src/components/list/DictGroup.vue')['default']
+    DictList: typeof import('./src/components/list/DictList.vue')['default']
+    Empty: typeof import('./src/components/Empty.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconFluentAdd16Regular: typeof import('~icons/fluent/add16-regular')['default']
     IconFluentArrowCircleRight16Regular: typeof import('~icons/fluent/arrow-circle-right16-regular')['default']
@@ -23,8 +31,10 @@ declare module 'vue' {
     IconFluentErrorCircle20Filled: typeof import('~icons/fluent/error-circle20-filled')['default']
     IconFluentSlideTextTitleEdit20Regular: typeof import('~icons/fluent/slide-text-title-edit20-regular')['default']
     IconFluentStar20Filled: typeof import('~icons/fluent/star20-filled')['default']
+    Progress: typeof import('./src/components/base/Progress.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Toast: typeof import('./src/components/base/toast/Toast.vue')['default']
+    Tooltip: typeof import('./src/components/base/Tooltip.vue')['default']
   }
 }

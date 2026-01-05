@@ -1,11 +1,74 @@
 import dayjs from 'dayjs' // 引入 dayjs 日期處理庫
 import { getDefaultSettingState, type SettingState } from "@/stores/setting.ts"; // 引入獲取預設設定狀態的函數
-import { SAVE_SETTING_KEY, SAVE_DICT_KEY } from "@/config/env.ts";
-import { type BaseState, getDefaultBaseState } from "@/stores/base.ts";
+import { AppEnv, RESOURCE_PATH, SAVE_SETTING_KEY, SAVE_DICT_KEY } from "@/config/env.ts";
+import { type BaseState, getDefaultBaseState, useBaseStore } from "@/stores/base.ts";
 import { useRouter } from "vue-router";
 import { useRuntimeStore } from "@/stores/runtime.ts";
 import { type Dict, DictId } from "@/types/types.ts";
 import { getDefaultDict } from "@/types/func.ts";
+import { nextTick } from "vue";
+
+//todo 偶尔发现一个报错，这里nextTick一直不执行
+export function _nextTick(cb: () => void, time?: number) {
+    if (time) {
+        nextTick(() => setTimeout(cb, time))
+    } else {
+        nextTick(cb)
+    }
+}
+
+export function groupBy<T extends Record<string, any>>(array: T[], key: string) {
+    return array.reduce<Record<string, T[]>>((result, item) => {
+        const groupKey = String(item[key]);
+        (result[groupKey] ||= []).push(item);
+        return result;
+    }, {});
+}
+
+export function isMobile(): boolean {
+    return /Mobi|iPhone|Android|ipad|tablet/i.test(window.navigator.userAgent)
+}
+
+export async function loadJsLib(key: string, url: string) {
+    if ((window as any)[key]) return (window as any)[key];
+    return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        // 判断是否是 .mjs 文件，如果是，则使用 type="module"
+        if (url.endsWith(".mjs")) {
+            script.type = "module";  // 需要加上 type="module"
+            script.src = url;
+            script.onload = async () => {
+                try {
+                    // 使用动态 import 加载模块
+                    const module = await import(/* @vite-ignore */ url); // 动态导入 .mjs 模块
+                    (window as any)[key] = module.default || module; // 将模块挂到 window 对象
+                    resolve((window as any)[key]);
+                } catch (err: any) {
+                    reject(`${key} 加载失败: ${err.message}`);
+                }
+            };
+        } else {
+            // 如果是非 .mjs 文件，直接按原方式加载
+            script.src = url;
+            script.onload = () => resolve((window as any)[key]);
+        }
+        script.onerror = () => reject(key + " 加载失败");
+        document.head.appendChild(script);
+    });
+}
+
+export function resourceWrap(resource: string, version?: number) {
+    if (AppEnv.IS_OFFICIAL) {
+        if (resource.includes('.json')) resource = resource.replace('.json', '');
+        if (!resource.includes('http')) resource = RESOURCE_PATH + resource
+        if (version === undefined) {
+            const store = useBaseStore()
+            return `${resource}_v${store.dictListVersion}.json`
+        }
+        return `${resource}_v${version}.json`
+    }
+    return resource;
+}
 
 export function cloneDeep<T>(val: T) { // 深拷貝函數，泛型 T 確保類型安全
     return JSON.parse(JSON.stringify(val)) // 使用 JSON 序列化反序列化進行深拷貝 (注意：無法處理 Date, RegExp, Function 等)
