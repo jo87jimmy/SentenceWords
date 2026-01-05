@@ -10,7 +10,7 @@
     "url": "CET4_T.json",
     "length": 2607,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "cet6",
@@ -23,7 +23,7 @@
     "url": "CET6_T.json",
     "length": 2345,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "xinghuoqiaoji_4",
@@ -36,7 +36,7 @@
     "url": "xinghuoqiaoji_4.json",
     "length": 2522,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "xinghuoqiaoji_6",
@@ -49,7 +49,7 @@
     "url": "xinghuoqiaoji_6.json",
     "length": 7520,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "cet4-sub",
@@ -62,7 +62,7 @@
     "url": "DanCiDeJianFa_4.json",
     "length": 1957,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "cet6-sub",
@@ -75,7 +75,7 @@
     "url": "DanCiDeJianFa_6.json",
     "length": 1949,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "kaoyan",
@@ -88,7 +88,7 @@
     "url": "KaoYan_3_T.json",
     "length": 3728,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "kaoyan_2024",
@@ -101,7 +101,7 @@
     "url": "KaoYan_2024.json",
     "length": 3731,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "kaoyanshanguo_2023",
@@ -114,7 +114,7 @@
     "url": "KaoYanShanGuo_2023.json",
     "length": 1771,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "926",
@@ -127,7 +127,7 @@
     "url": "926.json",
     "length": 926,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "dancimimi_1",
@@ -140,7 +140,7 @@
     "url": "DanCiDeMimi_1.json",
     "length": 5657,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "dancimimi_2",
@@ -153,7 +153,7 @@
     "url": "DanCiDeMimi_2.json",
     "length": 3827,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "2024HongBao T1",
@@ -166,7 +166,7 @@
     "url": "2024HongBao_T1.json",
     "length": 997,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "2024HongBao T2",
@@ -179,7 +179,7 @@
     "url": "2024HongBao_T2.json",
     "length": 854,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "hongbaoshu-2026",
@@ -192,12 +192,12 @@
     "url": "hongbaoshu-2026.json",
     "length": 4858,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "English_II",
-    "name": "英語二單詞书",
-    "description": "考研英語二單詞书",
+    "name": "英語二單詞書",
+    "description": "考研英語二單詞書",
     "category": "中國考試",
     "tags": [
       "考研"
@@ -205,7 +205,7 @@
     "url": "English_II.json",
     "length": 4559,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "kaoyanshanguo2025",
@@ -218,7 +218,7 @@
     "url": "kaoyanshanguo2025.json",
     "length": 2257,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "level4",
@@ -231,7 +231,7 @@
     "url": "Level4luan_2_T.json",
     "length": 4025,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "level8",
@@ -244,7 +244,7 @@
     "url": "Level8luan_2_T.json",
     "length": 12197,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pets3",
@@ -257,7 +257,7 @@
     "url": "PETS_3.json",
     "length": 1942,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pets3-2023",
@@ -270,7 +270,7 @@
     "url": "PETS3-2023.json",
     "length": 4449,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "self-study_English1",
@@ -283,7 +283,7 @@
     "url": "self-study_English1.json",
     "length": 1800,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "self-study_English2",
@@ -296,12 +296,12 @@
     "url": "self-study_English2.json",
     "length": 2181,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "self-study_English3",
     "name": "自考英語二完整單詞",
-    "description": "00015自考英語二完整單詞书",
+    "description": "00015自考英語二完整單詞書",
     "category": "中國考試",
     "tags": [
       "自考英語二"
@@ -309,7 +309,7 @@
     "url": "self-study_English3.json",
     "length": 4603,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "coca_20000",
@@ -322,7 +322,7 @@
     "url": "coca20000.json",
     "length": 20199,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "4000_Essential_English_Words1",
@@ -335,7 +335,7 @@
     "url": "4000_Essential_English_Words-meaning.json",
     "length": 3600,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "4000_Essential_English_Words2",
@@ -348,7 +348,7 @@
     "url": "4000_Essential_English_Words-sentence.json",
     "length": 3600,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "longman_communication_3000_words",
@@ -361,7 +361,7 @@
     "url": "Longman_Communication_3000.json",
     "length": 3168,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_2000_English_Words",
@@ -374,7 +374,7 @@
     "url": "top2000words.json",
     "length": 1867,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_1500_nouns_Words",
@@ -387,7 +387,7 @@
     "url": "Top1500NounWords.json",
     "length": 1525,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_1000_verb_Words",
@@ -400,7 +400,7 @@
     "url": "Top1000VerbWords.json",
     "length": 1011,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_500_Adj_Words",
@@ -413,7 +413,7 @@
     "url": "Top500AdjectiveWords.json",
     "length": 527,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_250_Adv_Words",
@@ -426,7 +426,7 @@
     "url": "Top250AdverbWords.json",
     "length": 255,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_60_Pronouns",
@@ -439,7 +439,7 @@
     "url": "Top60Pronouns.json",
     "length": 59,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "top_50_Prepositions",
@@ -452,7 +452,7 @@
     "url": "Top50Prepositions.json",
     "length": 46,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "suffix word",
@@ -465,7 +465,7 @@
     "url": "suffix_word.json",
     "length": 126,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "word roots1",
@@ -478,7 +478,7 @@
     "url": "word_roots1.json",
     "length": 369,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "adult self-study examination",
@@ -491,7 +491,7 @@
     "url": "adult-self-study-examination.json",
     "length": 3692,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "zhuan-cha-ben-ying-yu",
@@ -504,7 +504,7 @@
     "url": "zhuan-cha-ben.json",
     "length": 3216,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "zhuan-sheng-ben-xue-shi",
@@ -517,7 +517,7 @@
     "url": "xueshiyingyu.json",
     "length": 897,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Oxford5000",
@@ -530,7 +530,7 @@
     "url": "Oxford5000.json",
     "length": 5836,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Merriam_Webster_sVocabularyBuilder",
@@ -543,7 +543,7 @@
     "url": "Merriam_Webster_sVocabularyBuilder.json",
     "length": 1191,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "tingshuokaoshi",
@@ -556,12 +556,12 @@
     "url": "tingshuokaoshi.json",
     "length": 556,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "TOEFL_ZhangHongYan",
-    "name": "ZhangHongYan的TOEFL詞彙书",
-    "description": "ZhangHongYan的TOEFL詞彙书-詞以類記",
+    "name": "ZhangHongYan的TOEFL詞彙書",
+    "description": "ZhangHongYan的TOEFL詞彙書-詞以類記",
     "category": "國際考試",
     "tags": [
       "TOEFL"
@@ -569,12 +569,12 @@
     "url": "TOEFL_ZhangHongYan.json",
     "length": 4032,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "2025KaoYanHongBaoShu",
-    "name": "2025考研英語詞彙hongbao书",
-    "description": "2025考研英語詞彙hongbao书",
+    "name": "2025考研英語詞彙hongbao書",
+    "description": "2025考研英語詞彙hongbao書",
     "category": "中國考試",
     "tags": [
       "考研"
@@ -582,7 +582,7 @@
     "url": "2025KaoYanHongBaoShu.json",
     "length": 6705,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "3000_ClassRoom_English_Words",
@@ -595,7 +595,7 @@
     "url": "3000_ClassRoom_English_Words.json",
     "length": 2991,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "frequently_used_words01",
@@ -608,7 +608,7 @@
     "url": "frequently_used_word01.json",
     "length": 679,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "frequently_used_words03",
@@ -621,7 +621,7 @@
     "url": "frequently_used_word02.json",
     "length": 1040,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "frequently_used_words03",
@@ -634,12 +634,12 @@
     "url": "frequently_used_word03.json",
     "length": 1435,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Macmillan7000",
-    "name": "麦克米伦7000",
-    "description": "麦克米伦7000",
+    "name": "麥克米倫7000",
+    "description": "麥克米倫7000",
     "category": "中國考試",
     "tags": [
       "其他"
@@ -647,7 +647,7 @@
     "url": "Macmillan7000.json",
     "length": 6268,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "coder",
@@ -660,7 +660,7 @@
     "url": "it-words.json",
     "length": 1700,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "itVocabulary",
@@ -673,7 +673,7 @@
     "url": "itVocabulary.json",
     "length": 1665,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pet-2024",
@@ -686,7 +686,7 @@
     "url": "pet-vacabulary-list-2024.json",
     "length": 1871,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gmat",
@@ -699,7 +699,7 @@
     "url": "GMAT_3_T.json",
     "length": 3047,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gre",
@@ -712,12 +712,12 @@
     "url": "GRE_3_T.json",
     "length": 6515,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gre1500",
     "name": "GRE重點1500詞-fen哥",
-    "description": "GRE & TEM8 重叠高頻詞彙",
+    "description": "GRE & TEM8 重疊高頻詞彙",
     "category": "國際考試",
     "tags": [
       "GRE"
@@ -725,7 +725,7 @@
     "url": "GRE_1500.json",
     "length": 1533,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gre3000",
@@ -738,7 +738,7 @@
     "url": "GRE3000_3_T.json",
     "length": 3041,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "GRE-computer-based-test",
@@ -751,7 +751,7 @@
     "url": "GRE-computer-based-test.json",
     "length": 1451,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ZaiYaoNiMing_GRE3000",
@@ -764,7 +764,7 @@
     "url": "ZaiYaoNiMing_GRE3000.json",
     "length": 3041,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "GRE_equivalent",
@@ -777,7 +777,7 @@
     "url": "GRE_equivalent.json",
     "length": 827,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "GRE_ciyileiji",
@@ -790,7 +790,7 @@
     "url": "gre-ciyileiji.json",
     "length": 8785,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS_tinglichangjing",
@@ -803,7 +803,7 @@
     "url": "IELTS_tinglichangjing.json",
     "length": 1204,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts_disorder",
@@ -816,7 +816,7 @@
     "url": "IELTS_disorder.json",
     "length": 9389,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts_order",
@@ -829,7 +829,7 @@
     "url": "IELTS_order.json",
     "length": 9389,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts",
@@ -842,7 +842,7 @@
     "url": "IELTS_3_T.json",
     "length": 3575,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "heqiong",
@@ -855,7 +855,7 @@
     "url": "HeQiong_IELTS.json",
     "length": 2529,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ieltsWang3",
@@ -868,7 +868,7 @@
     "url": "IELTS_WANG_3.json",
     "length": 1135,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ieltsWang4",
@@ -881,7 +881,7 @@
     "url": "IELTS_WANG_4.json",
     "length": 346,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ieltsWang5",
@@ -894,7 +894,7 @@
     "url": "IELTS_WANG_5.json",
     "length": 1569,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ieltsWang11",
@@ -907,7 +907,7 @@
     "url": "IELTS_WANG_11.json",
     "length": 1738,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "DuckCircle_IELTS",
@@ -920,7 +920,7 @@
     "url": "DuckCircle_IELTS.json",
     "length": 2644,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTSVocabularyBible",
@@ -933,7 +933,7 @@
     "url": "IELTSVocabularyBible.json",
     "length": 3673,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-807",
@@ -946,7 +946,7 @@
     "url": "ielts-807.json",
     "length": 4340,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts-real-high",
@@ -959,7 +959,7 @@
     "url": "ielts-real-high.json",
     "length": 524,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts-real-5",
@@ -972,7 +972,7 @@
     "url": "ielts-real-5.json",
     "length": 183,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts-real-4",
@@ -985,7 +985,7 @@
     "url": "ielts-real-4.json",
     "length": 201,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts-real-3",
@@ -998,7 +998,7 @@
     "url": "ielts-real-3.json",
     "length": 256,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts-real-2",
@@ -1011,7 +1011,7 @@
     "url": "ielts-real-2.json",
     "length": 402,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ielts-real-1",
@@ -1024,7 +1024,7 @@
     "url": "ielts-real-1.json",
     "length": 737,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTSKingLu807",
@@ -1037,7 +1037,7 @@
     "url": "IELTSKingLu807.json",
     "length": 1916,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTSXDF7000",
@@ -1050,7 +1050,7 @@
     "url": "IELTS_XDF_7000.json",
     "length": 5567,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-oral-900",
@@ -1063,7 +1063,7 @@
     "url": "IELTS-oral-900.json",
     "length": 900,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task1",
@@ -1076,7 +1076,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task1.json",
     "length": 44,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task2",
@@ -1089,7 +1089,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task2.json",
     "length": 33,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task3",
@@ -1102,7 +1102,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task3.json",
     "length": 33,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task4",
@@ -1115,7 +1115,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task4.json",
     "length": 33,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task5",
@@ -1128,7 +1128,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task5.json",
     "length": 38,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task6",
@@ -1141,7 +1141,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task6.json",
     "length": 33,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task7",
@@ -1154,7 +1154,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task7.json",
     "length": 39,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task8",
@@ -1167,7 +1167,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task8.json",
     "length": 32,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task9",
@@ -1180,7 +1180,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task9.json",
     "length": 46,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task10",
@@ -1193,7 +1193,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task10.json",
     "length": 44,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task11",
@@ -1206,7 +1206,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task11.json",
     "length": 36,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task12",
@@ -1219,7 +1219,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task12.json",
     "length": 45,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task13",
@@ -1232,7 +1232,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task13.json",
     "length": 49,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task14",
@@ -1245,7 +1245,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task14.json",
     "length": 46,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task15",
@@ -1258,7 +1258,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task15.json",
     "length": 29,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task16",
@@ -1271,7 +1271,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task16.json",
     "length": 42,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task17",
@@ -1284,7 +1284,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task17.json",
     "length": 22,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task18",
@@ -1297,7 +1297,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task18.json",
     "length": 37,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-NeworientalDirect-Task19",
@@ -1310,7 +1310,7 @@
     "url": "IELTS-listening-NewOrientalDirect-Task19.json",
     "length": 26,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-1",
@@ -1323,7 +1323,7 @@
     "url": "IELTS-listening-18days-day1.json",
     "length": 74,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-2",
@@ -1336,7 +1336,7 @@
     "url": "IELTS-listening-18days-day2.json",
     "length": 77,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-3",
@@ -1349,7 +1349,7 @@
     "url": "IELTS-listening-18days-day3.json",
     "length": 77,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-4",
@@ -1362,7 +1362,7 @@
     "url": "IELTS-listening-18days-day4.json",
     "length": 73,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-5",
@@ -1375,7 +1375,7 @@
     "url": "IELTS-listening-18days-day5.json",
     "length": 76,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-6",
@@ -1388,7 +1388,7 @@
     "url": "IELTS-listening-18days-day6.json",
     "length": 77,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-7",
@@ -1401,7 +1401,7 @@
     "url": "IELTS-listening-18days-day7.json",
     "length": 75,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-8",
@@ -1414,7 +1414,7 @@
     "url": "IELTS-listening-18days-day8.json",
     "length": 75,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-9",
@@ -1427,7 +1427,7 @@
     "url": "IELTS-listening-18days-day9.json",
     "length": 76,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-10",
@@ -1440,7 +1440,7 @@
     "url": "IELTS-listening-18days-day10.json",
     "length": 33,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-11",
@@ -1453,7 +1453,7 @@
     "url": "IELTS-listening-18days-day11.json",
     "length": 52,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-12",
@@ -1466,7 +1466,7 @@
     "url": "IELTS-listening-18days-day12.json",
     "length": 77,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-13",
@@ -1479,7 +1479,7 @@
     "url": "IELTS-listening-18days-day13.json",
     "length": 78,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-14",
@@ -1492,7 +1492,7 @@
     "url": "IELTS-listening-18days-day14.json",
     "length": 76,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-15",
@@ -1505,7 +1505,7 @@
     "url": "IELTS-listening-18days-day15.json",
     "length": 77,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-16",
@@ -1518,7 +1518,7 @@
     "url": "IELTS-listening-18days-day16.json",
     "length": 77,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-17",
@@ -1531,7 +1531,7 @@
     "url": "IELTS-listening-18days-day17.json",
     "length": 46,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "IELTS-listening-18-days-18",
@@ -1544,7 +1544,7 @@
     "url": "IELTS-listening-18days-day18.json",
     "length": 76,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ket",
@@ -1557,7 +1557,7 @@
     "url": "ket2021.json",
     "length": 1147,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "sat",
@@ -1570,7 +1570,7 @@
     "url": "SAT_3_T.json",
     "length": 4464,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "SATen",
@@ -1583,7 +1583,7 @@
     "url": "SATen.json",
     "length": 2681,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "toefl",
@@ -1596,7 +1596,7 @@
     "url": "TOEFL_3_T.json",
     "length": 4264,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "bec2",
@@ -1609,7 +1609,7 @@
     "url": "BEC_2_T.json",
     "length": 2753,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "bec3",
@@ -1622,7 +1622,7 @@
     "url": "BEC_3_T.json",
     "length": 2825,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_junior",
@@ -1635,7 +1635,7 @@
     "url": "PTE_junior.json",
     "length": 2651,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_senior",
@@ -1648,7 +1648,7 @@
     "url": "PTE_senior.json",
     "length": 3170,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_FIB_R_junior",
@@ -1661,7 +1661,7 @@
     "url": "PTE_FIB_R_junior.json",
     "length": 941,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_FIB_R_senior",
@@ -1674,7 +1674,7 @@
     "url": "PTE_FIB_R_senior.json",
     "length": 1272,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_WFD",
@@ -1687,7 +1687,7 @@
     "url": "PTE_WFD.json",
     "length": 1212,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_FIB_L",
@@ -1700,7 +1700,7 @@
     "url": "PTE_FIB_L.json",
     "length": 646,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_Basic_apeuni",
@@ -1713,7 +1713,7 @@
     "url": "PTE_Basic_apeuni.json",
     "length": 2652,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_Advanced_apeuni.json",
@@ -1726,7 +1726,7 @@
     "url": "PTE_Advanced_apeuni.json",
     "length": 3169,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_Read_apeuni.json",
@@ -1739,7 +1739,7 @@
     "url": "PTE_Read_apeuni.json",
     "length": 630,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "PTE_Listening_apeuni.json",
@@ -1752,7 +1752,7 @@
     "url": "PTE_Listening_apeuni.json",
     "length": 674,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "TOEIC",
@@ -1765,7 +1765,7 @@
     "url": "TOEIC.json",
     "length": 1694,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Duolingo_Vocabulary_B1",
@@ -1778,7 +1778,7 @@
     "url": "Duolingo_Vocabulary_B1.json",
     "length": 801,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Duolingo_Vocabulary_B2",
@@ -1791,7 +1791,7 @@
     "url": "Duolingo_Vocabulary_B2.json",
     "length": 1423,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Duolingo_Vocabulary_C1",
@@ -1804,7 +1804,7 @@
     "url": "Duolingo_Vocabulary_C1.json",
     "length": 1314,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Oxford3000",
@@ -1817,7 +1817,7 @@
     "url": "Oxford3000.json",
     "length": 1342,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Oxford5000",
@@ -1830,7 +1830,7 @@
     "url": "Oxford5000.json",
     "length": 5836,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "voa",
@@ -1843,7 +1843,7 @@
     "url": "voa.json",
     "length": 1505,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Common-Phrases-PTE-Unofficial",
@@ -1856,7 +1856,7 @@
     "url": "Common-Phrases-PTE-Unofficial.json",
     "length": 274,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Common-Phrases-FCE-Unofficial",
@@ -1869,7 +1869,7 @@
     "url": "Common-Phrases-FCE-Unofficial.json",
     "length": 438,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gaokao3500",
@@ -1882,12 +1882,12 @@
     "url": "GaoKao_3500.json",
     "length": 3893,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gaokaozhentihexin",
-    "name": "高考历年真題核心高頻",
-    "description": "高考历年真題核心高頻",
+    "name": "高考歷年真題核心高頻",
+    "description": "高考歷年真題核心高頻",
     "category": "青少年英語",
     "tags": [
       "通用"
@@ -1895,7 +1895,7 @@
     "url": "GaoKaoZhenTiHeXinGaoPin.json",
     "length": 799,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "gaokao-yuedu-gaopin",
@@ -1908,7 +1908,7 @@
     "url": "gaokao-yuedu-gaopin.json",
     "length": 688,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "zhongkaohexin",
@@ -1921,7 +1921,7 @@
     "url": "ZhongKaoHeXin.json",
     "length": 2140,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "nce-new-1",
@@ -1934,7 +1934,7 @@
     "url": "nce-new-1.json",
     "length": 908,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "nce-new-2",
@@ -1947,7 +1947,7 @@
     "url": "nce-new-2.json",
     "length": 862,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "nce-new-3",
@@ -1960,7 +1960,7 @@
     "url": "nce-new-3.json",
     "length": 1062,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "nce-new-4",
@@ -1973,7 +1973,7 @@
     "url": "nce-new-4.json",
     "length": 793,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "SHjuniormiddleOxford",
@@ -1986,7 +1986,7 @@
     "url": "OxfordVocabulary_juniorMiddleSH.json",
     "length": 1270,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "san1",
@@ -1999,7 +1999,7 @@
     "url": "PEPXiaoXue3_1_T.json",
     "length": 64,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "san2",
@@ -2012,7 +2012,7 @@
     "url": "PEPXiaoXue3_2_T.json",
     "length": 72,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "si1",
@@ -2025,7 +2025,7 @@
     "url": "PEPXiaoXue4_1_T.json",
     "length": 84,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "si2",
@@ -2038,7 +2038,7 @@
     "url": "PEPXiaoXue4_2_T.json",
     "length": 104,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "wu1",
@@ -2051,7 +2051,7 @@
     "url": "PEPXiaoXue5_1_T.json",
     "length": 131,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "wu2",
@@ -2064,7 +2064,7 @@
     "url": "PEPXiaoXue5_2_T.json",
     "length": 156,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "liu1",
@@ -2077,7 +2077,7 @@
     "url": "PEPXiaoXue6_1_T.json",
     "length": 130,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "liu2",
@@ -2090,7 +2090,7 @@
     "url": "PEPXiaoXue6_2_T.json",
     "length": 108,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-yi1",
@@ -2103,7 +2103,7 @@
     "url": "PEP_SL_XiaoXue1_1_t.json",
     "length": 52,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-yi2",
@@ -2116,7 +2116,7 @@
     "url": "PEP_SL_XiaoXue1_2_t.json",
     "length": 45,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-er1",
@@ -2129,7 +2129,7 @@
     "url": "PEP_SL_XiaoXue2_1_t.json",
     "length": 54,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-er2",
@@ -2142,7 +2142,7 @@
     "url": "PEP_SL_XiaoXue2_2_t.json",
     "length": 55,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-san1",
@@ -2155,7 +2155,7 @@
     "url": "PEP_SL_XiaoXue3_1_t.json",
     "length": 103,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-san2",
@@ -2168,7 +2168,7 @@
     "url": "PEP_SL_XiaoXue3_2_t.json",
     "length": 84,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-si1",
@@ -2181,7 +2181,7 @@
     "url": "PEP_SL_XiaoXue4_1_t.json",
     "length": 115,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-si2",
@@ -2194,7 +2194,7 @@
     "url": "PEP_SL_XiaoXue4_2_t.json",
     "length": 87,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-wu1",
@@ -2207,7 +2207,7 @@
     "url": "PEP_SL_XiaoXue5_1_t.json",
     "length": 66,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-wu2",
@@ -2220,7 +2220,7 @@
     "url": "PEP_SL_XiaoXue5_2_t.json",
     "length": 96,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-liu1",
@@ -2233,7 +2233,7 @@
     "url": "PEP_SL_XiaoXue6_1_t.json",
     "length": 102,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "pep-sl-liu2",
@@ -2246,7 +2246,7 @@
     "url": "PEP_SL_XiaoXue6_2_t.json",
     "length": 41,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "qi1",
@@ -2259,7 +2259,7 @@
     "url": "PEPChuZhong7_1_T.json",
     "length": 392,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "qi2",
@@ -2272,7 +2272,7 @@
     "url": "PEPChuZhong7_2_T.json",
     "length": 492,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ba1",
@@ -2285,7 +2285,7 @@
     "url": "PEPChuZhong8_1_T.json",
     "length": 419,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ba2",
@@ -2298,7 +2298,7 @@
     "url": "PEPChuZhong8_2_T.json",
     "length": 466,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jiu",
@@ -2311,7 +2311,7 @@
     "url": "PEPChuZhong9_1_T.json",
     "length": 551,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong1",
@@ -2324,7 +2324,7 @@
     "url": "PEPGaoZhong_1_T.json",
     "length": 311,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong2",
@@ -2337,7 +2337,7 @@
     "url": "PEPGaoZhong_2_T.json",
     "length": 319,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong3",
@@ -2350,7 +2350,7 @@
     "url": "PEPGaoZhong_3_T.json",
     "length": 366,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong4",
@@ -2363,7 +2363,7 @@
     "url": "PEPGaoZhong_4_T.json",
     "length": 307,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong5",
@@ -2376,7 +2376,7 @@
     "url": "PEPGaoZhong_5_T.json",
     "length": 357,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong6",
@@ -2389,7 +2389,7 @@
     "url": "PEPGaoZhong_6_T.json",
     "length": 391,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong7",
@@ -2402,7 +2402,7 @@
     "url": "PEPGaoZhong_7_T.json",
     "length": 384,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong8",
@@ -2415,7 +2415,7 @@
     "url": "PEPGaoZhong_8_T.json",
     "length": 420,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong9",
@@ -2428,7 +2428,7 @@
     "url": "PEPGaoZhong_9_T.json",
     "length": 352,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong10",
@@ -2441,7 +2441,7 @@
     "url": "PEPGaoZhong_10_T.json",
     "length": 361,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "renjiaogaozhong11",
@@ -2454,7 +2454,7 @@
     "url": "PEPGaoZhong_11_T.json",
     "length": 309,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan1",
@@ -2467,7 +2467,7 @@
     "url": "WaiYanSheChuZhong_1_T.json",
     "length": 629,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "new-waiyan1",
@@ -2480,7 +2480,7 @@
     "url": "Newwaiyan7-1.json",
     "length": 294,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "new-waiyan2",
@@ -2493,7 +2493,7 @@
     "url": "Newwaiyan7-2.json",
     "length": 305,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan2",
@@ -2506,7 +2506,7 @@
     "url": "WaiYanSheChuZhong_2_T.json",
     "length": 438,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan3",
@@ -2519,7 +2519,7 @@
     "url": "WaiYanSheChuZhong_3_T.json",
     "length": 320,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan4",
@@ -2532,7 +2532,7 @@
     "url": "WaiYanSheChuZhong_4_T.json",
     "length": 266,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan5",
@@ -2545,7 +2545,7 @@
     "url": "WaiYanSheChuZhong_5_T.json",
     "length": 381,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan6",
@@ -2558,7 +2558,7 @@
     "url": "WaiYanSheChuZhong_6_T.json",
     "length": 128,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan7",
@@ -2571,7 +2571,7 @@
     "url": "WaiYanSheGaoZhong_1_T.json",
     "length": 411,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan8",
@@ -2584,7 +2584,7 @@
     "url": "WaiYanSheGaoZhong_2_T.json",
     "length": 272,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan9",
@@ -2597,7 +2597,7 @@
     "url": "WaiYanSheChuZhong_1-Volume-up.json",
     "length": 138,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan10",
@@ -2610,7 +2610,7 @@
     "url": "WaiYanSheChuZhong_1-Volume-down.json",
     "length": 118,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan11",
@@ -2623,7 +2623,7 @@
     "url": "WaiYanSheChuZhong_2-Volume-top.json",
     "length": 118,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan12",
@@ -2636,7 +2636,7 @@
     "url": "WaiYanSheChuZhong_2-Volume-down.json",
     "length": 110,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan13",
@@ -2649,7 +2649,7 @@
     "url": "WaiYanSheChuZhong_3-Volume-top.json",
     "length": 82,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan14",
@@ -2662,7 +2662,7 @@
     "url": "WaiYanSheChuZhong_3-Volume-down.json",
     "length": 106,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan15",
@@ -2675,7 +2675,7 @@
     "url": "WaiYanSheChuZhong_4-Volume-top.json",
     "length": 116,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan16",
@@ -2688,7 +2688,7 @@
     "url": "WaiYanSheChuZhong_4-Volume-down.json",
     "length": 78,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan17",
@@ -2701,7 +2701,7 @@
     "url": "WaiYanSheChuZhong_5-Volume-top.json",
     "length": 80,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan18",
@@ -2714,7 +2714,7 @@
     "url": "WaiYanSheChuZhong_5-Volume-down.json",
     "length": 72,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan19",
@@ -2727,7 +2727,7 @@
     "url": "WaiYanSheChuZhong_6-Volume-top.json",
     "length": 61,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan20",
@@ -2740,7 +2740,7 @@
     "url": "WaiYanSheChuZhong_6-Volume-down.json",
     "length": 91,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan3-1",
@@ -2753,7 +2753,7 @@
     "url": "waiyan-xin-3-1.json",
     "length": 134,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan3-2",
@@ -2766,7 +2766,7 @@
     "url": "waiyan-xin-3-2.json",
     "length": 156,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan4-1",
@@ -2779,7 +2779,7 @@
     "url": "waiyan-xin-4-1.json",
     "length": 144,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan4-2",
@@ -2792,7 +2792,7 @@
     "url": "waiyan-xin-4-2.json",
     "length": 134,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan5-1",
@@ -2805,7 +2805,7 @@
     "url": "waiyan-xin-5-1.json",
     "length": 152,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan5-2",
@@ -2818,7 +2818,7 @@
     "url": "waiyan-xin-5-2.json",
     "length": 147,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan6-1",
@@ -2831,7 +2831,7 @@
     "url": "waiyan-xin-6-1.json",
     "length": 83,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "waiyan6-2",
@@ -2844,7 +2844,7 @@
     "url": "waiyan-xin-6-2.json",
     "length": 105,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "shanghai-6-2word",
@@ -2857,7 +2857,7 @@
     "url": "shanghai-6-2-word.json",
     "length": 274,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Yilin1",
@@ -2870,7 +2870,7 @@
     "url": "YiLin_1.json",
     "length": 276,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Yilin2",
@@ -2883,7 +2883,7 @@
     "url": "YiLin_2.json",
     "length": 297,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Yilin3",
@@ -2896,7 +2896,7 @@
     "url": "YiLin_3.json",
     "length": 295,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi1",
@@ -2909,7 +2909,7 @@
     "url": "BeiShiGaoZhong_1_T.json",
     "length": 226,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi2",
@@ -2922,7 +2922,7 @@
     "url": "BeiShiGaoZhong_2_T.json",
     "length": 244,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi3",
@@ -2935,7 +2935,7 @@
     "url": "BeiShiGaoZhong_3_T.json",
     "length": 295,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi4",
@@ -2948,7 +2948,7 @@
     "url": "BeiShiGaoZhong_4_T.json",
     "length": 336,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi5",
@@ -2961,7 +2961,7 @@
     "url": "BeiShiGaoZhong_5_T.json",
     "length": 327,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi6",
@@ -2974,7 +2974,7 @@
     "url": "BeiShiGaoZhong_6_T.json",
     "length": 271,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi7",
@@ -2987,7 +2987,7 @@
     "url": "BeiShiGaoZhong_7_T.json",
     "length": 334,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi8",
@@ -3000,7 +3000,7 @@
     "url": "BeiShiGaoZhong_8_T.json",
     "length": 364,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi9",
@@ -3013,7 +3013,7 @@
     "url": "BeiShiGaoZhong_9_T.json",
     "length": 299,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi10",
@@ -3026,7 +3026,7 @@
     "url": "BeiShiGaoZhong_10_T.json",
     "length": 267,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "beishi11",
@@ -3039,7 +3039,7 @@
     "url": "BeiShiGaoZhong_11_T.json",
     "length": 330,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao1",
@@ -3052,7 +3052,7 @@
     "url": "jiJiao3-1.json",
     "length": 75,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao2",
@@ -3065,7 +3065,7 @@
     "url": "jiJiao3-2.json",
     "length": 76,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao3",
@@ -3078,7 +3078,7 @@
     "url": "jiJiao4-1.json",
     "length": 78,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao4",
@@ -3091,7 +3091,7 @@
     "url": "jiJiao4-2.json",
     "length": 84,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao5",
@@ -3104,7 +3104,7 @@
     "url": "jiJiao5-1.json",
     "length": 79,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao6",
@@ -3117,7 +3117,7 @@
     "url": "jiJiao5-2.json",
     "length": 96,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao7",
@@ -3130,7 +3130,7 @@
     "url": "jiJiao6-1.json",
     "length": 66,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao8",
@@ -3143,7 +3143,7 @@
     "url": "jiJiao6-2.json",
     "length": 51,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao9",
@@ -3156,7 +3156,7 @@
     "url": "jiJiao7-1.json",
     "length": 561,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao10",
@@ -3169,7 +3169,7 @@
     "url": "jiJiao7-2.json",
     "length": 514,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao11",
@@ -3182,7 +3182,7 @@
     "url": "jiJiao8-1.json",
     "length": 420,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao12",
@@ -3195,7 +3195,7 @@
     "url": "jiJiao8-2.json",
     "length": 487,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "jijiao13",
@@ -3208,7 +3208,7 @@
     "url": "jiJiao9.json",
     "length": 636,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "BJJuniorHigh",
@@ -3221,7 +3221,7 @@
     "url": "beijing_junior_high_school.json",
     "length": 1844,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "ReadingExplorer3",
@@ -3234,12 +3234,12 @@
     "url": "ReadingExplorer3.json",
     "length": 239,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   },
   {
     "id": "Cambridge_JOIN_IN",
     "name": "劍橋小學英語 JOIN IN",
-    "description": "外研社和劍橋大學出版社依据《义務教育英語课程标准》要求联合为我國小學生开发的一套英語教材。",
+    "description": "外研社和劍橋大學出版社依据《义務教育英語课程标准》要求联合為我國小學生開發的一套英語教材。",
     "category": "青少年英語",
     "tags": [
       "其他"
@@ -3247,6 +3247,6 @@
     "url": "Cambridge_JOIN_IN.json",
     "length": 1350,
     "language": "en",
-    "translateLanguage": "zh-CN"
+    "translateLanguage": "zh-TW"
   }
 ]
