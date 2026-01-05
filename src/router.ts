@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'; // 引入 RouteRecordRaw 類�
 import Layout from "@/pages/layout.vue"; // 引入佈局元件 Layout
 import WordsPage from "@/pages/word/WordsPage.vue"; // 引入單字頁面元件 WordsPage
 import DictList from "@/pages/word/DictList.vue"; // 引入字典列表元件 DictList
+import DictDetail from "@/pages/word/DictDetail.vue";
 
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
@@ -12,6 +13,7 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
             { path: '/', redirect: '/words' }, // 當訪問根路徑時，重新導向到 /words
             { path: 'words', component: WordsPage }, // 定義 /words 路徑，對應 WordsPage 元件
             { path: 'dict-list', component: DictList }, // 定義 /dict-list 路徑，對應 DictList 元件
+            { path: 'dict-detail', component: DictDetail },
         ]
     }
 ]

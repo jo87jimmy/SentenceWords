@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { type Dict } from "@/types/types.ts"; // 引入 Dict 類型定義
-import Progress from '@/components/base/Progress.vue' // 引入進度條組件
-import Checkbox from "@/components/base/checkbox/Checkbox.vue"; // 引入複選框組件
 import { computed } from "vue"; // 引入計算屬性
+import Checkbox from 'primevue/checkbox';
+import ProgressBar from 'primevue/progressbar';
 
 interface IProps { // 定義組件 Props 介面
   item?: Partial<Dict>; // 字典數據物件 (可選)
@@ -36,27 +36,35 @@ const studyProgress = computed(() => { // 計算顯示用的學習進度字串
 </script>
 
 <template>
-  <div class="book relative overflow-hidden" :id="item?.id ?? 'no-book'"> <!-- 書籍卡片容器，相對定位，隱藏溢出 -->
+  <div class="book relative overflow-hidden bg-white dark:bg-zinc-900 border border-neutral-200 dark:border-zinc-700 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300" :id="item?.id ?? 'no-book'"> <!-- 書籍卡片容器 -->
     <template v-if="!isAdd"> <!-- 如果不是添加模式 -->
-      <div>
-        <div class="text-base">{{ item?.name }}</div> <!-- 顯示書名 -->
-        <div class="text-sm line-clamp-3" v-opacity="item?.name !== item?.description">{{ item?.description }}</div> <!-- 顯示描述，最多3行 -->
+      <div class="p-4">
+        <div class="text-base font-medium text-gray-900 dark:text-gray-100">{{ item?.name }}</div> <!-- 顯示書名 -->
+        <div class="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mt-1 transition-opacity duration-300" :class="{ 'opacity-0': item?.name === item?.description }">{{ item?.description }}</div> <!-- 顯示描述，最多3行 -->
       </div>
-      <div class="absolute bottom-4 right-3"> <!-- 進度文字位置 -->
-        <div>{{ studyProgress }}{{ item?.length }}{{ quantifier }}</div> <!-- 顯示進度文字，例如 "10/100本" -->
-      </div>
-      <div class="absolute bottom-2 left-3 right-3"> <!-- 進度條位置 -->
-        <Progress v-if="(item?.lastLearnIndex || item?.complete) && showProgress" class="mt-1"
-                  :percentage="progress"
-                  :show-text="false"></Progress> <!-- 顯示進度條 -->
-      </div>
-      <Checkbox v-if="showCheckbox"
-                :model-value="checked"
-                @change="$emit('check')"
-                class="absolute left-3 bottom-3"/> <!-- 顯示複選框 -->
-      <div class="custom" v-if="item?.custom">自定義</div> <!-- 顯示自定義標籤 -->
+      <div class="h-24"></div> <!-- Spacer for content -->
+    <div class="absolute bottom-0 left-0 right-0 p-3 pt-0"> <!-- Footer container -->
+        <div class="flex justify-end mb-1 text-xs text-gray-400 dark:text-gray-500"> <!-- Text row -->
+          <span>{{ studyProgress }}</span>
+          <span>{{ item?.length }}</span>
+          <span class="ml-0.5">{{ quantifier }}</span>
+        </div>
+        
+        <div class="relative h-2 flex items-center"> <!-- Progress bar row -->
+           <ProgressBar v-if="(item?.lastLearnIndex || item?.complete) && showProgress" 
+                      class="w-full !h-1.5"
+                      :value="progress"
+                      :showValue="false"></ProgressBar>
+           
+           <div v-if="showCheckbox" class="absolute left-0 top-1/2 -translate-y-1/2 z-10"> <!-- Checkbox overlay on left -->
+               <Checkbox :modelValue="checked" :binary="true" @update:modelValue="$emit('check')" /> 
+           </div>
+        </div>
+    </div>
+      
+    <div class="custom" v-if="item?.custom">自定義</div> <!-- 顯示自定義標籤 -->
     </template>
-    <div v-else class="center h-full text-2xl"> <!-- 如果是添加模式 -->
+    <div v-else class="flex justify-center items-center h-48 text-2xl text-gray-400 hover:text-primary transition-colors cursor-pointer"> <!-- 如果是添加模式 -->
       <IconFluentAdd16Regular/> <!-- 顯示加號圖標 -->
     </div>
   </div>
@@ -65,11 +73,14 @@ const studyProgress = computed(() => { // 計算顯示用的學習進度字串
 <style scoped lang="scss">
 .custom { // 自定義標籤樣式
   position: absolute; // 絕對定位
-  top: 4px; // 頂部距離
-  right: -22px; // 右側距離 (移出邊界以旋轉)
-  padding: 1px 20px; // 內邊距
-  background: var(--color-label-bg); // 背景色
-  font-size: 11px; // 字體大小
+  top: 10px; // 頂部距離
+  right: -24px; // 右側距離 (移出邊界以旋轉)
+  padding: 2px 24px; // 內邊距
+  background: var(--p-primary-color); // 背景色 使用 PrimeVue 變量
+  color: #fff;
+  font-size: 10px; // 字體大小
   transform: rotate(45deg); // 旋轉 45 度
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 </style>

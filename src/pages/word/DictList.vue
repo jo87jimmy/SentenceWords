@@ -27,11 +27,13 @@ const router = useRouter() // 獲取 Router 實例
 // 選擇並進入字典詳情
 function selectDict(e:{dict: DictResource}) {
   console.log(e.dict) // 輸出選擇的字典信息
+  debugger
   getDictDetail(e.dict) // 獲取字典詳情
 }
 
 // 獲取字典詳情並導航
 async function getDictDetail(val: DictResource) {
+  debugger
   runtimeStore.editDict = getDefaultDict(val) // 設定當前編輯的字典為選中的字典（使用預設值填充）
   nav('dict-detail', {from: 'list'}) // 導航到字典詳情頁，並傳遞來源參數
 }
