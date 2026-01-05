@@ -1,7 +1,28 @@
 // import { cloneDeep } from '@/utils/index' // 引入深拷貝函數 (暫時註釋)
 import { type Dict, DictType } from '@/types/types' // 引入 Dict 類型和枚舉
 import { shallowReactive } from 'vue' // 引入 shallowReactive，用於優化大型物件的響應式性能
+import { type Word } from "@/types/types.ts";
+import { nanoid } from "nanoid";
 
+export function getDefaultWord(val: Partial<Word> = {}): Word {
+    return {
+        custom: false,
+        id: nanoid(6),
+        "word": "",
+        "phonetic0": "",
+        "phonetic1": "",
+        "trans": [],
+        "sentences": [],
+        "phrases": [],
+        "synos": [],
+        "relWords": {
+            "root": "",
+            "rels": []
+        },
+        "etymology": [],
+        ...val
+    }
+}
 export function getDefaultDict(val: Partial<Dict> = {}): Dict { // 獲取預設字典物件的函數，支持傳入部分屬性覆蓋
     return {
         id: '', // 預設 ID 為空字串

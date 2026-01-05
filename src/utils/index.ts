@@ -4,8 +4,8 @@ import { AppEnv, RESOURCE_PATH, SAVE_SETTING_KEY, SAVE_DICT_KEY } from "@/config
 import { type BaseState, getDefaultBaseState, useBaseStore } from "@/stores/base.ts"; // 引入基礎狀態及 Base Store
 import { useRouter } from "vue-router"; // 引入 Vue Router
 import { useRuntimeStore } from "@/stores/runtime.ts"; // 引入 Runtime Store
-import { type Dict, DictId } from "@/types/types.ts"; // 引入字典類型定義
-import { getDefaultDict } from "@/types/func.ts"; // 引入獲取預設字典函數
+import { type Dict, DictId, type DictResource, DictType } from "@/types/types.ts"; // 引入字典類型定義
+import { getDefaultDict, getDefaultWord } from "@/types/func.ts"; // 引入獲取預設字典函數
 import { nextTick } from "vue"; // 引入 Vue 的 nextTick
 
 // todo 偶爾發現一個報錯，這裡 nextTick 一直不執行
@@ -15,6 +15,133 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     } else { // 否則
         nextTick(cb) // 直接執行 nextTick
     }
+}
+
+
+//从字符串里面转换为Word格式
+export function convertToWord(raw: any) {
+    const safeString = (str: string) => (typeof str === 'string' ? str.trim() : '');
+    const safeSplit = (str: string, sep: string) =>
+        safeString(str) ? safeString(str).split(sep).filter(Boolean) : [];
+
+    // 1. trans
+    const trans = safeSplit(raw.trans, '\n').map(line => {
+        const match = safeString(line).match(/^([^\s.]+\.?)\s*(.*)$/);
+        if (match) {
+            let pos = safeString(match[1] as string);
+            let cn = safeString(match[2] as string);
+
+            // 如果 pos 不是常规词性（不以字母开头），例如 "【名】"
+            if (!/^[a-zA-Z]+\.?$/.test(pos)) {
+                cn = safeString(line); // 整行放到 cn
+                pos = ''; // pos 置空
+            }
+
+            return { pos, cn };
+        }
+        return { pos: '', cn: safeString(line) };
+    });
+
+    // 2. sentences
+    const sentences = safeSplit(raw.sentences, '\n\n').map(block => {
+        const [c, cn] = block.split('\n');
+        return { c: safeString(c as string), cn: safeString(cn as string) };
+    });
+
+    // 3. phrases
+    const phrases = safeSplit(raw.phrases, '\n\n').map(block => {
+        const [c, cn] = block.split('\n');
+        return { c: safeString(c as string), cn: safeString(cn as string) };
+    });
+
+    // 4. synos
+    const synos = safeSplit(raw.synos, '\n\n').map(block => {
+        const lines = block.split('\n').map(safeString);
+        const [posCn, wsStr] = lines;
+        let pos = '';
+        let cn = '';
+
+        if (posCn) {
+            const posMatch = posCn.match(/^([a-zA-Z.]+)(.*)$/);
+            pos = posMatch ? safeString(posMatch[1] as string) : '';
+            cn = posMatch ? safeString(posMatch[2] as string) : safeString(posCn);
+        }
+        const ws = wsStr ? wsStr.split('/').map(safeString) : [];
+
+        return { pos, cn, ws };
+    });
+
+    // 5. relWords
+    const relWordsText = safeString(raw.relWords);
+    let root = '';
+    const rels = [];
+
+    if (relWordsText) {
+        const relLines = relWordsText.split('\n').filter(Boolean);
+        if (relLines.length > 0) {
+            root = safeString(relLines[0]!.replace(/^词根:/, ''));
+            let currentPos = '';
+            let currentWords = [];
+
+            for (let i = 1; i < relLines.length; i++) {
+                const line = relLines[i]!.trim();
+                if (!line) continue;
+
+                if (/^[a-z]+\./i.test(line)) {
+                    if (currentPos && currentWords.length > 0) {
+                        rels.push({ pos: currentPos, words: currentWords });
+                    }
+                    currentPos = safeString(line.replace(':', ''));
+                    currentWords = [];
+                } else if (line.includes(':')) {
+                    const [c, cn] = line.split(':');
+                    currentWords.push({ c: safeString(c as string), cn: safeString(cn as string) });
+                }
+            }
+            if (currentPos && currentWords.length > 0) {
+                rels.push({ pos: currentPos, words: currentWords });
+            }
+        }
+    }
+
+    // 6. etymology
+    const etymology = safeSplit(raw.etymology, '\n\n').map(block => {
+        const lines = block.split('\n').map(safeString);
+        const t = lines.shift() || '';
+        const d = lines.join('\n').trim();
+        return { t, d };
+    });
+
+    return getDefaultWord({
+        id: raw.id,
+        word: safeString(raw.word),
+        phonetic0: safeString(raw.phonetic0),
+        phonetic1: safeString(raw.phonetic1),
+        trans,
+        sentences,
+        phrases,
+        synos,
+        relWords: { root, rels },
+        etymology,
+        custom: true
+    });
+}
+
+export async function _getDictDataByUrl(val: DictResource, type: DictType = DictType.word): Promise<Dict> {
+    // await sleep(2000);
+    let dictResourceUrl = `/dicts/${val.language}/word/${val.url}`
+    if (type === DictType.article) {
+        dictResourceUrl = `/dicts/${val.language}/article/${val.url}`;
+    }
+    let s = await fetch(resourceWrap(dictResourceUrl, val.version)).then(r => r.json())
+    if (s) {
+        if (type === DictType.word) {
+            return getDefaultDict({ ...val, words: s })
+        } else {
+            return getDefaultDict({ ...val, articles: s })
+        }
+    }
+    return getDefaultDict()
 }
 
 export function groupBy<T extends Record<string, any>>(array: T[], key: string) { // 根據鍵名對陣列進行分組
@@ -194,6 +321,7 @@ export function useNav() { // 導航 Hook
     const runtimeStore = useRuntimeStore() // 獲取 Runtime Store
 
     function nav(path: string, query = {}, data?: any) { // 導航函數
+        debugger
         if (data) { // 如果有傳遞額外數據
             runtimeStore.routeData = cloneDeep(data) // 深拷貝存入 store
         }
