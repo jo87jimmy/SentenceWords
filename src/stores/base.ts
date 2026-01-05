@@ -24,12 +24,12 @@ export interface BaseState { // 定義 BaseStore 的狀態介面
 
 export const getDefaultBaseState = (): BaseState => ({ // 獲取預設的 BaseState 狀態函數
     simpleWords: [ // 預設的簡單詞列表
-        'a', 'an',
-        'i', 'my', 'me', 'you', 'your', 'he', 'his', 'she', 'her', 'it',
-        'what', 'who', 'where', 'how', 'when', 'which',
-        'be', 'am', 'is', 'was', 'are', 'were', 'do', 'did', 'can', 'could', 'will', 'would',
-        'the', 'that', 'this', 'and', 'not', 'no', 'yes',
-        'to', 'of', 'for', 'at', 'in'
+        'a', 'an', // 冠詞
+        'i', 'my', 'me', 'you', 'your', 'he', 'his', 'she', 'her', 'it', // 代名詞
+        'what', 'who', 'where', 'how', 'when', 'which', // 疑問詞
+        'be', 'am', 'is', 'was', 'are', 'were', 'do', 'did', 'can', 'could', 'will', 'would', // 助動詞/be動詞
+        'the', 'that', 'this', 'and', 'not', 'no', 'yes', // 常見連接詞、限定詞、副詞
+        'to', 'of', 'for', 'at', 'in' // 常見介係詞
     ],
     load: false, // 預設未加載
     word: { // 單字狀態初始化
@@ -56,7 +56,7 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
     getters: { // 定義 Getters 計算屬性
         collectWord(): Dict { // 獲取單字收藏本
             // 存取加上了預設值 ?? getDefaultDict()，確保即使取不到值也會回傳一個合法的 Dict 物件，滿足類型定義
-            return this.word.bookList[0] ?? getDefaultDict()
+            return this.word.bookList[0] ?? getDefaultDict() // 返回收藏本或預設字典
         },
         collectArticle(): Dict { // 獲取文章收藏本
             return this.article.bookList[0] ?? getDefaultDict() // 若不存在則返回預設字典
@@ -81,10 +81,10 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
             return getDefaultDict() // 默認返回空字典
         },
         sdict(): Dict { // currentStudyWordDict 的簡寫別名
-            if (this.word.studyIndex >= 0) {
-                return this.word.bookList[this.word.studyIndex] ?? getDefaultDict()
+            if (this.word.studyIndex >= 0) { // 如果有選中索引
+                return this.word.bookList[this.word.studyIndex] ?? getDefaultDict() // 返回對應字典
             }
-            return getDefaultDict()
+            return getDefaultDict() // 返回空字典
         },
         currentStudyProgress(): number { // 計算當前單字字典的學習進度
             if (!this.sdict.length) return 0 // 如果長度為 0，進度為 0
@@ -124,26 +124,26 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
         },
         async init() { // 初始化 Action
             return new Promise(async resolve => { // 返回 Promise
-                try {
+                try { // 嘗試執行
                     // idb-keyval 的 get 方法可能會回傳 undefined 所以要加上 undefined 的處理
                     let configStr: string | undefined = await get(SAVE_DICT_KEY.key) // 從 IndexedDB 讀取字典數據
                     let data = checkAndUpgradeSaveDict(configStr) // 檢查並升級數據結構
                     if (AppEnv.IS_OFFICIAL) { // 如果是官方環境
                         let r = await dictListVersion() // 獲取服務端字典版本
-                        if (r.success) {
+                        if (r.success) { // 如果成功
                             data.dictListVersion = r.data // 更新版本號
                         }
                     }
                     if (AppEnv.CAN_REQUEST) { // 如果可以發送請求（已登入）
                         let res = await myDictList() // 獲取雲端字典列表
-                        if (res.success) {
+                        if (res.success) { // 如果成功
                             Object.assign(data, res.data) // 合併數據
                         }
                     }
                     this.setState(data) // 更新 State
                     // 為了效能，過濾掉通用字典數據後再存回 IndexedDB
-                    set(SAVE_DICT_KEY.key, JSON.stringify({ val: shakeCommonDict(this.$state), version: SAVE_DICT_KEY.version }))
-                } catch (e) {
+                    set(SAVE_DICT_KEY.key, JSON.stringify({ val: shakeCommonDict(this.$state), version: SAVE_DICT_KEY.version })) // 儲存數據
+                } catch (e) { // 捕獲錯誤
                     console.error('讀取本地 dict 數據失敗', e) // 錯誤處理
                 }
                 resolve(true) // 完成初始化
@@ -153,8 +153,8 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
         async changeDict(val: Dict) { // 切換當前學習的單字字典
             if (AppEnv.CAN_REQUEST) { // 如果可聯網
                 let r = await add2MyDict(val) // 將字典添加到雲端
-                if (!r.success) {
-                    return Toast.error(r.msg) // 失敗則提示
+                if (!r.success) { // 如果失敗
+                    return Toast.error(r.msg) // 提示錯誤
                 }
             }
             // 把其他的詞典的單字數據都刪掉，全保存在記憶體裡太卡了
@@ -170,9 +170,9 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
             if (rIndex > -1) { // 如果列表中已存在
                 this.word.studyIndex = rIndex // 切換索引
                 // TypeScript 的靜態分析無法確定 this.word.bookList[this.word.studyIndex] 是否一定存在。
-                const book = this.word.bookList[rIndex]
+                const book = this.word.bookList[rIndex] // 獲取字典物件
                 // 先將該陣列元素賦值給一個變數 (例如 book)，並在存取其屬性前檢查該變數是否存在
-                if (book) {
+                if (book) { // 如果字典存在
                     book.words = shallowReactive(val.words) // 更新單字數據
                     book.perDayStudyNumber = val.perDayStudyNumber // 更新每日目標
                     book.lastLearnIndex = val.lastLearnIndex // 更新學習進度
@@ -186,21 +186,21 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
         async changeBook(val: Dict) { // 切換當前學習的文章字典
             if (AppEnv.CAN_REQUEST) { // 如果可聯網
                 let r = await add2MyDict(val) // 同步到雲端
-                if (!r.success) {
+                if (!r.success) { // 如果失敗
                     return Toast.error(r.msg) // 失敗提示
                 }
             }
             // 把其他的書籍裡面的文章數據都刪掉，全保存在記憶體裡太卡了
             this.article.bookList.slice(1).map(v => { // 遍歷文章列表（排除第一個收藏本）
-                if (!v.custom) {
+                if (!v.custom) { // 如果不是自定義的
                     v.articles = shallowReactive([]) // 清空文章數據
                 }
             })
             let rIndex = this.article.bookList.findIndex((v: Dict) => v.id === val.id) // 查找索引
             if (rIndex > -1) { // 如果存在
                 this.article.studyIndex = rIndex // 切換索引
-                const book = this.article.bookList[rIndex]
-                if (book) {
+                const book = this.article.bookList[rIndex] // 獲取書籍物件
+                if (book) { // 如果存在
                     book.articles = shallowReactive(val.articles) // 更新文章數據
                 }
             } else { // 如果不存在

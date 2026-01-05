@@ -1,9 +1,9 @@
 import axios, { type AxiosInstance } from 'axios' // 引入 axios 及其類型
 import { AppEnv, ENV } from "@/config/env.ts"; // 引入環境變數
-import Toast from "@/components/base/toast/Toast.ts"; // 引入 Toast 提示組件
-import App from "@/App.vue"; // 引入 App 組件 (這裡似乎未被使用)
+import Toast from "@/components/base/toast/Toast.ts"; // 引入 Toast 提示元件
+// import App from "@/App.vue"; // 引入 App 元件 (這裡似乎未被使用，已註解)
 
-export const axiosInstance: AxiosInstance = axios.create({ // 創建 axios 實例
+export const axiosInstance: AxiosInstance = axios.create({ // 建立 axios 實例
     baseURL: ENV.API, // 設定基礎 URL
     timeout: 15000, // 設定請求超時時間 15000ms
 })
@@ -27,17 +27,17 @@ axiosInstance.interceptors.response.use( // 響應攔截器
         }
         if (data === null) { // 如果返回數據為 null
             return Promise.resolve({ // 返回自定義錯誤結構
-                code: 500,
-                msg: '系統出現錯誤', // 翻譯：系统出现错误 -> 系統出現錯誤
-                data: {},
-                success: false,
+                code: 500, // 錯誤碼
+                msg: '系統出現錯誤', // 錯誤訊息：系統出現錯誤
+                data: {}, // 空資料
+                success: false, // 成功標記：否
             })
         }
         if (typeof data !== 'object') { // 如果返回不是物件 (例如純字串)
             return Promise.resolve({ // 包裝成標準結構
-                data,
-                success: true,
-                code: 200
+                data, // 數據
+                success: true, // 成功標記：是
+                code: 200 // 狀態碼
             })
         }
         return Promise.resolve(data) // 返回處理後的數據
@@ -46,40 +46,40 @@ axiosInstance.interceptors.response.use( // 響應攔截器
     (error) => {
         if (error.response === undefined && error.status === undefined) { // 如果沒有響應且無狀態 (通常是網絡錯誤或超時)
             return Promise.resolve({ // 返回超時錯誤結構
-                code: 500,
-                msg: '伺服器響應超時', // 翻譯：服务器响应超时 -> 伺服器響應超時
-                data: null,
-                success: false,
+                code: 500, // 錯誤碼
+                msg: '伺服器響應超時', // 錯誤訊息：伺服器響應超時
+                data: null, // 空資料
+                success: false, // 成功標記：否
             })
         }
         if (error.response.status >= 500) { // 如果是 5xx 伺服器錯誤
             return Promise.resolve({
-                code: 500,
-                msg: '伺服器出現錯誤', // 翻譯：服务器出现错误 -> 伺服器出現錯誤
-                data: null,
-                success: false,
+                code: 500, // 錯誤碼
+                msg: '伺服器出現錯誤', // 錯誤訊息：伺服器出現錯誤
+                data: null, // 空資料
+                success: false, // 成功標記：否
             })
         }
         if (error.response.status === 401) { // 如果是 401 未授權
             return Promise.resolve({
-                code: 500,
-                msg: '使用者名稱或密碼不正確', // 翻譯：用户名或密码不正确 -> 使用者名稱或密碼不正確
-                data: null,
+                code: 500, // 錯誤碼
+                msg: '使用者名稱或密碼不正確', // 錯誤訊息：使用者名稱或密碼不正確
+                data: null, // 空資料
             })
         }
         const { data } = error.response // 獲取錯誤響應數據
         if (data.code !== undefined) { // 如果後端有返回錯誤碼
             return Promise.resolve({
-                code: data.code,
+                code: data.code, // 錯誤碼
                 msg: data.msg, // 使用後端返回的訊息
-                success: false,
+                success: false, // 成功標記：否
             })
         }
         return Promise.resolve({ // 其他未知錯誤
-            code: 500,
-            success: false,
-            msg: data.msg,
-            data: null,
+            code: 500, // 錯誤碼
+            success: false, // 成功標記：否
+            msg: data.msg, // 錯誤訊息
+            data: null, // 空資料
         })
     },
 )
@@ -96,4 +96,4 @@ async function request<T>(url: string, data: any = {}, params: any = {}, method:
     })
 }
 
-export default request // 導出 request 函數
+export default request // 匯出 request 函數
