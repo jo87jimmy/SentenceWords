@@ -5,28 +5,29 @@ import { computed, onMounted, reactive, ref, shallowReactive, watch } from "vue"
 import { useRuntimeStore } from "@/stores/runtime.ts";
 import { _getDictDataByUrl, _nextTick, convertToWord, isMobile, loadJsLib, useNav } from "@/utils";
 import { nanoid } from "nanoid";
-import BaseIcon from "@/components/BaseIcon.vue";
 import BaseTable from "@/components/BaseTable.vue";
 import WordItem from "@/components/WordItem.vue";
 import Toast from '@/components/base/toast/Toast.ts'
-import PopConfirm from "@/components/PopConfirm.vue";
-import BackIcon from "@/components/BackIcon.vue";
-import BaseButton from "@/components/BaseButton.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useBaseStore } from "@/stores/base.ts";
 import EditBook from "@/pages/article/components/EditBook.vue";
 import { getDefaultDict } from "@/types/func.ts";
-import BaseInput from "@/components/base/BaseInput.vue";
-import Textarea from "@/components/base/Textarea.vue";
 import FormItem from "@/components/base/form/FormItem.vue";
 import Form from "@/components/base/form/Form.vue";
 import DeleteIcon from "@/components/icon/DeleteIcon.vue";
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import Textarea from 'primevue/textarea';
+import ConfirmPopup from 'primevue/confirmpopup';
+import { useConfirm } from "primevue/useconfirm";
 import { getCurrentStudyWord } from "@/hooks/dict.ts";
 import PracticeSettingDialog from "@/pages/word/components/PracticeSettingDialog.vue";
 import { useSettingStore } from "@/stores/setting.ts";
 import { MessageBox } from "@/utils/MessageBox.tsx";
 import { AppEnv, LIB_JS_URL, Origin, PracticeSaveWordKey, TourConfig } from "@/config/env.ts";
 import { detail } from "@/apis";
+
+const confirm = useConfirm();
 
 const runtimeStore = useRuntimeStore()
 const base = useBaseStore()
@@ -135,6 +136,17 @@ function delWord(id: string, isBatch = false) {
   }
   if (!isBatch) syncDictInMyStudyList()
 }
+
+const confirmDelete = (event: any, id: string) => {
+    confirm.require({
+        target: event.currentTarget,
+        message: '確認刪除？',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+            delWord(id);
+        }
+    });
+};
 
 function batchDel(ids: string[]) {
   ids.map(v => delWord(v, true))
@@ -390,9 +402,7 @@ async function exportData() {
   exportLoading.value = false
 }
 
-function searchWord() {
-  console.log('wordForm.word', wordForm.value.word)
-}
+
 
 
 watch(() => loading.value, (val) => {
@@ -456,23 +466,41 @@ watch(() => loading.value, (val) => {
   <BasePage>
     <div v-if="showBookDetail" class="card mb-0 dict-detail-card flex flex-col">
       <div class="dict-header flex justify-between items-center relative">
-        <BackIcon class="dict-back z-2" />
-        <div class="dict-title absolute page-title text-align-center w-full">{{ runtimeStore.editDict.name }}</div>
-        <div class="dict-actions flex">
-          <BaseButton 
+        <Button 
+          text 
+          rounded 
+          class="dict-back z-10 w-8 h-8 p-0" 
+          @click="() => {
+            if (isAdd) {
+              router.back()
+            } else {
+              isEdit = false
+            }
+          }" 
+        >
+          <template #icon>
+            <IconFluentChevronLeft28Filled />
+          </template>
+        </Button>
+        <div class="dict-title absolute page-title text-center w-full">{{ runtimeStore.editDict.name }}</div>
+        <div class="dict-actions flex gap-2">
+          <Button 
             :loading="studyLoading || loading" 
-            type="info"
+            severity="info"
+            label="編輯"
             @click="isEdit = true"
-          >編輯</BaseButton>
-          <BaseButton 
+          />
+          <Button 
             id="study" 
             :loading="studyLoading || loading" 
+            label="學習"
             @click="addMyStudyList"
-          >學習</BaseButton>
-          <BaseButton 
+          />
+          <Button 
             :loading="studyLoading || loading" 
+            label="測試"
             @click="startTest"
-          >測試</BaseButton>
+          />
         </div>
       </div>
       <div class="text-lg">介紹：{{ runtimeStore.editDict.description }}</div>
@@ -525,25 +553,31 @@ watch(() => loading.value, (val) => {
                    <VNodeRender :vnode="checkbox(item)" />
                 </template>
                 <template #suffix>
-                  <div class='flex flex-col'>
-                    <BaseIcon
-                      class="option-icon"
+                  <div class='flex flex-col gap-1'>
+                    <Button
+                      text
+                      rounded
+                      severity="secondary"
+                      class="option-icon w-8 h-8 p-0"
                       @click="editWord(item)"
                       title="編輯"
                     >
-                      <IconFluentTextEditStyle20Regular />
-                    </BaseIcon>
-                    <PopConfirm 
-                      title="確認刪除？"
-                      @confirm="delWord(item.id)"
+                      <template #icon>
+                        <IconFluentTextEditStyle20Regular />
+                      </template>
+                    </Button>
+                    <Button
+                      text
+                      rounded
+                      severity="secondary"
+                      class="option-icon w-8 h-8 p-0"
+                      title="刪除"
+                      @click="confirmDelete($event, item.id)"
                     >
-                      <BaseIcon
-                        class="option-icon"
-                        title="刪除"
-                      >
+                      <template #icon>
                         <DeleteIcon />
-                      </BaseIcon>
-                    </PopConfirm>
+                      </template>
+                    </Button>
                   </div>
                 </template>
               </WordItem>
@@ -567,72 +601,79 @@ watch(() => loading.value, (val) => {
             label-width="7rem"
           >
             <FormItem label="單詞" prop="word">
-              <BaseInput
-                v-model="wordForm.word"
-              />
+              <InputText v-model="wordForm.word" class="w-full" />
             </FormItem>
             <FormItem label="英音音標">
-              <BaseInput
-                v-model="wordForm.phonetic0"
-              />
+              <InputText v-model="wordForm.phonetic0" class="w-full" />
             </FormItem>
             <FormItem label="美音音標">
-              <BaseInput
-                v-model="wordForm.phonetic1"
-              />
+              <InputText v-model="wordForm.phonetic1" class="w-full" />
             </FormItem>
             <FormItem label="翻譯">
               <Textarea
                 v-model="wordForm.trans"
                 placeholder="一行一個翻譯，前面詞性，後面內容（如n.取消）；多個翻譯請換行"
-                :autosize="{minRows: 6, maxRows: 10}"
+                autoResize
+                rows="6"
+                class="w-full"
               />
             </FormItem>
             <FormItem label="例句">
               <Textarea
                 v-model="wordForm.sentences"
                 placeholder="一行原文，一行譯文；多個請換兩行"
-                :autosize="{minRows: 6, maxRows: 10}"
+                autoResize
+                rows="6"
+                class="w-full"
               />
             </FormItem>
             <FormItem label="短語">
               <Textarea
                 v-model="wordForm.phrases"
                 placeholder="一行原文，一行譯文；多個請換兩行"
-                :autosize="{minRows: 6, maxRows: 10}"
+                autoResize
+                rows="6"
+                class="w-full"
               />
             </FormItem>
             <FormItem label="同義詞">
               <Textarea
                 v-model="wordForm.synos"
                 placeholder="請參考已有單詞格式"
-                :autosize="{minRows: 6, maxRows: 20}"
+                autoResize
+                rows="6"
+                class="w-full"
               />
             </FormItem>
             <FormItem label="同根詞">
               <Textarea
                 v-model="wordForm.relWords"
                 placeholder="請參考已有單詞格式"
-                :autosize="{minRows: 6, maxRows: 20}"
+                autoResize
+                rows="6"
+                class="w-full"
               />
             </FormItem>
             <FormItem label="詞源">
               <Textarea
                 v-model="wordForm.etymology"
                 placeholder="請參考已有單詞格式"
-                :autosize="{minRows: 6, maxRows: 10}"
+                autoResize
+                rows="6"
+                class="w-full"
               />
             </FormItem>
           </Form>
-          <div class="center">
-            <BaseButton
-              type="info"
+          <div class="flex justify-center items-center gap-4">
+            <Button
+              severity="secondary"
+              label="關閉"
               @click="closeWordForm"
-            >關閉</BaseButton>
-            <BaseButton 
-              type="primary"
+            />
+            <Button 
+              label="保存"
               @click="onSubmitWord"
-            >保存</BaseButton>
+            />
           </div>
         </div>
       </div>
@@ -640,18 +681,24 @@ watch(() => loading.value, (val) => {
 
     <div v-else class="card mb-0 dict-detail-card">
       <div class="dict-header flex justify-between items-center relative">
-        <BackIcon class="dict-back z-2" @click="() => {
-          if (isAdd) {
-            router.back()
-          } else {
-            isEdit = false
-          }
-        }" />
-        <div class="dict-title absolute page-title text-align-center w-full">
+        <Button 
+          icon="i-fluent-arrow-left-24-regular" 
+          text 
+          rounded 
+          class="dict-back z-10" 
+          @click="() => {
+            if (isAdd) {
+              router.back()
+            } else {
+              isEdit = false
+            }
+          }" 
+        />
+        <div class="dict-title absolute page-title text-center w-full">
           {{ runtimeStore.editDict.id ? '修改' : '創建' }}詞典
         </div>
       </div>
-      <div class="center">
+      <div class="flex justify-center items-center">
         <EditBook
           :isAdd="isAdd"
           :isBook="false"
@@ -666,6 +713,7 @@ watch(() => loading.value, (val) => {
       v-model="showPracticeSettingDialog"
       @ok="startPractice"
     />
+    <ConfirmPopup />
   </BasePage>
 </template>
 

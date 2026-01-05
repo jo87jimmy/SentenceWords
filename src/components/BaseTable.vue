@@ -1,19 +1,21 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { nextTick, ref, computed, h } from "vue";
 import { Sort } from "@/types/types.ts";
-import MiniDialog from "@/components/dialog/MiniDialog.vue";
-import BaseIcon from "@/components/BaseIcon.vue";
-import BaseButton from "@/components/BaseButton.vue";
 import { cloneDeep, debounce, reverse, shuffle } from "@/utils";
-import PopConfirm from "@/components/PopConfirm.vue"
 import Empty from "@/components/Empty.vue";
-import Pagination from '@/components/base/Pagination.vue'
 import Toast from '@/components/base/toast/Toast.ts'
-import Checkbox from "@/components/base/checkbox/Checkbox.vue";
-import DeleteIcon from "@/components/icon/DeleteIcon.vue";
-import Dialog from "@/components/dialog/Dialog.vue";
-import BaseInput from "@/components/base/BaseInput.vue";
 import { Host } from "@/config/env.ts";
+
+import Button from 'primevue/button';
+import Checkbox from 'primevue/checkbox';
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import Paginator from 'primevue/paginator';
+import Popover from 'primevue/popover';
+import ConfirmPopup from 'primevue/confirmpopup';
+import { useConfirm } from "primevue/useconfirm";
 
 let list = defineModel<any[]>('list', { default: () => [] })
 
@@ -37,6 +39,7 @@ const props = withDefaults(defineProps<{
   batchDel: () => void 0
 })
 
+const confirm = useConfirm();
 const emit = defineEmits<{
   click: [val: {
     item: any,
@@ -47,6 +50,7 @@ const emit = defineEmits<{
 }>()
 
 const listRef = ref<HTMLElement | null>(null)
+const sortOp = ref();
 
 function scrollToBottom() {
   nextTick(() => {
@@ -69,7 +73,6 @@ function scrollToItem(index: number) {
 let pageNo = ref(1)
 let pageSize = ref(50)
 let searchKey = ref('')
-let showSortDialog = ref(false)
 let showSearchInput = ref(false)
 let showImportDialog = ref(false)
 let selectIds = ref<any[]>([])
@@ -89,8 +92,8 @@ let selectAll = computed({
 
 const renderCheckbox = (item: any) => h(Checkbox, {
   modelValue: selectIds.value.includes(item.id),
-  onChange: () => toggleSelect(item),
-  size: "large"
+  'onUpdate:modelValue': () => toggleSelect(item),
+  binary: true
 })
 
 function toggleSelect(item: any) {
@@ -121,7 +124,18 @@ function sort(type: Sort) {
     Toast.success('已隨機排序')
     list.value = shuffle(cloneDeep(list.value))
   }
-  showSortDialog.value = false
+  if (sortOp.value) sortOp.value.hide();
+}
+
+function confirmDeleteBatch(event: any) {
+    confirm.require({
+        target: event.currentTarget,
+        message: '確認刪除所有選中數據？',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+             handleBatchDel();
+        }
+    });
 }
 
 function handleBatchDel() {
@@ -129,9 +143,10 @@ function handleBatchDel() {
   selectIds.value = []
 }
 
-function handlePageNo(e: number) {
-  pageNo.value = e
-  scrollToTop()
+function handlePageChange(event: any) {
+  pageNo.value = event.page + 1;
+  pageSize.value = event.rows;
+  scrollToTop();
 }
 
 const onSearchUpdate = debounce((e: string) => searchKey.value = e, 300)
@@ -153,90 +168,126 @@ defineExpose({
     <div v-if="showToolbar">
       <!-- Search Input Mode -->
       <div v-if="showSearchInput" class="flex gap-4">
-        <BaseInput
-          clearable
-          :modelValue="searchKey"
-          @update:modelValue="onSearchUpdate"
-          class="flex-1"
-          autofocus
-        >
-          <template #subfix>
-            <IconFluentSearch24Regular class="text-lg text-gray" />
-          </template>
-        </BaseInput>
-        <BaseButton @click="showSearchInput = false; searchKey = ''">取消</BaseButton>
+        <IconField class="w-full flex-1">
+            <InputIcon class="pi pi-search" />
+            <InputText 
+              v-model="searchKey" 
+              class="w-full"
+              placeholder="搜索..." 
+              autofocus 
+              @input="(e:any) => onSearchUpdate(e.target.value)" 
+            />
+        </IconField>
+        <Button label="取消" severity="secondary" @click="showSearchInput = false; searchKey = ''" />
       </div>
 
       <!-- Normal Toolbar Mode -->
-      <div v-else class="flex justify-between">
+      <div v-else class="flex justify-between items-center">
         <div class="flex gap-2 items-center">
           <Checkbox
             :disabled="!currentList.length"
-            @change="toggleSelectAll()"
+            @update:modelValue="toggleSelectAll()"
             :modelValue="selectAll"
-            size="large"
+            binary
           />
           <span>{{ selectIds.length }} / {{ list.length }}</span>
         </div>
 
-        <div class="flex gap-2 relative">
-          <PopConfirm 
+        <div class="flex gap-2 relative items-center">
+          <Button
             v-if="selectIds.length"
-            title="確認刪除所有選中數據？"
-            @confirm="handleBatchDel"
+            icon="i-fluent-delete-24-regular"
+            text
+            severity="danger"
+            class="w-8 h-8 p-0"
+            title="刪除"
+            @click="confirmDeleteBatch"
           >
-            <BaseIcon class="del" title="刪除">
-              <DeleteIcon />
-            </BaseIcon>
-          </PopConfirm>
+            <template #icon>
+                <IconFluentDelete20Regular />
+             </template>
+          </Button>
 
-          <BaseIcon @click="showImportDialog = true" title="導入">
-            <IconSystemUiconsImport />
-          </BaseIcon>
+          <Button 
+            text 
+            severity="secondary" 
+            class="w-8 h-8 p-0" 
+            title="導入"
+            @click="showImportDialog = true"
+          >
+           <template #icon>
+             <IconSystemUiconsImport />
+           </template>
+          </Button>
 
-          <BaseIcon @click="emit('exportData')" title="導出">
-            <IconEosIconsLoading v-if="exportLoading" />
-            <IconPhExportLight v-else />
-          </BaseIcon>
+          <Button 
+            text 
+            severity="secondary" 
+            class="w-8 h-8 p-0" 
+            title="導出"
+            @click="emit('exportData')"
+          >
+             <template #icon>
+                <IconEosIconsLoading v-if="exportLoading" />
+                <IconPhExportLight v-else />
+             </template>
+          </Button>
 
-          <BaseIcon @click="props.add()" title="添加單詞">
-            <IconFluentAdd20Regular />
-          </BaseIcon>
+          <Button 
+            text 
+            severity="secondary" 
+            class="w-8 h-8 p-0" 
+            title="添加單詞"
+             @click="props.add()"
+          >
+            <template #icon>
+                <IconFluentAdd20Regular />
+            </template>
+          </Button>
 
-          <BaseIcon
-            :disabled="!currentList.length"
+          <Button
+            text
+            severity="secondary"
+            class="w-8 h-8 p-0"
             title="改變順序"
-            @click="showSortDialog = !showSortDialog"
+            :disabled="!currentList.length"
+            @click="(e) => sortOp.toggle(e)"
           >
-            <IconFluentArrowSort20Regular />
-          </BaseIcon>
+             <template #icon>
+                <IconFluentArrowSort20Regular />
+             </template>
+          </Button>
 
-          <BaseIcon
+          <Button 
+            text
+            severity="secondary"
+            class="w-8 h-8 p-0"
+            title="搜索"
             :disabled="!currentList.length"
             @click="showSearchInput = !showSearchInput"
-            title="搜索"
           >
-            <IconFluentSearch20Regular />
-          </BaseIcon>
+             <template #icon>
+                <IconFluentSearch20Regular />
+             </template>
+          </Button>
 
-          <!-- Sort Dialog -->
-          <MiniDialog
-            v-model="showSortDialog"
-            style="width: 8rem;"
-          >
-            <div class="mini-row-title">列表順序設置</div>
-            <div class="mini-row">
-              <BaseButton size="small" @click="sort(Sort.reverse)">翻轉</BaseButton>
-              <BaseButton size="small" @click="sort(Sort.random)">隨機</BaseButton>
+          <!-- Sort Popover -->
+          <Popover ref="sortOp">
+            <div class="flex flex-col gap-2 p-2 w-32">
+              <div class="text-sm font-bold mb-1">列表順序設置</div>
+              <div class="flex gap-2">
+                <Button size="small" label="翻轉" @click="sort(Sort.reverse)" />
+                <Button size="small" label="隨機" @click="sort(Sort.random)" />
+              </div>
             </div>
-          </MiniDialog>
+          </Popover>
         </div>
       </div>
     </div>
 
     <!-- Content -->
-    <div v-if="loading" class="h-full w-full center text-4xl">
-      <IconEosIconsLoading color="gray" />
+    <div v-if="loading" class="h-full w-full flex justify-center items-center text-4xl">
+      <IconEosIconsLoading class="text-gray-500" />
     </div>
     
     <template v-else-if="currentList.length">
@@ -255,14 +306,15 @@ defineExpose({
       </div>
       
       <div v-if="showPagination" class="flex justify-end">
-        <Pagination
-          :currentPage="pageNo"
-          @update:currentPage="handlePageNo"
-          :pageSize="pageSize"
-          @update:pageSize="(e) => pageSize = e"
-          :pageSizes="[20, 50, 100, 200]"
-          layout="prev, pager, next"
-          :total="list.length"
+        <Paginator
+          :rows="pageSize"
+          :totalRecords="list.length"
+          :rowsPerPageOptions="[20, 50, 100, 200]"
+          @page="handlePageChange"
+          :first="(pageNo - 1) * pageSize"
+          template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown CurrentPageReport"
+          currentPageReportTemplate="第 {first} - {last} 條，共 {totalRecords} 條"
+          class="!border-none !bg-transparent"
         />
       </div>
     </template>
@@ -271,25 +323,27 @@ defineExpose({
 
     <!-- Import Dialog -->
     <Dialog 
-      v-model="showImportDialog"
-      @update:modelValue="closeImportDialog"
-      title="導入教程"
+      v-model:visible="showImportDialog"
+      modal
+      header="導入教程"
+      :style="{ width: '50rem' }"
     >
-        <div class="w-100 p-4 pt-0">
+        <div class="w-full p-4 pt-0">
             <div>請按照模板的格式來填寫數據</div>
-            <div class="color-red">單詞項為必填，其他項可不填</div>
+            <div class="text-red-500">單詞項為必填，其他項可不填</div>
             <div>翻譯：一行一個翻譯，前面詞性，後面內容（如n.取消）；多個翻譯請換行</div>
-            <div>例句：一行原文，一行譯文；多個請換<span class="color-red">兩</span>行</div>
-            <div>短語：一行原文，一行譯文；多個請換<span class="color-red">兩</span>行</div>
+            <div>例句：一行原文，一行譯文；多個請換<span class="text-red-500">兩</span>行</div>
+            <div>短語：一行原文，一行譯文；多個請換<span class="text-red-500">兩</span>行</div>
             <div>同義詞、同根詞、詞源：請前往官方字典，然後編輯其中某個單詞，參考其格式</div>
             <div class="mt-6">
-              模板下載地址：<a :href="`https://${Host}/libs/单词导入模板.xlsx`">單詞導入模板</a>
+              模板下載地址：<a :href="`https://${Host}/libs/单词导入模板.xlsx`" class="text-blue-500 hover:text-blue-600">單詞導入模板</a>
             </div>
-            <div class="mt-4">
-              <BaseButton
+            <div class="mt-4 flex gap-2 items-center">
+              <Button
                 @click="openUpload"
                 :loading="props.importLoading"
-              >導入</BaseButton>
+                label="導入"
+              />
               <input
                 id="upload-trigger"
                 type="file"
@@ -300,6 +354,7 @@ defineExpose({
             </div>
           </div>
     </Dialog>
+    <ConfirmPopup />
   </div>
 </template>
 
