@@ -113,6 +113,7 @@ export default defineComponent({
                   props: {
                     ...vnode.props,
                     error: !!error.value,
+                    invalid: !!error.value,
                     onBlur: handleBlur,
                     onChange: handChange
                   },
