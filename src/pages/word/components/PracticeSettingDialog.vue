@@ -1,21 +1,23 @@
 <script setup lang="ts">
-
 import { _getAccomplishDays } from "@/utils";
-import BaseButton from "@/components/BaseButton.vue";
-import Checkbox from "@/components/base/checkbox/Checkbox.vue";
-import Slider from "@/components/base/Slider.vue";
-import { defineAsyncComponent, watch ,ref} from "vue";
+import { watch, ref } from "vue";
 import { useSettingStore } from "@/stores/setting.ts";
 import Toast from "@/components/base/toast/Toast.ts";
 import ChangeLastPracticeIndexDialog from "@/pages/word/components/ChangeLastPracticeIndexDialog.vue";
-import Tooltip from "@/components/base/Tooltip.vue";
 import { useRuntimeStore } from "@/stores/runtime.ts";
 
-const Dialog = defineAsyncComponent(() => import('@/components/dialog/Dialog.vue'))
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import Slider from 'primevue/slider';
+import Checkbox from 'primevue/checkbox';
+import InputNumber from 'primevue/inputnumber';
+import Tooltip from 'primevue/tooltip';
 
+const vTooltip = Tooltip;
 const settings = useSettingStore()
 const runtimeStore = useRuntimeStore()
 
+// 使用 defineModel 對應父組件的 v-model
 const model = defineModel<boolean>()
 
 defineProps<{
@@ -26,89 +28,119 @@ const emit = defineEmits<{
   ok: [];
 }>()
 
-let show = ref(false)
-let tempPerDayStudyNumber = ref(0)
-let tempLastLearnIndex = ref(0)
-let temPracticeMode = ref(0)
-let tempDisableShowPracticeSettingDialog = ref(false)
-
+const show = ref(false)
+const tempPerDayStudyNumber = ref(0)
+const tempLastLearnIndex = ref(0)
+const tempPracticeMode = ref(0)
+const tempDisableShowPracticeSettingDialog = ref(false)
 
 function changePerDayStudyNumber() {
   runtimeStore.editDict.perDayStudyNumber = tempPerDayStudyNumber.value
   runtimeStore.editDict.lastLearnIndex = tempLastLearnIndex.value
-  settings.wordPracticeMode = temPracticeMode.value
+  settings.wordPracticeMode = tempPracticeMode.value
   settings.disableShowPracticeSettingDialog = tempDisableShowPracticeSettingDialog.value
+  model.value = false // 關閉 Dialog
   emit('ok')
 }
 
+// 監聽 model 變化，打開時初始化數據
 watch(() => model.value, (n) => {
   if (n) {
     if (runtimeStore.editDict.id) {
-      tempPerDayStudyNumber.value = runtimeStore.editDict.perDayStudyNumber
-      tempLastLearnIndex.value = runtimeStore.editDict.lastLearnIndex
-      temPracticeMode.value = settings.wordPracticeMode
+      tempPerDayStudyNumber.value = runtimeStore.editDict.perDayStudyNumber || 10
+      tempLastLearnIndex.value = runtimeStore.editDict.lastLearnIndex || 0
+      tempPracticeMode.value = settings.wordPracticeMode
       tempDisableShowPracticeSettingDialog.value = settings.disableShowPracticeSettingDialog
     } else {
-      Toast.warning('请先选择一本词典')
+      Toast.warning('請先選擇一本詞典')
+      model.value = false // 防止在沒有詞典時打開
     }
   }
 })
 </script>
 
 <template>
-  <Dialog v-model="model" title="学习设置" :footer="true"
-          @ok="changePerDayStudyNumber">
-    <div class="target-modal color-main"  id="mode">
-      <div class="center">
-        <div class="flex gap-4 text-center h-30 w-85">
-          <div class="mode-item" :class="temPracticeMode == 0 && 'active'" @click=" temPracticeMode = 0">
-            <div class="title text-align-center">智能模式</div>
-            <div class="desc mt-2">自动规划学习、复习、听写、默写</div>
-          </div>
-          <div class="mode-item" :class="temPracticeMode == 1 && 'active'" @click=" temPracticeMode = 1">
-            <div class="title">自由模式</div>
-            <div class="desc mt-2">自由练习，系统不强制复习与默写</div>
-          </div>
+  <Dialog v-model:visible="model" header="學習設定" modal :draggable="false" class="w-[90vw] md:w-[30rem]">
+    <div class="flex flex-col gap-6 text-[var(--p-text-color)]">
+      <!-- 模式選擇 -->
+      <div class="flex gap-4 h-32 md:h-30">
+        <div 
+          class="flex-1 border rounded-lg p-4 cursor-pointer transition-colors flex flex-col items-center justify-center text-center"
+          :class="tempPracticeMode === 0 ? 'bg-primary text-primary-contrast border-primary' : 'border-surface-300 dark:border-surface-600 hover:border-primary'"
+          @click="tempPracticeMode = 0"
+        >
+          <div class="font-bold text-lg mb-2">智能模式</div>
+          <div class="text-sm opacity-90">自動規劃學習、複習、聽寫、默寫</div>
+        </div>
+        <div 
+          class="flex-1 border rounded-lg p-4 cursor-pointer transition-colors flex flex-col items-center justify-center text-center"
+          :class="tempPracticeMode === 1 ? 'bg-primary text-primary-contrast border-primary' : 'border-surface-300 dark:border-surface-600 hover:border-primary'"
+          @click="tempPracticeMode = 1"
+        >
+          <div class="font-bold text-lg mb-2">自由模式</div>
+          <div class="text-sm opacity-90">自由練習，系統不強制複習與默寫</div>
         </div>
       </div>
 
-      <div class="text-center mt-2 mb-8">
-        <span>从第<span class="text-3xl mx-2 lh">{{ tempLastLearnIndex }}</span>个开始，</span>
-        <span>每日<span class="text-3xl mx-2 lh">{{ tempPerDayStudyNumber }}</span>个，</span>
-        <span>预计<span
-          class="text-3xl mx-2 lh">{{
-            _getAccomplishDays(runtimeStore.editDict.length - tempLastLearnIndex, tempPerDayStudyNumber)
-          }}</span>天完成</span>
+      <!-- 統計資訊 -->
+      <div class="text-center bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
+        <p class="leading-loose">
+          從第 <span class="text-2xl font-bold text-primary mx-1">{{ tempLastLearnIndex }}</span> 個開始，
+          每日 <span class="text-2xl font-bold text-primary mx-1">{{ tempPerDayStudyNumber }}</span> 個，
+          預計 <span class="text-2xl font-bold text-primary mx-1">{{ 
+            _getAccomplishDays((runtimeStore.editDict.words?.length || 0) - (tempLastLearnIndex || 0), tempPerDayStudyNumber) 
+          }}</span> 天完成
+        </p>
       </div>
-      <div class="flex mb-4 gap-space">
-        <span class="shrink-0">每日学习</span>
-        <Slider :min="10"
-                :step="10"
-                show-text
-                class="mt-1"
-                :max="200" v-model="tempPerDayStudyNumber"/>
+
+      <!-- 每日學習 Slider -->
+      <div class="flex flex-col">
+        <span class="font-medium">每日學習</span>
+        <div class="flex items-center gap-1">
+          <Slider v-model="tempPerDayStudyNumber" :min="10" :max="200" :step="10" class="flex-1" />
+          <InputNumber 
+            v-model="tempPerDayStudyNumber" 
+            :min="10" 
+            :max="200" 
+            :step="10" 
+            :pt="{ input: { class: 'text-center'} }" 
+            showButtons 
+            buttonLayout="horizontal" 
+            :allowEmpty="false"
+          />
+        </div>
       </div>
-      <div class="mb-6 flex gap-space">
-        <span class="shrink-0">学习进度</span>
-        <div class="flex-1">
-          <Slider :min="0"
-                  :step="10"
-                  show-text
-                  class="my-1"
-                  :max="runtimeStore.editDict.words.length" v-model="tempLastLearnIndex"/>
-          <BaseButton @click="show = true">从词典选起始位置</BaseButton>
+
+      <!-- 學習進度 Slider -->
+      <div class="flex flex-col ">
+        <span class="font-medium">學習進度</span>
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center">
+             <Slider v-model="tempLastLearnIndex" :min="0" :max="runtimeStore.editDict.words?.length || 100" :step="1" class="flex-1" />
+             <span class="w-14 text-right font-mono">{{ tempLastLearnIndex }}</span>
+          </div>
+          <Button label="從詞典選起始位置" severity="secondary" outlined size="small" @click="show = true" class="w-full" />
         </div>
       </div>
     </div>
-    <template v-slot:footer-left v-if="showLeftOption">
-      <div class="flex items-center">
-        <Checkbox v-model="tempDisableShowPracticeSettingDialog"/>
-        <Tooltip title="可在设置页面更改">
-          <span class="text-sm">保持默认，不再显示</span>
-        </Tooltip>
+
+    <!-- Footer -->
+    <template #footer>
+      <div class="flex items-center justify-between w-full mt-4">
+        <div v-if="showLeftOption" class="flex items-center gap-2">
+           <Checkbox v-model="tempDisableShowPracticeSettingDialog" binary inputId="notShowAgain" />
+           <label for="notShowAgain" class="text-sm cursor-pointer select-none text-muted-color" v-tooltip="'可在設定頁面更改'">
+             保持默認，不再顯示
+           </label>
+        </div>
+        <div class="flex gap-2 ml-auto">
+          <Button label="取消" severity="secondary" text @click="model = false" />
+          <Button label="確定" @click="changePerDayStudyNumber" />
+        </div>
       </div>
     </template>
   </Dialog>
+
   <ChangeLastPracticeIndexDialog
     v-model="show"
     @ok="e => {
@@ -118,98 +150,6 @@ watch(() => model.value, (n) => {
   />
 </template>
 
-<style scoped lang="scss">
-
-.target-modal {
-  width: 30rem;
-  padding: 0 var(--space);
-
-  .lh {
-    color: rgb(176, 116, 211)
-  }
-
-  .mode-item{
-    @apply w-50% border border-blue border-solid p-2 rounded-lg cursor-pointer;
-  }
-
-  .active{
-    @apply bg-blue color-white;
-  }
-}
-
-// 移动端适配
-@media (max-width: 768px) {
-  .target-modal {
-    width: 90vw !important;
-    max-width: 400px;
-    padding: 0 1rem;
-    
-    // 模式选择
-    .center .flex.gap-4 {
-      width: 100%;
-      flex-direction: column;
-      height: auto;
-      gap: 0.8rem;
-      
-      .mode-item {
-        width: 100%;
-        padding: 1rem;
-        
-        .title {
-          font-size: 1rem;
-        }
-        
-        .desc {
-          font-size: 0.85rem;
-          margin-top: 0.5rem;
-        }
-      }
-    }
-    
-    // 统计显示
-    .text-center {
-      font-size: 0.9rem;
-      
-      .text-3xl {
-        font-size: 1.5rem;
-      }
-    }
-    
-    // 滑块控件
-    .flex.mb-4, .flex.mb-6 {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-      
-      span {
-        width: 100%;
-      }
-      
-      .flex-1 {
-        width: 100%;
-      }
-    }
-    
-    // 按钮
-    .base-button {
-      width: 100%;
-      min-height: 44px;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .target-modal {
-    width: 95vw !important;
-    padding: 0 0.5rem;
-    
-    .text-center {
-      font-size: 0.8rem;
-      
-      .text-3xl {
-        font-size: 1.2rem;
-      }
-    }
-  }
-}
+<style scoped>
+/* 移除 scoped scss，全部使用 Tailwind CSS */
 </style>

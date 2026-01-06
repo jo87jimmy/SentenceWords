@@ -39,9 +39,9 @@ function play(time = props.time, reset = false) {
     }
   }, time)
 }
-
-function click() {
-  emit('click')
+//click.stop  emit('click')必須傳遞一個事件物件（Event Object）作為參數， 沒有傳遞任何參數，導致父層接收到的是 undefined，引發報錯。
+function click(e: Event) {
+  emit('click', e)
   play()
 }
 

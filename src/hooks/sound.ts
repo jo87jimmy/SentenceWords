@@ -24,13 +24,12 @@ export function useSound(audioSrcList?: string[], audioFileLength?: number) {
   }
 
   function play(volume: number = 100) {
+    if (audioList.length === 0) return
     index++
-    if (audioList.length > 1 && audioList.length !== audioLength) {
-      audioList[index % audioList.length].volume = volume / 100
-      audioList[index % audioList.length].play()
-    } else {
-      audioList[index % audioLength].volume = volume / 100
-      audioList[index % audioLength].play()
+    const audio = audioList[index % audioList.length]
+    if (audio) {
+      audio.volume = volume / 100
+      audio.play()
     }
   }
 
@@ -98,7 +97,9 @@ export function usePlayWordAudio() {
     audio.src = url
     audio.volume = settingStore.wordSoundVolume / 100
     audio.playbackRate = settingStore.wordSoundSpeed
-    audio.play()
+    audio.play().catch(err => {
+      console.warn('Audio play failed:', err)
+    })
   }
 
   return playAudio

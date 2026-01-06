@@ -36,6 +36,20 @@ export type Word = { // 定義單字類型
         d: string,// desc 描述
     }[],
 }
+export interface Statistics {
+    startDate: number,//开始日期
+    spend: number,//花费时间
+    total: number//单词数量
+    new: number//新学单词数量
+    review: number//复习单词数量
+    wrong: number//错误数
+}
+export interface TaskWords {
+    new: Word[],
+    review: Word[],
+    write: Word[],
+    shuffle: Word[],
+}
 
 export const PronunciationApi = 'https://dict.youdao.com/dictvoice?audio=' // 發音 API URL
 

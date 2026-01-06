@@ -7,6 +7,8 @@ import { useRuntimeStore } from "@/stores/runtime.ts"; // 引入 Runtime Store
 import { type Dict, DictId, type DictResource, DictType } from "@/types/types.ts"; // 引入字典類型定義
 import { getDefaultDict, getDefaultWord } from "@/types/func.ts"; // 引入獲取預設字典函數
 import { nextTick } from "vue"; // 引入 Vue 的 nextTick
+import duration from "dayjs/plugin/duration"; // 引入 dayjs 的 duration 插件
+dayjs.extend(duration); // 扩展 dayjs 的功能
 
 // todo 偶爾發現一個報錯，這裡 nextTick 一直不執行
 export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick 函數
@@ -15,6 +17,21 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     } else { // 否則
         nextTick(cb) // 直接執行 nextTick
     }
+}
+
+export function jump2Feedback() {
+    window.open('todo作者', '_blank');
+}
+export function last<T>(array: T[]): T | undefined {
+    return array.length > 0 ? array[array.length - 1] : undefined;
+}
+
+export function msToHourMinute(ms: number) {
+    const d = dayjs.duration(ms);
+    const hours = d.hours();
+    const minutes = d.minutes();
+    if (hours) return `${hours}小时${minutes}分钟`;
+    return `${minutes}分钟`;
 }
 
 //随机取N个
