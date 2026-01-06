@@ -4,9 +4,8 @@ import { inject, type Ref, computed } from "vue"
 import { usePracticeStore } from "@/stores/practice.ts";
 import { useSettingStore } from "@/stores/setting.ts";
 import { type PracticeData, ShortcutKey } from "@/types/types.ts";
-import BaseIcon from "@/components/BaseIcon.vue";
-import Tooltip from "@/components/base/Tooltip.vue";
-import Progress from '@/components/base/Progress.vue'
+import Button from "primevue/button";
+import ProgressBar from "primevue/progressbar";
 
 const statStore = usePracticeStore()
 const settingStore = useSettingStore()
@@ -85,285 +84,106 @@ const progress = computed(() => {
 </script>
 
 <template>
-  <div class="footer">
-    <Tooltip :title="settingStore.showToolbar?'收起':'展開'">
-      <IconFluentChevronLeft20Filled
-          @click="settingStore.showToolbar = !settingStore.showToolbar"
-          class="arrow"
-          :class="!settingStore.showToolbar && 'down'"
-          color="#999"/>
-    </Tooltip>
+  <div class="fixed z-50 transition-all duration-300 pointer-events-none
+              bottom-[calc(0.5rem+env(safe-area-inset-bottom))] left-2 right-2 w-auto
+              md:bottom-[calc(0.8rem+env(safe-area-inset-bottom))] md:left-1/2 md:-translate-x-1/2 md:w-[var(--toolbar-width)] md:right-auto">
+    
+    <div v-tooltip="settingStore.showToolbar?'收起':'展開'" 
+         class="absolute -top-10 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-300 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-2 transform pointer-events-auto"
+         :class="{'rotate-180': !settingStore.showToolbar}"
+         @click="settingStore.showToolbar = !settingStore.showToolbar">
+      <IconFluentChevronDown20Filled />
+    </div>
 
-    <div class="bottom">
-      <Progress
-          :percentage="progress"
-          :stroke-width="8"
-          :show-text="false"/>
-      <div class="flex justify-between items-center">
-        <div class="stat">
-          <div class="row">
-            <div class="num">{{ practiceData ? `${practiceData.index + 1}/${practiceData.words.length}` : '-/-' }}</div>
-            <div class="line"></div>
-            <div class="name">{{ status }}</div>
-          </div>
-          <div class="row">
-            <div class="num">{{ statStore.total }}</div>
-            <div class="line"></div>
-            <div class="name">單字總數</div>
-          </div>
-<!--          <div class="row">-->
-<!--            <div class="num">{{ format(statStore.inputWordNumber, '', 0) }}</div>-->
-<!--            <div class="line"></div>-->
-<!--            <div class="name">總輸入數</div>-->
-<!--          </div>-->
-          <div class="row">
-            <div class="num">{{ format(statStore.wrong, '', 0) }}</div>
-            <div class="line"></div>
-            <div class="name">錯誤數</div>
-          </div>
-        </div>
-        <div class="flex gap-2 justify-center items-center" id="toolbar-icons">
-          <BaseIcon
-              v-if="statStore.step < 9"
-              @click="emit('skipStep')"
-              :title="`跳到下一階段:${getStepStr(statStore.step+1)}`">
-            <IconFluentArrowRight16Regular/>
-          </BaseIcon>
+    <div class="relative w-full rounded-xl bg-[var(--color-second)] p-1 border border-[var(--color-item-border)] shadow-lg backdrop-blur-sm md:p-2 pointer-events-auto transition-all duration-300"
+         :class="{'translate-y-[120%] opacity-0': !settingStore.showToolbar}">
+      <!-- ProgressBar for Desktop (inside panel) -->
+      <div class="hidden md:block mb-2 px-1">
+         <ProgressBar :value="progress" :showValue="false" class="h-1.5 !bg-gray-200 dark:!bg-gray-700" 
+                      :pt="{ value: { class: '!bg-green-500' } }"></ProgressBar>
+      </div>
 
-          <BaseIcon
-              :class="!isSimple?'collect':'fill'"
-              @click="$emit('toggleSimple')"
-              :title="(!isSimple ? '標記為已掌握' : '取消標記已掌握')+`(${settingStore.shortcutKeyMap[ShortcutKey.ToggleSimple]})`">
-            <IconFluentCheckmarkCircle16Regular v-if="!isSimple"/>
-            <IconFluentCheckmarkCircle16Filled v-else/>
-          </BaseIcon>
+      <div class="flex flex-col md:gap-2">
+        <div class="flex justify-between items-center md:flex-col md:gap-1">
+            <!-- Mobile Stats (Horizontal Scroll) -->
+            <div class="flex flex-1 overflow-x-auto items-center gap-4 px-2 no-scrollbar md:w-full md:justify-around md:overflow-visible">
+              <div class="flex flex-col items-center min-w-max">
+                <div class="text-xs font-bold text-gray-700 dark:text-gray-300 md:text-sm">{{ practiceData ? `${practiceData.index + 1}/${practiceData.words.length}` : '-/-' }}</div>
+                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">{{ status }}</div>
+              </div>
+              <div class="flex flex-col items-center min-w-max">
+                <div class="text-xs font-bold text-gray-700 dark:text-gray-300 md:text-sm">{{ statStore.total }}</div>
+                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">單字總數</div>
+              </div>
+               <!-- Hidden on very small screens if needed, but keeping for now -->
+              <div class="flex flex-col items-center min-w-max hidden sm:flex">
+                <div class="text-xs font-bold text-gray-700 dark:text-gray-300 md:text-sm">{{ format(statStore.wrong, '', 0) }}</div>
+                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">錯誤數</div>
+              </div>
+            </div>
 
-          <BaseIcon
-              :class="!isCollect?'collect':'fill'"
-              @click.stop="$emit('toggleCollect')"
-              :title="(!isCollect ? '收藏' : '取消收藏')+`(${settingStore.shortcutKeyMap[ShortcutKey.ToggleCollect]})`">
-            <IconFluentStarAdd16Regular v-if="!isCollect"/>
-            <IconFluentStar16Filled v-else/>
-          </BaseIcon>
-          <BaseIcon
-              @click="emit('skip')"
-              :title="`跳過當前單字(${settingStore.shortcutKeyMap[ShortcutKey.Next]})`">
-            <IconFluentArrowBounce20Regular class="transform-rotate-180"/>
-          </BaseIcon>
+            <!-- Toolbar Icons -->
+            <div class="flex items-center gap-1 md:grid md:grid-cols-7 md:gap-2 md:w-full md:mt-1">
+              <Button v-if="statStore.step < 9" text rounded size="small" 
+                      @click="emit('skipStep')" v-tooltip.top="`跳到下一階段:${getStepStr(statStore.step+1)}`"
+                      class="!w-8 !h-8 !p-0 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 md:!w-full md:!h-9">
+                <IconFluentArrowRight16Regular />
+              </Button>
 
-          <BaseIcon
-              @click="settingStore.dictation = !settingStore.dictation"
-              :title="`開關默寫模式(${settingStore.shortcutKeyMap[ShortcutKey.ToggleDictation]})`"
-          >
-            <IconFluentEyeOff16Regular v-if="settingStore.dictation"/>
-            <IconFluentEye16Regular v-else/>
-          </BaseIcon>
+              <Button text rounded size="small"
+                      :class="!isSimple ? 'text-gray-400' : 'text-green-500'"
+                      @click="$emit('toggleSimple')" v-tooltip.top="(!isSimple ? '標記為已掌握' : '取消標記已掌握')"
+                      class="!w-8 !h-8 !p-0 md:!w-full md:!h-9">
+                <IconFluentCheckmarkCircle16Regular v-if="!isSimple" />
+                <IconFluentCheckmarkCircle16Filled v-else />
+              </Button>
 
-          <BaseIcon
-              :title="`開關釋義顯示(${settingStore.shortcutKeyMap[ShortcutKey.ToggleShowTranslate]})`"
-              @click="settingStore.translate = !settingStore.translate">
-            <IconFluentTranslate16Regular v-if="settingStore.translate"/>
-            <IconFluentTranslateOff16Regular v-else/>
-          </BaseIcon>
+              <Button text rounded size="small"
+                      :class="!isCollect ? 'text-gray-400' : 'text-yellow-500'"
+                      @click.stop="$emit('toggleCollect')" v-tooltip.top="(!isCollect ? '收藏' : '取消收藏')"
+                      class="!w-8 !h-8 !p-0 md:!w-full md:!h-9">
+                <IconFluentStarAdd16Regular v-if="!isCollect" />
+                <IconFluentStar16Filled v-else />
+              </Button>
 
-          <BaseIcon
-              @click="settingStore.showPanel = !settingStore.showPanel"
-              :title="`單字本(${settingStore.shortcutKeyMap[ShortcutKey.TogglePanel]})`">
-            <IconFluentTextListAbcUppercaseLtr20Regular/>
-          </BaseIcon>
+              <Button text rounded size="small" 
+                      @click="emit('skip')" v-tooltip.top="`跳過`"
+                      class="!w-8 !h-8 !p-0 text-gray-500 md:!w-full md:!h-9">
+                <IconFluentArrowBounce20Regular class="transform rotate-180" />
+              </Button>
+
+              <Button text rounded size="small"
+                      @click="settingStore.dictation = !settingStore.dictation" v-tooltip.top="`默寫模式`"
+                      class="!w-8 !h-8 !p-0 text-gray-500 md:!w-full md:!h-9">
+                <IconFluentEyeOff16Regular v-if="settingStore.dictation" />
+                <IconFluentEye16Regular v-else />
+              </Button>
+
+              <Button text rounded size="small"
+                      @click="settingStore.translate = !settingStore.translate" v-tooltip.top="`釋義顯示`"
+                      class="!w-8 !h-8 !p-0 text-gray-500 md:!w-full md:!h-9">
+                <IconFluentTranslate16Regular v-if="settingStore.translate" />
+                <IconFluentTranslateOff16Regular v-else />
+              </Button>
+
+              <Button text rounded size="small"
+                      @click="settingStore.showPanel = !settingStore.showPanel" v-tooltip.top="`單字本`"
+                      class="!w-8 !h-8 !p-0 text-gray-500 md:!w-full md:!h-9">
+                <IconFluentTextListAbcUppercaseLtr20Regular />
+              </Button>
+            </div>
         </div>
       </div>
-    </div>
-    <div class="progress-wrap">
-      <Progress :percentage="progress"
-                :stroke-width="8"
-                :show-text="false"/>
+    
+      <!-- Mobile ProgressBar (Horizontal bottom) -->
+      <div class="block md:hidden mt-2 px-1">
+         <ProgressBar :value="progress" :showValue="false" class="h-1 !bg-gray-200 dark:!bg-gray-700" 
+                      :pt="{ value: { class: '!bg-green-500' } }"></ProgressBar>
+      </div>
     </div>
   </div>
 </template>
 
-<style scoped lang="scss">
-
-.footer {
-  flex-shrink: 0;
-  width: var(--toolbar-width);
-  position: relative;
-  z-index: 20; // 提高z-index确保在最上方
-
-  &.hide {
-    margin-bottom: -6rem;
-    margin-top: 3rem;
-
-    .progress-wrap {
-      bottom: calc(100% + 1.8rem);
-    }
-  }
-
-  .bottom {
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: .6rem;
-    background: var(--color-second);
-    padding: .2rem var(--space) calc(.4rem + env(safe-area-inset-bottom, 0px)) var(--space);
-    border: 1px solid var(--color-item-border);
-    box-shadow: var(--shadow);
-    z-index: 10;
-
-    .stat {
-      margin-top: .5rem;
-      display: flex;
-      justify-content: space-around;
-      gap: var(--stat-gap);
-
-      .row {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: .3rem;
-        color: gray;
-
-        .line {
-          height: 1px;
-          width: 100%;
-          background: var(--color-sub-gray);
-        }
-      }
-    }
-  }
-
-  .progress-wrap {
-    width: var(--toolbar-width);
-    transition: all .3s;
-    padding: 0 .6rem;
-    box-sizing: border-box;
-    position: fixed;
-    bottom: 1rem;
-    z-index: 1; // 确保进度条也在最上方
-  }
-
-  .arrow {
-    position: absolute;
-    top: -40%;
-    left: 50%;
-    cursor: pointer;
-    transition: all .5s;
-    transform: rotate(-90deg);
-    padding: .5rem;
-    font-size: 1.2rem;
-
-    &.down {
-      top: -90%;
-      transform: rotate(90deg);
-    }
-  }
-}
-
-// 移动端适配
-@media (max-width: 768px) {
-  .footer {
-    width: 100%;
-    
-    .bottom {
-      padding: 0.3rem 0.5rem 0.5rem 0.5rem;
-      border-radius: 0.4rem;
-      
-      .stat {
-        margin-top: 0.3rem;
-        gap: 0.2rem;
-        flex-direction: row;
-        overflow-x: auto;
-        
-        .row {
-          min-width: 3.5rem;
-          gap: 0.2rem;
-          
-          .num {
-            font-size: 0.8rem;
-            font-weight: bold;
-          }
-          
-          .name {
-            font-size: 0.7rem;
-          }
-        }
-      }
-      
-      // 移动端按钮组调整 - 改为网格布局
-      .flex.gap-2 {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.4rem;
-        justify-content: center;
-        
-        .base-icon {
-          padding: 0.3rem;
-          font-size: 1rem;
-          min-height: 44px;
-          min-width: 44px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-      }
-    }
-    
-    .progress-wrap {
-      width: 100%;
-      padding: 0 0.5rem;
-      bottom: 0.5rem;
-    }
-    
-    .arrow {
-      font-size: 1rem;
-      padding: 0.3rem;
-    }
-  }
-}
-
-// 超小屏幕适配
-@media (max-width: 480px) {
-  .footer {
-    .bottom {
-      padding: 0.2rem 0.3rem 0.3rem 0.3rem;
-      
-      .stat {
-        margin-top: 0.2rem;
-        gap: 0.1rem;
-        
-        .row {
-          min-width: 3rem;
-          gap: 0.1rem;
-          
-          .num {
-            font-size: 0.7rem;
-          }
-          
-          .name {
-            font-size: 0.6rem;
-          }
-          
-          // 隐藏部分统计信息，只保留关键数据
-          &:nth-child(n+3) {
-            display: none;
-          }
-        }
-      }
-      
-      .flex.gap-2 {
-        gap: 0.2rem;
-        
-        .base-icon {
-          padding: 0.2rem;
-          font-size: 0.9rem;
-        }
-      }
-    }
-    
-    .progress-wrap {
-      padding: 0 0.3rem;
-      bottom: 0.3rem;
-    }
-  }
-}
+<style scoped>
+/* No extra styles needed, Tailwind handles it */
 </style>

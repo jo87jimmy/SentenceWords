@@ -53,7 +53,7 @@ watch(() => model.value, (n) => {
       tempDisableShowPracticeSettingDialog.value = settings.disableShowPracticeSettingDialog
     } else {
       Toast.warning('請先選擇一本詞典')
-      // model.value = false // 防止在沒有詞典時打開
+      model.value = false // 防止在沒有詞典時打開
     }
   }
 })
