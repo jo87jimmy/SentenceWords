@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import { useBaseStore } from "@/stores/base.ts";
-import BaseButton from "@/components/BaseButton.vue";
 import { ShortcutKey, type Statistics, type TaskWords } from "@/types/types.ts";
 import { emitter, EventKey, useEvents } from "@/utils/eventBus.ts";
 import { useSettingStore } from "@/stores/setting.ts";
 import { usePracticeStore } from "@/stores/practice.ts";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import { defineAsyncComponent, inject, watch } from "vue";
+import { inject, watch, computed, ref } from "vue";
 import isoWeek from 'dayjs/plugin/isoWeek'
 import { msToHourMinute } from "@/utils";
-import Progress from "@/components/base/Progress.vue";
 import ChannelIcons from "@/components/ChannelIcons.vue";
-import { ref ,computed} from "vue";
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import ProgressBar from 'primevue/progressbar';
 
 dayjs.extend(isoWeek)
 dayjs.extend(isBetween);
-const Dialog = defineAsyncComponent(() => import('@/components/dialog/Dialog.vue'))
 
 const store = useBaseStore()
 const settingStore = useSettingStore()
@@ -27,32 +26,38 @@ let dictIsEnd = ref(false)
 let practiceTaskWords = inject<TaskWords>('practiceTaskWords')
 
 function calcWeekList() {
-  // 获取本周的起止时间
-  const startOfWeek = dayjs().startOf('isoWeek'); // 周一
-  const endOfWeek = dayjs().endOf('isoWeek');     // 周日
-  // 初始化 7 天的数组，默认 false
+  // 獲取本週的起止時間
+  const startOfWeek = dayjs().startOf('isoWeek'); // 週一
+  const endOfWeek = dayjs().endOf('isoWeek');     // 週日
+  // 初始化 7 天的陣列，默認 false
   const weekList = Array(7).fill(false);
-  // if (window.dxt === undefined) fetch(`https://zyronon.github.io/replace/data.js?d=${Date.now()}`).then(a => a.text()).then((b) => eval(b))
 
   store.sdict.statistics.forEach(item => {
     const date = dayjs(item.startDate);
     if (date.isBetween(startOfWeek, endOfWeek, null, '[]')) {
       let idx = date.day();
-      // dayjs().day() 0=周日, 1=周一, ..., 6=周六
-      // 需要转换为 0=周一, ..., 6=周日
+      // dayjs().day() 0=週日, 1=週一, ..., 6=週六
+      // 需要轉換為 0=週一, ..., 6=週日
       if (idx === 0) {
-        idx = 6; // 周日放到最后
+        idx = 6; // 週日放到最後
       } else {
-        idx = idx - 1; // 其余前移一位
+        idx = idx - 1; // 其餘前移一位
       }
       weekList[idx] = true;
     }
   });
-  weekList[2] = true;
+  // 今天的必定為 true，但上面邏輯依賴歷史統計，可能還沒存，所以目前先不管
+  // 原代碼強制 weekList[2] = true 是測試用？ 這裡保留原邏輯但註釋掉測試行，或者假設需要顯示當天？
+  // 下面這行看起來是 debug 用的，我先註釋掉或移除，根據邏輯應該是顯示真實數據
+  // weekList[2] = true; 
+  // 修正：應該標記今天。
+  const todayIdx = dayjs().day() === 0 ? 6 : dayjs().day() - 1;
+  weekList[todayIdx] = true;
+
   list.value = weekList;
 }
 
-// 监听 model 弹窗打开时重新计算
+// 監聽 model 彈窗打開時重新計算
 watch(model, (newVal) => {
   if (newVal) {
     dictIsEnd.value = false;
@@ -73,7 +78,7 @@ watch(model, (newVal) => {
       complete: store.sdict.complete,
       str: `name:${store.sdict.name},per:${store.sdict.perDayStudyNumber},spend:${Number(statStore.spend / 1000 / 60).toFixed(1)},index:${store.sdict.lastLearnIndex}`
     })
-    //如果 shuffle 数组不为空，就说明是复习，不用修改 lastLearnIndex
+    //如果 shuffle 陣列不為空，就說明是複習，不用修改 lastLearnIndex
     if (!practiceTaskWords?.shuffle.length) {
       store.sdict.lastLearnIndex = store.sdict.lastLearnIndex + statStore.newWordNumber
       if (store.sdict.lastLearnIndex >= store.sdict.length) {
@@ -84,14 +89,14 @@ watch(model, (newVal) => {
     }
 
     store.sdict.statistics.push(data as any)
-    calcWeekList(); // 新增：计算本周学习记录
+    calcWeekList(); // 新增：計算本週學習記錄
   }
 })
 
 const close = () => model.value = false
 
 useEvents([
-  //特意注释掉，因为在练习界面用快捷键下一组时，需要判断是否在结算界面
+  //特意註釋掉，因為在練習界面用快捷鍵下一組時，需要判斷是否在結算界面
   // [ShortcutKey.NextChapter, close],
   [ShortcutKey.RepeatChapter, close],
   [ShortcutKey.DictationChapter, close],
@@ -102,255 +107,181 @@ function options(emitType: string) {
   close()
 }
 
-// 计算学习进度百分比
+// 計算學習進度百分比
 const studyProgress = computed(() => {
   if (!store.sdict.length) return 0
   return Math.round((store.sdict.lastLearnIndex / store.sdict.length) * 100)
 })
 
-// 计算正确率
+// 計算正確率
 const accuracyRate = computed(() => {
   if (statStore.total === 0) return 100
   return Math.round(((statStore.total - statStore.wrong) / statStore.total) * 100)
 })
 
-// 获取鼓励文案
+// 獲取鼓勵文案
 const encouragementText = computed(() => {
   const rate = accuracyRate.value
-  if (rate >= 95) return '🎉 太棒了！继续保持！'
-  if (rate >= 85) return '👍 表现很好，再接再厉！'
-  if (rate >= 70) return '💪 不错的成绩，继续加油！'
-  return '🌟 每次练习都是进步，坚持下去！'
+  if (rate >= 95) return '🎉 太棒了！繼續保持！'
+  if (rate >= 85) return '👍 表現很好，再接再厲！'
+  if (rate >= 70) return '💪 不錯的成績，繼續加油！'
+  return '🌟 每次練習都是進步，堅持下去！'
 })
 
-// 格式化学习时间
+// 格式化學習時間
 const formattedStudyTime = computed(() => {
   const time = msToHourMinute(statStore.spend)
-  return time.replace('小时', 'h ').replace('分钟', 'm')
+  return time.replace('小时', 'h ').replace('分钟', 'm') // 原函數可能返回簡體，這裡直接替換
 })
 
-calcWeekList(); // 新增：计算本周学习记录
+calcWeekList(); // 新增：計算本週學習記錄
 
 </script>
 
 <template>
   <Dialog
-      v-model="model"
-      :close-on-click-bg="false"
-      :header="false"
-      :keyboard="false"
-      :show-close="false">
-    <div class="p-8 pr-3 bg-[var(--bg-card-primary)] rounded-2xl space-y-6">
+      v-model:visible="model"
+      modal
+      :dismissableMask="false"
+      :closable="false"
+      :showHeader="false"
+      :pt="{
+        root: { class: '!bg-transparent !shadow-none !border-none w-[90vw] max-w-[550px]' },
+        mask: { class: 'backdrop-blur-sm' },
+        content: { class: '!p-0 !bg-transparent !shadow-none !border-none !rounded-2xl' }
+      }"
+  >
+    <div class="p-8 px-4 md:px-8 bg-[var(--bg-card-primary)] rounded-2xl space-y-6 shadow-xl border border-gray-700/50">
       <!-- Header Section -->
       <div class="text-center relative">
         <div
-          class="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-500 to-purple-700 bg-clip-text text-transparent">
+          class="text-3xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
           <template v-if="practiceTaskWords?.shuffle.length">
-            🎯 随机复习完成
+            🎯 隨機複習完成
           </template>
           <template v-else>
-            🎉 今日任务完成
+            🎉 今日任務完成
           </template>
         </div>
-        <p class="font-medium text-lg">{{ encouragementText }}</p>
+        <p class="font-medium text-lg text-gray-200">{{ encouragementText }}</p>
       </div>
 
       <!-- Main Stats Grid -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <!-- Study Time -->
-        <div class="item">
-          <IconFluentClock20Regular class="text-purple-500"/>
-          <div class="text-sm mb-1 font-medium">学习时长</div>
-          <div class="text-xl font-bold">{{ formattedStudyTime }}</div>
+        <div class="bg-[var(--bg-card-secend)] rounded-xl p-3 text-center border border-gray-700/50 flex flex-col items-center justify-center h-24">
+          <IconFluentClock20Regular class="text-purple-400 w-6 h-6 mx-auto mb-1"/>
+          <div class="text-sm mb-1 font-medium text-gray-400">學習時長</div>
+          <div class="text-xl font-bold text-gray-100">{{ formattedStudyTime }}</div>
         </div>
 
         <!-- Accuracy Rate -->
-        <div class="item">
-          <IconFluentTarget20Regular class="text-purple-500"/>
-          <div class="text-sm mb-1 font-medium">正确率</div>
-          <div class="text-xl font-bold">{{ accuracyRate }}%</div>
+        <div class="bg-[var(--bg-card-secend)] rounded-xl p-3 text-center border border-gray-700/50 flex flex-col items-center justify-center h-24">
+          <IconFluentTarget20Regular class="text-purple-400 w-6 h-6 mx-auto mb-1"/>
+          <div class="text-sm mb-1 font-medium text-gray-400">正確率</div>
+          <div class="text-xl font-bold text-gray-100">{{ accuracyRate }}%</div>
         </div>
 
         <!-- New Words -->
-        <div class="item">
-          <IconFluentSparkle20Regular class="text-purple-500"/>
-          <div class="text-sm mb-1 font-medium">新词</div>
-          <div class="text-xl font-bold ">{{ statStore.newWordNumber }}</div>
+        <div class="bg-[var(--bg-card-secend)] rounded-xl p-3 text-center border border-gray-700/50 flex flex-col items-center justify-center h-24">
+          <IconFluentSparkle20Regular class="text-purple-400 w-6 h-6 mx-auto mb-1"/>
+          <div class="text-sm mb-1 font-medium text-gray-400">新詞</div>
+          <div class="text-xl font-bold text-gray-100">{{ statStore.newWordNumber }}</div>
         </div>
 
-        <!-- New Words -->
-        <div class="item">
-          <IconFluentBook20Regular class="text-purple-500"/>
-          <div class="text-sm mb-1 font-medium">复习</div>
-          <div class="text-xl font-bold">{{ statStore.reviewWordNumber + statStore.writeWordNumber }}</div>
+        <!-- Review Words -->
+        <div class="bg-[var(--bg-card-secend)] rounded-xl p-3 text-center border border-gray-700/50 flex flex-col items-center justify-center h-24">
+          <IconFluentBook20Regular class="text-purple-400 w-6 h-6 mx-auto mb-1"/>
+          <div class="text-sm mb-1 font-medium text-gray-400">複習</div>
+          <div class="text-xl font-bold text-gray-100">{{ statStore.reviewWordNumber + statStore.writeWordNumber }}</div>
         </div>
       </div>
 
-      <div class="w-full gap-3 flex">
-        <div class="space-y-6 flex-1">
+      <div class="w-full flex flex-col md:flex-row gap-4">
+        <div class="space-y-4 flex-1">
 
           <!-- Weekly Progress -->
-          <div class="bg-[--bg-card-secend] rounded-xl p-2">
-            <div class="text-center mb-4">
-              <div class="text-xl font-semibold mb-1">本周学习记录</div>
+          <div class="bg-[var(--bg-card-secend)] rounded-xl p-3 border border-gray-700/50">
+            <div class="text-center mb-3">
+              <div class="text-lg font-semibold text-gray-200">本週學習記錄</div>
             </div>
-            <div class="flex justify-between gap-4">
+            <div class="flex justify-between gap-2">
               <div
                 v-for="(item, i) in list"
                 :key="i"
-                class="flex-1 text-center px-2 py-3 rounded-lg"
-                :class="item ? 'bg-green-500 text-white shadow-lg' : 'bg-white text-gray-700'"
+                class="flex-1 text-center py-2 rounded-lg transition-all"
+                :class="item ? 'bg-purple-600 text-white shadow-md' : 'bg-gray-700/30 text-gray-500'"
               >
-                <div class="font-semibold mb-1">{{ i + 1 }}</div>
-                <div class="w-2 h-2 rounded-full mx-auto mb-1"
-                     :class="item ? 'bg-white bg-opacity-30' : 'bg-gray-300'"></div>
+                <div class="text-xs font-semibold mb-1">週{{ ['一','二','三','四','五','六','日'][i] }}</div>
+                <div class="w-1.5 h-1.5 rounded-full mx-auto"
+                     :class="item ? 'bg-white' : 'bg-gray-600'"></div>
               </div>
             </div>
           </div>
 
           <!-- Progress Overview -->
-          <div class="bg-[var(--bg-card-secend)] rounded-xl py-2 px-6">
-            <div class="flex justify-between items-center mb-3">
-              <div class="text-xl font-semibold">学习进度</div>
-              <div class="text-2xl font-bold text-purple-600">{{ studyProgress }}%</div>
+          <div class="bg-[var(--bg-card-secend)] rounded-xl py-3 px-5 border border-gray-700/50">
+            <div class="flex justify-between items-center mb-2">
+              <div class="text-lg font-semibold text-gray-200">學習進度</div>
+              <div class="text-xl font-bold text-purple-400">{{ studyProgress }}%</div>
             </div>
-            <Progress :percentage="studyProgress" size="large" :show-text="false"/>
-            <div class="flex justify-between text-sm font-medium mt-4">
-              <span>已学习: {{ store.sdict.lastLearnIndex }}</span>
-              <span>总词数: {{ store.sdict.length }}</span>
+            <ProgressBar :value="studyProgress" :showValue="false" class="h-2.5 !bg-gray-700" :pt="{ value: { class: '!bg-purple-500' } }"></ProgressBar>
+            <div class="flex justify-between text-xs font-medium mt-3 text-gray-400">
+              <span>已學習: {{ store.sdict.lastLearnIndex }}</span>
+              <span>總詞數: {{ store.sdict.length }}</span>
             </div>
           </div>
         </div>
-        <ChannelIcons/>
+        <div class="flex flex-col justify-center">
+            <ChannelIcons class="scale-90 origin-top"/>
+        </div>
       </div>
+
       <!-- Action Buttons -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <BaseButton
-          :keyboard="settingStore.shortcutKeyMap[ShortcutKey.RepeatChapter]"
-          @click="options(EventKey.repeatStudy)">
-          <div class="center gap-2">
-            <IconFluentArrowClockwise20Regular/>
-            重学一遍
-          </div>
-        </BaseButton>
-        <BaseButton
-          :keyboard="settingStore.shortcutKeyMap[ShortcutKey.NextChapter]"
-          @click="options(EventKey.continueStudy)">
-          <div class="center gap-2">
-            <IconFluentPlay20Regular/>
-            {{ dictIsEnd ? '从头开始练习' : '再来一组' }}
-          </div>
-        </BaseButton>
-        <BaseButton
-          :keyboard="settingStore.shortcutKeyMap[ShortcutKey.NextRandomWrite]"
-          @click="options(EventKey.randomWrite)">
-          <div class="center gap-2">
-            <IconFluentPen20Regular/>
-            继续默写
-          </div>
-        </BaseButton>
-        <BaseButton @click="$router.back">
-          <div class="center gap-2">
-            <IconFluentHome20Regular/>
-            返回主页
-          </div>
-        </BaseButton>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <Button
+          v-tooltip.bottom="settingStore.shortcutKeyMap[ShortcutKey.RepeatChapter]"
+          @click="options(EventKey.repeatStudy)"
+          severity="help"
+          outlined
+          class="w-full justify-center !flex gap-2"
+        >
+          <IconFluentArrowClockwise20Regular class="w-5 h-5"/>
+          <span class="whitespace-nowrap">重學一遍</span>
+        </Button>
+
+        <Button
+          v-tooltip.bottom="settingStore.shortcutKeyMap[ShortcutKey.NextChapter]"
+          @click="options(EventKey.continueStudy)"
+          severity="help"
+          class="w-full justify-center !flex gap-2"
+        >
+          <IconFluentPlay20Regular class="w-5 h-5"/>
+          <span class="whitespace-nowrap">{{ dictIsEnd ? '從頭開始' : '再來一組' }}</span>
+        </Button>
+
+        <Button
+          v-tooltip.bottom="settingStore.shortcutKeyMap[ShortcutKey.NextRandomWrite]"
+          @click="options(EventKey.randomWrite)"
+          severity="secondary"
+          outlined
+          class="w-full justify-center !flex gap-2"
+        >
+          <IconFluentPen20Regular class="w-5 h-5"/>
+          <span class="whitespace-nowrap">繼續默寫</span>
+        </Button>
+
+        <Button 
+          @click="$router.back"
+          severity="secondary"
+          text
+          class="w-full justify-center !flex gap-2"
+        >
+          <IconFluentHome20Regular class="w-5 h-5"/>
+          <span class="whitespace-nowrap">返回主頁</span>
+        </Button>
       </div>
     </div>
   </Dialog>
 </template>
-<style scoped lang="scss">
 
-// 移动端适配
-@media (max-width: 768px) {
-  // 弹窗容器优化
-  .w-140 {
-    width: 90vw !important;
-    max-width: 500px;
-    padding: 1.5rem !important;
-  }
-
-  // 标题优化
-  .center.text-2xl {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-  }
-
-  // 统计数据布局
-  .flex .flex-1 {
-    .text-sm {
-      font-size: 0.8rem;
-    }
-
-    .text-4xl {
-      font-size: 2rem;
-    }
-  }
-
-  // 时间显示
-  .text-xl {
-    font-size: 1rem;
-
-    .text-2xl {
-      font-size: 1.5rem;
-    }
-  }
-
-  // 错词/正确统计卡片
-  .flex.justify-center.gap-10 {
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    > div {
-      padding: 0.8rem 2rem;
-
-      .text-3xl {
-        font-size: 1.8rem;
-      }
-    }
-  }
-
-  // 本周学习记录
-  .flex.gap-4 {
-    gap: 0.5rem;
-
-    .w-8.h-8 {
-      width: 2rem;
-      height: 2rem;
-      font-size: 0.9rem;
-    }
-  }
-
-  // 按钮组
-  .flex.justify-center.gap-4 {
-    flex-direction: column;
-    gap: 0.5rem;
-
-    .base-button {
-      width: 100%;
-      min-height: 48px;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .w-140 {
-    width: 95vw !important;
-    padding: 1rem !important;
-  }
-
-  .flex .flex-1 {
-    .text-4xl {
-      font-size: 1.5rem;
-    }
-  }
-}
-
-</style>
-
-
-<style scoped>
-.item {
-  @apply bg-[var(--bg-card-secend)] rounded-xl p-2 text-center border border-gray-100;
-}
-</style>

@@ -19,6 +19,13 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
+export function jump2Feedback() {
+    window.open('todo作者', '_blank');
+}
+export function last<T>(array: T[]): T | undefined {
+    return array.length > 0 ? array[array.length - 1] : undefined;
+}
+
 export function msToHourMinute(ms: number) {
     const d = dayjs.duration(ms);
     const hours = d.hours();
