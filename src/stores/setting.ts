@@ -91,7 +91,7 @@ export const getDefaultSettingState = (): SettingState => ({ // 獲取預設設�
     wordTranslateFontSize: 20, // 單字翻譯大小
   },
   showToolbar: true, // 顯示工具欄
-  showPanel: true, // 顯示面板
+  showPanel: false, // 顯示面板
   sideExpand: false, // 側邊欄收起
   theme: 'auto', // 自動主題
   shortcutKeyMap: cloneDeep(DefaultShortcutKeyMap), // 複製預設快捷鍵
