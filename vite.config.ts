@@ -32,5 +32,13 @@ export default defineConfig({
     },
     extensions: ['.js', '.ts', '.json', '.vue']
   },
-
+  server: {
+    proxy: {
+      '/proxy-dicts': {
+        target: 'https://typewords.cc/dicts',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/proxy-dicts/, '')
+      }
+    }
+  }
 })

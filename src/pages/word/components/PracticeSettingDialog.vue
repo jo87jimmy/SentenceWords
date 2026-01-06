@@ -4,7 +4,7 @@ import { _getAccomplishDays } from "@/utils";
 import BaseButton from "@/components/BaseButton.vue";
 import Checkbox from "@/components/base/checkbox/Checkbox.vue";
 import Slider from "@/components/base/Slider.vue";
-import { defineAsyncComponent, watch } from "vue";
+import { defineAsyncComponent, watch ,ref} from "vue";
 import { useSettingStore } from "@/stores/setting.ts";
 import Toast from "@/components/base/toast/Toast.ts";
 import ChangeLastPracticeIndexDialog from "@/pages/word/components/ChangeLastPracticeIndexDialog.vue";
@@ -16,7 +16,7 @@ const Dialog = defineAsyncComponent(() => import('@/components/dialog/Dialog.vue
 const settings = useSettingStore()
 const runtimeStore = useRuntimeStore()
 
-const model = defineModel()
+const model = defineModel<boolean>()
 
 defineProps<{
   showLeftOption: boolean,
@@ -26,28 +26,28 @@ const emit = defineEmits<{
   ok: [];
 }>()
 
-let show = $ref(false)
-let tempPerDayStudyNumber = $ref(0)
-let tempLastLearnIndex = $ref(0)
-let temPracticeMode = $ref(0)
-let tempDisableShowPracticeSettingDialog = $ref(false)
+let show = ref(false)
+let tempPerDayStudyNumber = ref(0)
+let tempLastLearnIndex = ref(0)
+let temPracticeMode = ref(0)
+let tempDisableShowPracticeSettingDialog = ref(false)
 
 
 function changePerDayStudyNumber() {
-  runtimeStore.editDict.perDayStudyNumber = tempPerDayStudyNumber
-  runtimeStore.editDict.lastLearnIndex = tempLastLearnIndex
-  settings.wordPracticeMode = temPracticeMode
-  settings.disableShowPracticeSettingDialog = tempDisableShowPracticeSettingDialog
+  runtimeStore.editDict.perDayStudyNumber = tempPerDayStudyNumber.value
+  runtimeStore.editDict.lastLearnIndex = tempLastLearnIndex.value
+  settings.wordPracticeMode = temPracticeMode.value
+  settings.disableShowPracticeSettingDialog = tempDisableShowPracticeSettingDialog.value
   emit('ok')
 }
 
 watch(() => model.value, (n) => {
   if (n) {
     if (runtimeStore.editDict.id) {
-      tempPerDayStudyNumber = runtimeStore.editDict.perDayStudyNumber
-      tempLastLearnIndex = runtimeStore.editDict.lastLearnIndex
-      temPracticeMode = settings.wordPracticeMode
-      tempDisableShowPracticeSettingDialog = settings.disableShowPracticeSettingDialog
+      tempPerDayStudyNumber.value = runtimeStore.editDict.perDayStudyNumber
+      tempLastLearnIndex.value = runtimeStore.editDict.lastLearnIndex
+      temPracticeMode.value = settings.wordPracticeMode
+      tempDisableShowPracticeSettingDialog.value = settings.disableShowPracticeSettingDialog
     } else {
       Toast.warning('请先选择一本词典')
     }

@@ -17,6 +17,32 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
+//随机取N个
+export function getRandomN(arr: any[], n: number) {
+    const copy = [...arr]
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]] // 交换
+    }
+    return copy.slice(0, n)
+}
+//数组分成N份
+export function splitIntoN(arr: any[], n: number) {
+    const result = []
+    const len = arr.length
+    const base = Math.floor(len / n)  // 每份至少这么多
+    let extra = len % n               // 前几份多 1 个
+
+    let index = 0
+    for (let i = 0; i < n; i++) {
+        const size = base + (extra > 0 ? 1 : 0)
+        result.push(arr.slice(index, index + size))
+        index += size
+        if (extra > 0) extra--
+    }
+    return result
+}
+
 export function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
     let timer: ReturnType<typeof setTimeout> | null = null;
     return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
@@ -152,7 +178,33 @@ export async function _getDictDataByUrl(val: DictResource, type: DictType = Dict
     if (type === DictType.article) {
         dictResourceUrl = `/dicts/${val.language}/article/${val.url}`;
     }
-    let s = await fetch(resourceWrap(dictResourceUrl, val.version)).then(r => r.json())
+
+    const fetchDict = async (u: string) => {
+        const res = await fetch(u)
+        if (res.ok) {
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                return res.json();
+            }
+        }
+        throw new Error("Invalid response or file not found");
+    }
+
+    let s;
+    try {
+        s = await fetchDict(resourceWrap(dictResourceUrl, val.version));
+    } catch (e) {
+        // Fallback to remote if local fails (e.g. 404 or HTML result)
+        // Try accessing via proxy to avoid CORS
+        const remoteUrl = `/proxy-dicts${dictResourceUrl.replace('/dicts', '')}`;
+        try {
+            console.warn(`Local dictionary not found, trying remote via proxy: ${remoteUrl}`);
+            s = await fetchDict(remoteUrl);
+        } catch (e2) {
+            console.error("Failed to fetch dictionary both locally and remotely", e2);
+        }
+    }
+
     if (s) {
         if (type === DictType.word) {
             return getDefaultDict({ ...val, words: s })
@@ -340,7 +392,6 @@ export function useNav() { // 導航 Hook
     const runtimeStore = useRuntimeStore() // 獲取 Runtime Store
 
     function nav(path: string, query = {}, data?: any) { // 導航函數
-        debugger
         if (data) { // 如果有傳遞額外數據
             runtimeStore.routeData = cloneDeep(data) // 深拷貝存入 store
         }

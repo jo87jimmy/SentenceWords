@@ -10,7 +10,7 @@
         :rows="rows"
         :disabled="disabled"
         :style="textareaStyle"
-        class="w-full px-3 py-2 border border-gray-300 rounded-md outline-none resize-none transition-colors duration-200 box-border"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md outline-none resize-none transition-colors duration-200 box-border text-base"
         @input="handleInput"
     />
     <!-- 字数统计 -->
@@ -100,7 +100,7 @@ textarea {
   font-family: var(--font-family);
   color: var(--color-input-color);
   background: var(--color-input-bg);
-  @apply text-base;
+
 
   &:focus {
     outline: none;
