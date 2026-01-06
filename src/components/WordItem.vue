@@ -11,11 +11,13 @@ withDefaults(defineProps<{
   showWord?: boolean
   showTransPop?: boolean
   hiddenOptionIcon?: boolean
+  index?: number
 }>(), {
   showTranslate: true,
   showWord: true,
   showTransPop: true,
   hiddenOptionIcon: false,
+  index: undefined,
 })
 
 const playWordAudio = usePlayWordAudio()
@@ -30,6 +32,10 @@ const playWordAudio = usePlayWordAudio()
       <slot name="prefix" :item="item"></slot>
       <div class="flex flex-col gap-1 w-full min-w-0">
         <div class="flex items-center gap-3 flex-wrap">
+          <span 
+            v-if="index !== undefined"
+            class="text-surface-500 dark:text-surface-400 font-mono text-lg"
+          >{{ index }}.</span>
           <span 
             class="text-lg font-bold text-surface-900 dark:text-surface-0 transition-all duration-300"
             :class="!showWord && 'blur-sm select-none'"

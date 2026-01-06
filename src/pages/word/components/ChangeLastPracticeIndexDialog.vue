@@ -1,26 +1,23 @@
 <script setup lang="ts">
-
 import BaseTable from "@/components/BaseTable.vue";
 import WordItem from "@/components/WordItem.vue";
-import { defineAsyncComponent } from "vue";
 import { useRuntimeStore } from "@/stores/runtime.ts";
-import { AppEnv } from "@/config/env.ts";
-
-const Dialog = defineAsyncComponent(() => import('@/components/dialog/Dialog.vue'))
+import Dialog from 'primevue/dialog';
+import { ref, watch } from "vue";
 
 const model = defineModel<boolean>()
 const runtimeStore = useRuntimeStore()
 
-async function requestList({pageNo, pageSize}:{pageNo: number, pageSize: number}) {
-  if (AppEnv.CAN_REQUEST) {
+// 使用 ref 存儲列表副本
+const wordList = ref<any[]>([])
 
-  } else {
-    let list = runtimeStore.editDict.words
-    let total = list.length
-    list = list.slice((pageNo - 1) * pageSize, (pageNo - 1) * pageSize + pageSize)
-    return {list, total}
+// 監聽 model，當 Dialog 打開時初始化數據
+watch(model, (val) => {
+  if (val) {
+    // 複製一份數據以供列表顯示
+    wordList.value = [...(runtimeStore.editDict.words || [])]
   }
-}
+}, { immediate: true })
 
 defineEmits<{
   ok: [number]
@@ -28,20 +25,26 @@ defineEmits<{
 </script>
 
 <template>
-  <!--  todo 这里显示的时候可以选中并高亮当前index-->
-  <!--  todo 这个组件的分页器，需要直接可跳转指定页面，并显示一页有多少个-->
-  <Dialog v-model="model"
-          padding
-          title="修改学习进度">
-    <div class="py-4 h-80vh ">
+  <Dialog 
+    v-model:visible="model" 
+    header="修改學習進度" 
+    modal 
+    maximizable 
+    :draggable="false"
+    class="w-[95vw] md:w-[60rem]"
+    :contentStyle="{ height: '80vh', padding: '1rem' }"
+  >
+    <div class="h-full">
       <BaseTable
           class="h-full"
-          :request="requestList"
+          v-model:list="wordList"
+          :loading="false"
           :show-toolbar="false"
       >
         <template v-slot="item">
           <WordItem
-              @click="$emit('ok',item.index-1)"
+              class="cursor-pointer hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors rounded p-2"
+              @click="$emit('ok', item.index)"
               :item="item.item"
               :show-translate="false"
               :index="item.index"
@@ -53,6 +56,5 @@ defineEmits<{
   </Dialog>
 </template>
 
-<style scoped lang="scss">
-
+<style scoped>
 </style>

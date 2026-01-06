@@ -329,7 +329,7 @@ defineExpose({
         </div>
       </div>
 
-      <div v-if="showPagination" class="flex justify-end">
+      <div v-if="showPagination" class="flex justify-center">
         <Paginator
           :rows="pageSize"
           :totalRecords="list.length"

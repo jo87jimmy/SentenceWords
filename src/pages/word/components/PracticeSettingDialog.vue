@@ -53,7 +53,7 @@ watch(() => model.value, (n) => {
       tempDisableShowPracticeSettingDialog.value = settings.disableShowPracticeSettingDialog
     } else {
       Toast.warning('請先選擇一本詞典')
-      model.value = false // 防止在沒有詞典時打開
+      // model.value = false // 防止在沒有詞典時打開
     }
   }
 })
@@ -94,17 +94,16 @@ watch(() => model.value, (n) => {
       </div>
 
       <!-- 每日學習 Slider -->
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col">
         <span class="font-medium">每日學習</span>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-1">
           <Slider v-model="tempPerDayStudyNumber" :min="10" :max="200" :step="10" class="flex-1" />
           <InputNumber 
             v-model="tempPerDayStudyNumber" 
             :min="10" 
             :max="200" 
             :step="10" 
-            :pt="{ input: { class: 'text-center' } }" 
-            class="w-36"
+            :pt="{ input: { class: 'text-center'} }" 
             showButtons 
             buttonLayout="horizontal" 
             :allowEmpty="false"
@@ -113,12 +112,12 @@ watch(() => model.value, (n) => {
       </div>
 
       <!-- 學習進度 Slider -->
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col ">
         <span class="font-medium">學習進度</span>
-        <div class="flex flex-col gap-3">
-          <div class="flex items-center gap-4">
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center">
              <Slider v-model="tempLastLearnIndex" :min="0" :max="runtimeStore.editDict.words?.length || 100" :step="1" class="flex-1" />
-             <span class="w-16 text-right font-mono">{{ tempLastLearnIndex }}</span>
+             <span class="w-14 text-right font-mono">{{ tempLastLearnIndex }}</span>
           </div>
           <Button label="從詞典選起始位置" severity="secondary" outlined size="small" @click="show = true" class="w-full" />
         </div>
