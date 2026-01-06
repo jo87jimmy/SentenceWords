@@ -12,6 +12,10 @@ import Aura from '@primeuix/themes/aura' // 引入 PrimeVue 的 Aura 主題
 import ConfirmationService from 'primevue/confirmationservice'; // 引入 PrimeVue 的確認服務
 import loadingDirective from './directives/loading.tsx' // 引入自訂的載入指令 loadingDirective
 
+import opacity from './directives/opacity.ts'
+
+import Tooltip from 'primevue/tooltip';
+
 const pinia = createPinia() // 建立 Pinia 實例
 const app = createApp(App) // 建立 Vue 應用程式實例
 app.use(VueVirtualScroller) // 註冊 VueVirtualScroller 套件
@@ -23,7 +27,9 @@ app.use(PrimeVue, { // 註冊 PrimeVue 套件並進行設定
     }
 })
 app.use(ConfirmationService); // 註冊 ConfirmationService 服務
+app.directive('tooltip', Tooltip);
 app.directive('loading', loadingDirective) // 註冊全域指令 'loading'
+app.directive('opacity', opacity) // 註冊全域指令 'opacity'
 app.mount('#app') // 將應用程式掛載到 DOM 中的 #app 元素上
 
 // 註冊 Service Worker (PWA 支援)
