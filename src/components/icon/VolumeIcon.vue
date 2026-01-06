@@ -40,8 +40,8 @@ function play(time = props.time, reset = false) {
   }, time)
 }
 
-function click() {
-  emit('click')
+function click(e: Event) {
+  emit('click', e)
   play()
 }
 

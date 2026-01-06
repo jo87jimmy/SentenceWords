@@ -1,89 +1,100 @@
-<script lang="jsx">
-import {Teleport, Transition} from 'vue' // 引入 Vue 組件
+<script lang="tsx">
+import { defineComponent, ref, nextTick, Teleport, Transition, cloneVNode, Comment } from 'vue'
 
-export default {
-  name: "Tooltip", // 組件名稱
-  components: {
-    Teleport,
-    Transition
-  },
-  props: { // 定義 Props
+export default defineComponent({
+  name: "Tooltip",
+  props: {
     title: {
       type: String,
-      default() {
-        return ''
-      }
+      default: ''
     },
     disabled: {
       type: Boolean,
-      default() {
-        return false
-      }
+      default: false
     }
   },
-  data() { // 定義數據
-    return {
-      show: false // 顯示狀態
-    }
-  },
-  methods: { // 定義方法
-    showPop(e) { // 顯示懸浮框
-      if (this.disabled) return // 如果禁用則返回
-      if (!this.title && !this.$slots?.reference) return; // 如果無標題且無引用插槽則返回
-      e.stopPropagation() // 阻止冒泡
-      let rect = e.target.getBoundingClientRect() // 獲取目標元素位置
-      this.show = true // 顯示
-      this.$nextTick(() => { // 等待 DOM 更新
-        let tip = this.$refs?.tip?.getBoundingClientRect() // 獲取 Tooltip 元素位置
-        if (!tip) return // 如果不存在則返回
-        if (rect.top < 50) { // 如果距離頂部小於 50
-            // 顯示在下方
-          this.$refs.tip.style.top = rect.top + rect.height + 10 + 'px'
-        } else {
-            // 顯示在上方
-          this.$refs.tip.style.top = rect.top - tip.height - 10 + 'px'
-        }
-        let tipWidth = tip.width // Tooltip 寬度
-        let rectWidth = rect.width // 目標寬度
-        // 水平居中對齊
-        this.$refs.tip.style.left = rect.left - (tipWidth - rectWidth) / 2 + 'px'
-        // onmouseleave={() => this.show = false}
-      })
-    },
-  },
-  render() { // 渲染函數
-    let DefaultNode = this.$slots.default()[0] // 默認插槽
-    let ReferenceNode = this.$slots?.reference?.()?.[0] // 引用插槽 (可選)
-    return <>
-      <Transition name="fade">
-        <Teleport to="body">
-          {this.show && (
-              <div ref="tip" class="tip">
-                {ReferenceNode ? <ReferenceNode/> : this.title}
-              </div>
-          )}
-        </Teleport>
-      </Transition>
+  setup(props, { slots }) {
+    const show = ref(false)
+    const tipRef = ref<HTMLElement | null>(null)
 
-      <DefaultNode
-          onClick={() => this.show = false}
-          onmouseenter={(e) => this.showPop(e)}
-          onmouseleave={() => this.show = false}
-      />
-    </>
+    const showPop = (e: MouseEvent) => {
+      if (props.disabled) return
+      // Type safe check for slots
+      const hasReferenceSlot = !!slots.reference
+      if (!props.title && !hasReferenceSlot) return
+      
+      e.stopPropagation()
+      const target = e.target as HTMLElement
+      const rect = target.getBoundingClientRect()
+      
+      show.value = true
+      
+      nextTick(() => {
+        const tipEl = tipRef.value
+        if (!tipEl) return
+        
+        const tipRect = tipEl.getBoundingClientRect()
+        
+        if (rect.top < 50) {
+          // Show below
+          tipEl.style.top = `${rect.top + rect.height + 10}px`
+        } else {
+          // Show above
+          tipEl.style.top = `${rect.top - tipRect.height - 10}px`
+        }
+        
+        const tipWidth = tipRect.width
+        const rectWidth = rect.width
+        // Center horizontally
+        tipEl.style.left = `${rect.left - (tipWidth - rectWidth) / 2}px`
+      })
+    }
+
+    return () => {
+      const defaultNodes = slots.default ? slots.default() : []
+      // Find the first non-comment node to ensure we don't try to attach events to a comment
+      // which happens if the parent component has comments in the slot (like BaseIcon.vue)
+      const triggerNode = defaultNodes.find(node => node.type !== Comment)
+      
+      const Trigger = triggerNode ? cloneVNode(triggerNode, {
+        onClick: () => { show.value = false },
+        onMouseenter: (e: MouseEvent) => showPop(e),
+        onMouseleave: () => { show.value = false }
+      }) : null
+
+      const referenceNodes = slots.reference ? slots.reference() : []
+      const ReferenceNode = referenceNodes[0]
+
+      return (
+        <>
+          <Transition name="fade">
+            <Teleport to="body">
+              {show.value && (
+                <div ref={tipRef} class="tip">
+                  {ReferenceNode ? ReferenceNode : props.title}
+                </div>
+              )}
+            </Teleport>
+          </Transition>
+          {Trigger}
+        </>
+      )
+    }
   }
-}
+})
 </script>
+
 <style lang="scss" scoped>
-.tip { // Tooltip 樣式
-  position: fixed; // 固定定位
-  font-size: 1rem; // 字體大小
-  z-index: 9999; // 層級
-  border-radius: .3rem; // 圓角
-  padding: 0.4rem .8rem; // 內邊距
-  color: var(--color-font-1); // 字體顏色
-  background: var(--color-tooltip-bg); // 背景色
-  max-width: 22rem; // 最大寬度
-  box-shadow: 0 0 6px 1px var(--color-tooltip-shadow); // 陰影
+.tip { 
+  position: fixed; 
+  font-size: 1rem; 
+  z-index: 9999; 
+  border-radius: .3rem; 
+  padding: 0.4rem .8rem; 
+  color: var(--color-font-1); 
+  background: var(--color-tooltip-bg); 
+  max-width: 22rem; 
+  box-shadow: 0 0 6px 1px var(--color-tooltip-shadow); 
 }
 </style>
+
