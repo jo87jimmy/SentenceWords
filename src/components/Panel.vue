@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import {computed, provide,ref} from "vue"
-import {ShortcutKey} from "@/types/types.ts"
-import {useSettingStore} from "@/stores/setting.ts";
+import { computed, provide } from "vue"
+import { ShortcutKey } from "@/types/types.ts"
+import { useSettingStore } from "@/stores/setting.ts";
 import Close from "@/components/icon/Close.vue";
+import Tooltip from "@/components/base/Tooltip.vue";
+import { ref } from "vue";
 
 const settingStore = useSettingStore()
 let tabIndex = ref(0)
@@ -12,19 +14,14 @@ provide('tabIndex', computed(() => tabIndex.value))
 </script>
 <template>
   <Transition name="fade">
-    <div class="anim bg-white dark:bg-zinc-900 flex flex-col border border-[var(--color-item-border)] shadow-[var(--shadow)] 
-                fixed z-[200] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[400px] max-h-[90vh] h-auto rounded-[0.4rem]
-                md:relative md:z-10 md:top-auto md:left-auto md:translate-x-0 md:translate-y-0 md:w-[var(--panel-width)] md:h-full md:max-h-full md:max-w-none md:rounded-lg" 
-         v-bind="$attrs" v-show="settingStore.showPanel">
-      <header class="flex justify-between items-center py-[0.3rem] px-[0.3rem] md:py-3 md:px-space">
-        <div class="color-main text-[0.8rem] md:text-base">
+    <div class="panel anim" v-bind="$attrs" v-show="settingStore.showPanel">
+      <header class="flex justify-between items-center py-3 px-space">
+        <div class="color-main">
           <slot name="title"></slot>
         </div>
-        <div
-            v-tooltip.bottom="`關閉(${settingStore.shortcutKeyMap[ShortcutKey.TogglePanel]})`"
-        >
-          <Close @click="settingStore.showPanel = false"/>
-        </div>
+        <Tooltip :title="`关闭(${settingStore.shortcutKeyMap[ShortcutKey.TogglePanel]})`">
+          <Close @click="settingStore.showPanel = false" />
+        </Tooltip>
       </header>
       <div class="flex-1 overflow-auto">
         <slot></slot>
@@ -32,5 +29,58 @@ provide('tabIndex', computed(() => tabIndex.value))
     </div>
   </Transition>
 </template>
-<style scoped>
+<style scoped lang="scss">
+.panel {
+  border-radius: .5rem;
+  width: var(--panel-width);
+  background: var(--color-second);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-item-border);
+  box-shadow: var(--shadow);
+}
+
+// 移动端适配
+@media (max-width: 768px) {
+  .panel {
+    width: 90vw;
+    max-width: 400px;
+    max-height: 90vh;
+    height: auto;
+    border-radius: 0.4rem;
+  }
+
+  .panel>div.flex-1 {
+    max-height: calc(90vh - 3.2rem);
+  }
+
+  .panel header {
+    padding: 0.5rem 0.5rem;
+
+    .color-main {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// 超小屏幕适配
+@media (max-width: 480px) {
+  .panel {
+    width: 95vw;
+    max-height: 94vh;
+  }
+
+  .panel>div.flex-1 {
+    max-height: calc(94vh - 3rem);
+  }
+
+  .panel header {
+    padding: 0.3rem 0.3rem;
+
+    .color-main {
+      font-size: 0.8rem;
+    }
+  }
+}
 </style>
