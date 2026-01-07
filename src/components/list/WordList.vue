@@ -48,7 +48,7 @@ defineExpose({scrollToBottom, scrollToItem})
       <slot name="prefix" :item="item" :index="index"></slot>
     </template>
     <template v-slot="{ item, index }">
-      <div class="item-title">
+      <div class="item-title border-t">
         <span class="text-sm">{{ index + 1 }}.</span>
         <span class="word" :class="!showWord && 'word-shadow'">{{ item.word }}</span>
         <span class="phonetic" :class="!showWord && 'word-shadow'">{{ item.phonetic0 }}</span>

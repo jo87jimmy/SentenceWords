@@ -1,86 +1,42 @@
 <script setup lang="ts">
-import { computed, provide } from "vue"
+import { computed, provide, ref } from "vue"
 import { ShortcutKey } from "@/types/types.ts"
 import { useSettingStore } from "@/stores/setting.ts";
 import Close from "@/components/icon/Close.vue";
-import Tooltip from "@/components/base/Tooltip.vue";
-import { ref } from "vue";
 
 const settingStore = useSettingStore()
 let tabIndex = ref(0)
 provide('tabIndex', computed(() => tabIndex.value))
-
-
 </script>
 <template>
   <Transition name="fade">
-    <div class="panel anim" v-bind="$attrs" v-show="settingStore.showPanel">
-      <header class="flex justify-between items-center py-3 px-space">
-        <div class="color-main">
+    <div 
+      class="anim flex flex-col bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 shadow-lg
+        rounded-[0.4rem] md:rounded-lg
+        w-[95vw] min-[480px]:w-[90vw] md:w-[var(--panel-width)]
+        max-w-[400px] md:max-w-none
+        h-auto md:h-full
+        max-h-[94vh] min-[480px]:max-h-[90vh] md:max-h-full"
+      v-bind="$attrs" 
+      v-show="settingStore.showPanel"
+    >
+      <header class="flex justify-between items-center 
+        p-[0.3rem] min-[480px]:p-[0.5rem] md:py-3 md:px-[var(--space-md,1.25rem)]">
+        <div class="color-main text-[0.8rem] min-[480px]:text-[0.9rem] md:text-base">
           <slot name="title"></slot>
         </div>
-        <Tooltip :title="`关闭(${settingStore.shortcutKeyMap[ShortcutKey.TogglePanel]})`">
-          <Close @click="settingStore.showPanel = false" />
-        </Tooltip>
+        <Close 
+          class="cursor-pointer"
+          @click="settingStore.showPanel = false" 
+          v-tooltip="`關閉(${settingStore.shortcutKeyMap[ShortcutKey.TogglePanel]})`"
+        />
       </header>
-      <div class="flex-1 overflow-auto">
+      <div 
+        class="flex-1 overflow-auto 
+        max-h-[calc(94vh-3rem)] min-[480px]:max-h-[calc(90vh-3.2rem)] md:max-h-full"
+      >
         <slot></slot>
       </div>
     </div>
   </Transition>
 </template>
-<style scoped lang="scss">
-.panel {
-  border-radius: .5rem;
-  width: var(--panel-width);
-  background: var(--color-second);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--color-item-border);
-  box-shadow: var(--shadow);
-}
-
-// 移动端适配
-@media (max-width: 768px) {
-  .panel {
-    width: 90vw;
-    max-width: 400px;
-    max-height: 90vh;
-    height: auto;
-    border-radius: 0.4rem;
-  }
-
-  .panel>div.flex-1 {
-    max-height: calc(90vh - 3.2rem);
-  }
-
-  .panel header {
-    padding: 0.5rem 0.5rem;
-
-    .color-main {
-      font-size: 0.9rem;
-    }
-  }
-}
-
-// 超小屏幕适配
-@media (max-width: 480px) {
-  .panel {
-    width: 95vw;
-    max-height: 94vh;
-  }
-
-  .panel>div.flex-1 {
-    max-height: calc(94vh - 3rem);
-  }
-
-  .panel header {
-    padding: 0.3rem 0.3rem;
-
-    .color-main {
-      font-size: 0.8rem;
-    }
-  }
-}
-</style>

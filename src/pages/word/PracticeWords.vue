@@ -664,7 +664,7 @@ useEvents([
             </BaseIcon>
           </div>
         </template>
-        <div class="panel-page-item pl-4">
+        <div class="panel-page-item pl-2 border-t border-surface-200 dark:border-surface-700">
           <WordList
               v-if="data.words.length"
               :is-active="settingStore.showPanel"
