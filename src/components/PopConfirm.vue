@@ -15,9 +15,9 @@ const props = defineProps({
     validator(value: any) {
       // Validate that array items have the correct structure
       if (Array.isArray(value)) {
-        return value.every(item => 
-          typeof item === 'object' && 
-          item !== null && 
+        return value.every(item =>
+          typeof item === 'object' &&
+          item !== null &&
           typeof item.text === 'string' &&
           ['normal', 'bold', 'red', 'redBold'].includes(item.type)
         )
@@ -71,17 +71,17 @@ const getTextStyle = (type: string) => {
 const showPop = (e: Event) => {
   if (props.disabled) return emit('confirm')
   e?.stopPropagation()
-  
+
   const target = e.target as HTMLElement
   let rect = target.getBoundingClientRect()
-  
+
   show.value = true
-  
+
   nextTick(() => {
     let tip = tipRef.value?.getBoundingClientRect()
     // console.log('rect', rect, tip)
     if (!tip || !tipRef.value) return
-    
+
     // 計算位置
     if (rect.top < 150) {
       tipRef.value.style.top = rect.top + rect.height + tip.height + 30 + 'px'
@@ -114,17 +114,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="pop-confirm leading-none" @click="showPop">
+  <div class="pop-confirm" @click="showPop">
     <Teleport to="body">
       <Transition name="fade">
         <div v-if="show" ref="tipRef" class="pop-confirm-content shadow-2xl">
           <div class="w-52 title-content">
-            <div 
-              v-for="(item, index) in titleItems"
-              :key="index"
-              :style="getTextStyle(item.type)"
-              class="title-item"
-            >
+            <div v-for="(item, index) in titleItems" :key="index" :style="getTextStyle(item.type)" class="title-item">
               {{ item.text }}
             </div>
           </div>
@@ -135,7 +130,7 @@ onUnmounted(() => {
         </div>
       </Transition>
     </Teleport>
-    
+
     <!-- 渲染默認插槽 -->
     <slot></slot>
   </div>
@@ -153,7 +148,7 @@ onUnmounted(() => {
   .title-content {
     .title-item {
       margin-bottom: 0.25rem;
-      
+
       &:last-child {
         margin-bottom: 0;
       }
