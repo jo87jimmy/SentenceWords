@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {onMounted, ref, computed} from 'vue'
+import Button from 'primevue/button'
+import Divider from 'primevue/divider'
 import BasePage from '@/components/BasePage.vue'
-import BaseButton from '@/components/BaseButton.vue'
 import VolumeIcon from '@/components/icon/VolumeIcon.vue'
 import {useRoute, useRouter} from 'vue-router'
 import {useBaseStore} from '@/stores/base.ts'
@@ -212,12 +213,12 @@ onMounted(init)
 
 <template>
   <BasePage>
-    <div class="card flex flex-col">
+    <div class="p-6 bg-surface-0 dark:bg-surface-900 shadow rounded-lg flex flex-col">
       <div class="flex items-center justify-between">
-        <div class="page-title">測試：{{ dict?.name }}</div>
+        <div class="text-xl font-bold">測試：{{ dict?.name }}</div>
         <div class="text-base">{{ index + 1 }} / {{ questions.length }}</div>
       </div>
-      <div class="line my-2"></div>
+      <Divider class="my-4" />
 
       <div v-if="currentQuestion" class="flex flex-col gap-4">
         <div class="text-2xl en-article-family flex items-center gap-2">
@@ -228,7 +229,7 @@ onMounted(init)
           <div
             v-for="(opt,i) in currentQuestion.optionTexts"
             :key="i"
-            class="option border rounded p-2 cursor-pointer"
+            class="border rounded p-2 cursor-pointer hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors"
             :class="{
               'text-green-600': currentQuestion.submitted && i === currentQuestion.correctIndex,
               'text-red-600': currentQuestion.submitted && i === currentQuestion.selectedIndex && i !== currentQuestion.correctIndex
@@ -242,22 +243,20 @@ onMounted(init)
         <div v-if="currentQuestion.submitted" class="mt-4">
           <div class="mb-2 text-base">選項解析：</div>
           <div class="grid gap-2 grid-cols-1 md:grid-cols-3">
-            <div v-for="(c,i) in currentQuestion.candidates" :key="i" class="p-2 rounded bg-[--bg-card-secend]">
+            <div v-for="(c,i) in currentQuestion.candidates" :key="i" class="p-2 rounded bg-surface-50 dark:bg-surface-800">
               <div class="en-article-family text-lg">{{ c.word }}</div>
               <div class="mt-1 text-sm">{{ c.wordObj?.trans?.map(v => v.cn).join('；') || '當前詞典未收錄釋義' }}</div>
             </div>
           </div>
         </div>
 
-        <div class="mt-6 flex">
-          <BaseButton type="primary" @click="next">繼續測試</BaseButton>
-          <BaseButton type="info" @click="end">結束</BaseButton>
+        <div class="mt-6 flex gap-2">
+          <Button label="繼續測試" @click="next" />
+          <Button label="結束" severity="secondary" outlined @click="end" />
         </div>
       </div>
     </div>
   </BasePage>
-  </template>
+</template>
 
-<style scoped>
-.option:hover { background: var(--color-second); }
-</style>
+
