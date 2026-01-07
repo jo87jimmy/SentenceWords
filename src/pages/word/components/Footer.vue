@@ -81,22 +81,29 @@ const progress = computed(() => {
   return ((practiceData.index / practiceData.words.length) * 100)
 })
 
+function togglePanel() {
+  settingStore.showPanel = !settingStore.showPanel
+  if (settingStore.showPanel) {
+    settingStore.showToolbar = false
+  }
+}
+
 </script>
 
 <template>
-  <div class="fixed z-50 transition-all duration-300 pointer-events-none
+  <div class="fixed transition-all duration-300 pointer-events-none
               bottom-[calc(0.5rem+env(safe-area-inset-bottom))] left-2 right-2 w-auto
               md:bottom-[calc(0.8rem+env(safe-area-inset-bottom))] md:left-1/2 md:-translate-x-1/2 md:w-[var(--toolbar-width)] md:right-auto">
     
     <div v-tooltip="settingStore.showToolbar?'收起':'展開'" 
-         class="absolute -top-10 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-300 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-2 transform pointer-events-auto"
-         :class="{'rotate-180': !settingStore.showToolbar}"
+         class="absolute -bottom-1 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-300 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-2 transform pointer-events-auto"
+         :class="{'rotate-180': !settingStore.showToolbar, '[@media(max-width:767px)]:rotate-180': settingStore.showPanel}"
          @click="settingStore.showToolbar = !settingStore.showToolbar">
       <IconFluentChevronDown20Filled />
     </div>
 
     <div class="relative w-full rounded-xl bg-[var(--color-second)] p-1 border border-[var(--color-item-border)] shadow-lg backdrop-blur-sm md:p-2 pointer-events-auto transition-all duration-300"
-         :class="{'translate-y-[120%] opacity-0': !settingStore.showToolbar}">
+         :class="{'translate-y-[120%] opacity-0': !settingStore.showToolbar, '[@media(max-width:767px)]:translate-y-[120%] [@media(max-width:767px)]:opacity-0': settingStore.showPanel}">
       <!-- ProgressBar for Desktop (inside panel) -->
       <div class="hidden md:block mb-2 px-1">
          <ProgressBar :value="progress" :showValue="false" class="h-1.5 !bg-gray-200 dark:!bg-gray-700" 
@@ -167,7 +174,7 @@ const progress = computed(() => {
               </Button>
 
               <Button text rounded size="small"
-                      @click="settingStore.showPanel = !settingStore.showPanel" v-tooltip.top="`單字本`"
+                      @click="togglePanel" v-tooltip.top="`單字本`"
                       class="!w-8 !h-8 !p-0 text-gray-500 md:!w-full md:!h-9">
                 <IconFluentTextListAbcUppercaseLtr20Regular />
               </Button>

@@ -39,14 +39,14 @@ function scrollViewToCenter(index: number) {
   if (index === -1) return
   nextTick(() => {
     if (props.list.length > limit) {
-      listRef?.scrollToItem(index)
+      listRef.value?.scrollToItem(index)
     } else {
-      listRef?.children[index]?.scrollIntoView({block: 'center', behavior: 'smooth'})
+      listRef.value?.children[index]?.scrollIntoView({block: 'center', behavior: 'smooth'})
     }
   })
 }
 
-watch(() => localActiveIndex, (n: any) => {
+watch(localActiveIndex, (n: any) => {
   if (props.static) return
   if (settingStore.showPanel) {
     scrollViewToCenter(n)
@@ -65,9 +65,9 @@ watch(() => props.list, () => {
   if (props.static) return
   nextTick(() => {
     if (props.list.length > limit) {
-      listRef?.scrollToItem(0)
+      listRef.value?.scrollToItem(0)
     } else {
-      listRef?.scrollTo(0, 0)
+      listRef.value?.scrollTo(0, 0)
     }
   })
 })
@@ -75,9 +75,9 @@ watch(() => props.list, () => {
 function scrollToBottom() {
   nextTick(() => {
     if (props.list.length > limit) {
-      listRef.scrollToBottom()
+      listRef.value?.scrollToBottom()
     } else {
-      listRef?.scrollTo(0, listRef.scrollHeight)
+      listRef.value?.scrollTo(0, listRef.value?.scrollHeight)
     }
   })
 }
@@ -85,9 +85,9 @@ function scrollToBottom() {
 function scrollToItem(index: number) {
   nextTick(() => {
     if (props.list.length > limit) {
-      listRef?.scrollToItem(index)
+      listRef.value?.scrollToItem(index)
     } else {
-      listRef?.children[index]?.scrollIntoView({block: 'center', behavior: 'smooth'})
+      listRef.value?.children[index]?.scrollIntoView({block: 'center', behavior: 'smooth'})
     }
   })
 }
