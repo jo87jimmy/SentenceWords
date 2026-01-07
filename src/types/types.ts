@@ -36,42 +36,6 @@ export type Word = { // 定義單字類型
         d: string,// desc 描述
     }[],
 }
-export interface Statistics {
-    startDate: number,//开始日期
-    spend: number,//花费时间
-    total: number//单词数量
-    new: number//新学单词数量
-    review: number//复习单词数量
-    wrong: number//错误数
-}
-export interface TaskWords {
-    new: Word[],
-    review: Word[],
-    write: Word[],
-    shuffle: Word[],
-}
-
-export const PronunciationApi = 'https://dict.youdao.com/dictvoice?audio=' // 發音 API URL
-
-export type TranslateLanguageType = 'en' | 'zh-CN' | 'ja' | 'de' | 'common' | '' // 翻譯語言類型定義
-export type LanguageType = 'en' | 'ja' | 'de' | 'code' // 語言類型定義
-
-export enum DictType { // 字典類型枚舉
-    collect = 'collect', // 收藏
-    simple = 'simple', // 簡單
-    wrong = 'wrong', // 錯詞
-    known = 'known', // 已掌握
-    word = 'word', // 單字書
-    article = 'article', // 文章書
-}
-
-export interface ArticleWord extends Word { // 文章中的單字介面，繼承自 Word
-    nextSpace: boolean, // 下一個是否為空格
-    symbolPosition: 'start' | 'end' | '', // 符號位置
-    input: string // 用戶輸入
-    type: PracticeArticleWordType // 練習類型
-}
-
 export interface Sentence { // 句子介面
     text: string, // 句子文本
     translate: string, // 句子翻譯
@@ -106,6 +70,41 @@ export interface Statistics { // 統計數據介面
     new: number// 新學數量
     review: number// 複習數量
     wrong: number// 錯誤數量
+}
+
+export interface PracticeData { // 練習數據介面
+    index: number, // 索引
+    words: Word[], // 單字列表
+    wrongWords: Word[], // 錯詞列表
+    excludeWords: string[], // 排除單字列表
+}
+
+export interface TaskWords { // 任務單字介面
+    new: Word[], // 新詞
+    review: Word[], // 複習詞
+    write: Word[], // 書寫詞
+    shuffle: Word[], // 亂序詞
+}
+
+export const PronunciationApi = 'https://dict.youdao.com/dictvoice?audio=' // 發音 API URL
+
+export type TranslateLanguageType = 'en' | 'zh-CN' | 'ja' | 'de' | 'common' | '' // 翻譯語言類型定義
+export type LanguageType = 'en' | 'ja' | 'de' | 'code' // 語言類型定義
+
+export enum DictType { // 字典類型枚舉
+    collect = 'collect', // 收藏
+    simple = 'simple', // 簡單
+    wrong = 'wrong', // 錯詞
+    known = 'known', // 已掌握
+    word = 'word', // 單字書
+    article = 'article', // 文章書
+}
+
+export interface ArticleWord extends Word { // 文章中的單字介面，繼承自 Word
+    nextSpace: boolean, // 下一個是否為空格
+    symbolPosition: 'start' | 'end' | '', // 符號位置
+    input: string // 用戶輸入
+    type: PracticeArticleWordType // 練習類型
 }
 
 export enum Sort { // 排序枚舉
@@ -202,20 +201,6 @@ export interface ArticleItem { // 文章項目介面
 export const SlideType = { // 滑動類型常數
     HORIZONTAL: 0, // 水平
     VERTICAL: 1, // 垂直
-}
-
-export interface PracticeData { // 練習數據介面
-    index: number, // 索引
-    words: Word[], // 單字列表
-    wrongWords: Word[], // 錯詞列表
-    excludeWords: string[], // 排除單字列表
-}
-
-export interface TaskWords { // 任務單字介面
-    new: Word[], // 新詞
-    review: Word[], // 複習詞
-    write: Word[], // 書寫詞
-    shuffle: Word[], // 亂序詞
 }
 
 export class DictId { // 字典 ID 常數類

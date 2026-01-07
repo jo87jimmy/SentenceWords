@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   fullScreen: false,
   footer: false,
   header: true,
-  confirmButtonText: '确认',
+  confirmButtonText: '確認',
   cancelButtonText: '取消',
   keyboard: true
 })
@@ -156,7 +156,7 @@ async function cancel() {
                 fullScreen?'full':'window'
             ]"
       >
-        <Tooltip title="关闭">
+        <Tooltip title="關閉">
           <IconFluentDismiss20Regular @click="close"
                                       v-if="showClose"
                                       class="close cursor-pointer"
