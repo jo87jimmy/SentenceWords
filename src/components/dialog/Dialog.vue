@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   fullScreen: false,
   footer: false,
   header: true,
-  confirmButtonText: '确认',
+  confirmButtonText: '確認',
   cancelButtonText: '取消',
   keyboard: true
 })

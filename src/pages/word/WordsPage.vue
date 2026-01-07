@@ -20,12 +20,14 @@ import {
   _nextTick,
   isMobile,
   loadJsLib,
+  shuffle,
 } from "@/utils";
 import { watch } from "vue";
 import { AppEnv, LIB_JS_URL, PracticeSaveWordKey, TourConfig } from "@/config/env.ts";
 import { myDictList } from "@/apis";
 import ChangeLastPracticeIndexDialog from "@/pages/word/components/ChangeLastPracticeIndexDialog.vue";
-
+import PracticeWordListDialog from "@/pages/word/components/PracticeWordListDialog.vue";
+import ShufflePracticeSettingDialog from "@/pages/word/components/ShufflePracticeSettingDialog.vue";
 const store = useBaseStore() // 獲取 Base Store 實例
 const router = useRouter(); // 獲取 Router 實例
 const confirm = useConfirm(); // 獲取 Confirm 實例
@@ -193,6 +195,26 @@ async function saveLastPracticeIndex(e:any) {
   currentStudy.value = getCurrentStudyWord()
 }
 
+async function onShufflePracticeSettingOk(total:any) {
+  window.umami?.track('startShuffleStudyWord', {
+    name: store.sdict.name,
+    index: store.sdict.lastLearnIndex,
+    perDayStudyNumber: store.sdict.perDayStudyNumber,
+    total,
+    custom: store.sdict.custom,
+    complete: store.sdict.complete,
+  })
+  isSaveData.value = false
+  localStorage.removeItem(PracticeSaveWordKey.key)
+
+  let ignoreList = settingStore.ignoreSimpleWord ? store.allIgnoreWords : store.knownWords
+  currentStudy.value.shuffle = shuffle(store.sdict.words.slice(0, store.sdict.lastLearnIndex).filter(v => !ignoreList.includes(v.word))).slice(0, total)
+  nav('practice-words/' + store.sdict.id, {}, {
+    taskWords: currentStudy.value,
+    total //用于再来一组时，随机出正确的长度，因为练习中可能会点击已掌握，导致重学一遍之后长度变少，如果再来一组，此时长度就不正确
+  })
+}
+
 </script>
 
 <template>
@@ -329,12 +351,12 @@ async function saveLastPracticeIndex(e:any) {
       @ok="saveLastPracticeIndex"
   />
 
-  <!-- <PracticeWordListDialog
+  <PracticeWordListDialog
       :data="currentStudy"
       v-model="showPracticeWordListDialog"
   />
 
   <ShufflePracticeSettingDialog
       v-model="showShufflePracticeSettingDialog"
-      @ok="onShufflePracticeSettingOk"/> -->
+      @ok="onShufflePracticeSettingOk"/>
 </template>
