@@ -278,15 +278,15 @@ async function onShufflePracticeSettingOk(total:any) {
             <div class="flex-1 w-full transition-opacity duration-200"
                 :class="!store.sdict.id && 'opacity-30 cursor-not-allowed'"> <!-- 右側區域，無字典時變淡 -->
                 <div class="flex justify-between"> <!-- 任務標題區 -->
-                    <div class="flex items-center gap-2"> <!-- 左側標題 -->
+                    <div class="flex items-center"> <!-- 左側標題 -->
                         <div class="p-2 flex justify-center items-center rounded-full bg-white"> <!-- 圖示背景 -->
                             <IconFluentStar20Filled class="text-lg text-amber-500" /> <!-- 圖示 -->
                         </div>
-                        <div class="text-xl font-bold"> <!-- 標題文字 -->
+                        <div class="text-xl font-bold mr-1"> <!-- 標題文字 -->
                             {{ isSaveData ? '上次任務' : '今日任務' }}
                         </div>
                         <span class="text-blue-600 cursor-pointer" v-if="store.sdict.id"
-                            @click="showPracticeWordListDialog = true">詞表</span> <!-- 詞表按鈕 -->
+                            @click="showPracticeWordListDialog = true">詞彙</span> <!-- 詞表按鈕 -->
 
                     </div>
                     <div class="flex gap-1 items-center" v-if="store.sdict.id"> <!-- 右側目標設定 -->
