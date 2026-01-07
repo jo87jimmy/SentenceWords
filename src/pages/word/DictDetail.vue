@@ -469,12 +469,13 @@ watch(() => loading.value, (val) => {
         <Button 
           text 
           rounded 
-          class="dict-back z-10 w-8 h-8 p-0" 
+          class="dict-back relative z-10 w-8 h-8 p-0" 
           @click="() => {
             if (isAdd) {
               router.back()
             } else {
-              isEdit = false
+              if (isEdit) isEdit = false
+              else router.back()
             }
           }" 
         >
