@@ -7,13 +7,24 @@ import Card from 'primevue/card'; // 引入 PrimeVue 卡片組件
 import { useConfirm } from 'primevue/useconfirm'; // 引入確認框 Hook
 import { useRouter } from 'vue-router'; // 引入路由 Hook
 import { ref, computed } from 'vue'; // 引入 Vue 響應式 API
-import { type DictResource, WordPracticeMode } from "@/types/types.ts"; // 引入字典資源類型和練習模式枚舉
+import { type DictResource, WordPracticeMode, type TaskWords } from "@/types/types.ts"; // 引入字典資源類型和練習模式枚舉
 import { getDefaultDict } from "@/types/func.ts"; // 引入獲取預設字典函數
 import { _getAccomplishDate, useNav } from '@/utils/index.ts'; // 引入日期計算工具和導航 Hook
 import { useRuntimeStore } from "@/stores/runtime.ts"; // 引入 Runtime Store
+import { getCurrentStudyWord } from "@/hooks/dict.ts";
 import { useBaseStore } from '@/stores/base.ts'; // 引入 Base Store
 import Toast from '@/components/base/toast/Toast.ts'; // 引入 Toast 提示
 import { useSettingStore } from "@/stores/setting.ts"; // 引入 Setting Store
+import {
+  _getDictDataByUrl,
+  _nextTick,
+  isMobile,
+  loadJsLib,
+} from "@/utils";
+import { watch } from "vue";
+import { AppEnv, LIB_JS_URL, PracticeSaveWordKey, TourConfig } from "@/config/env.ts";
+import { myDictList } from "@/apis";
+import ChangeLastPracticeIndexDialog from "@/pages/word/components/ChangeLastPracticeIndexDialog.vue";
 
 const store = useBaseStore() // 獲取 Base Store 實例
 const router = useRouter(); // 獲取 Router 實例
@@ -64,6 +75,7 @@ const progressTextRight = computed(() => {
 
 // 檢查是否選擇了字典
 function check(cb: Function) {
+    debugger
   if (!store.sdict.id) { // 如果沒有字典 ID
     Toast.warning('請先選擇一本詞典') // 提示警告
   } else {
@@ -77,16 +89,77 @@ let showChangeLastPracticeIndexDialog = ref(false) // 顯示更改進度彈窗
 let showPracticeWordListDialog = ref(false) // 顯示練習詞表彈窗
 let showPracticeSettingDialog = ref(false) // 顯示練習設定彈窗
 let showShufflePracticeSettingDialog = ref(false) // 顯示隨機練習設定彈窗
-let currentStudy = ref({ // 當前學習內容的統計數據
+const currentStudy = ref<TaskWords>({ // 當前學習內容的統計數據
   new: [], // 新詞
   review: [], // 複習
   write: [], // 書寫
   shuffle: [], // 亂序
 })
 
+watch(() => store.load, n => {
+  if (n) {
+    init()
+    _nextTick(async () => {
+      const Shepherd = await loadJsLib('Shepherd', LIB_JS_URL.SHEPHERD);
+      const tour = new Shepherd.Tour(TourConfig);
+      tour.on('cancel', () => {
+        localStorage.setItem('tour-guide', '1');
+      });
+      tour.addStep({
+        id: 'step1',
+        text: '点击这里选择一本词典开始学习',
+        attachTo: {
+          element: '#step1',
+          on: 'bottom'
+        },
+        buttons: [
+          {
+            text: `下一步（1/${TourConfig.total}）`,
+            action() {
+              tour.next()
+              router.push('/dict-list')
+            }
+          }
+        ]
+      });
+      const r = localStorage.getItem('tour-guide');
+      if (settingStore.first && !r && !isMobile()) tour.start();
+    }, 500)
+  }
+}, {immediate: true})
+
+async function init() {
+  if (AppEnv.CAN_REQUEST) {
+    let res = await myDictList({type: "word"})
+    if (res.success) {
+      store.setState(Object.assign(store.$state, res.data))
+    }
+  }
+  if (store.word.studyIndex >= 3) {
+    if (!store.sdict.custom && !store.sdict.words.length) {
+      store.word.bookList[store.word.studyIndex] = await _getDictDataByUrl(store.sdict)
+    }
+  }
+  if (!currentStudy.value.new.length && store.sdict.words.length) {
+    let d = localStorage.getItem(PracticeSaveWordKey.key)
+    if (d) {
+      try {
+        let obj = JSON.parse(d)
+        currentStudy.value = obj.val.taskWords
+        isSaveData.value = true
+      } catch (e) {
+        localStorage.removeItem(PracticeSaveWordKey.key)
+        currentStudy.value = getCurrentStudyWord()
+      }
+    } else {
+      currentStudy.value = getCurrentStudyWord()
+    }
+  }
+  loading.value = false
+}
+
 // 開始練習函數
 function startPractice() {
-    debugger
   if (store.sdict.id) { // 如果有選擇字典
     if (!store.sdict.words.length) { // 如果字典為空
       return Toast.warning('沒有單字可學習！') // 提示
@@ -108,6 +181,16 @@ function startPractice() {
     window.umami?.track('no-dict') // 埋點：無字典
     Toast.warning('請先選擇一本詞典') // 提示
   }
+}
+
+async function saveLastPracticeIndex(e:any) {
+  Toast.success('修改成功')
+  runtimeStore.editDict.lastLearnIndex = e
+  showChangeLastPracticeIndexDialog.value = false
+  isSaveData.value = false
+  localStorage.removeItem(PracticeSaveWordKey.key)
+  await store.changeDict(runtimeStore.editDict)
+  currentStudy.value = getCurrentStudyWord()
 }
 
 </script>
@@ -236,4 +319,22 @@ function startPractice() {
         </Card>
         <ConfirmPopup /> <!-- 確認彈窗組件 -->
     </BasePage>
+      <!-- <PracticeSettingDialog
+      :show-left-option="false"
+      v-model="showPracticeSettingDialog"
+      @ok="savePracticeSetting"/> -->
+
+  <ChangeLastPracticeIndexDialog
+      v-model="showChangeLastPracticeIndexDialog"
+      @ok="saveLastPracticeIndex"
+  />
+
+  <!-- <PracticeWordListDialog
+      :data="currentStudy"
+      v-model="showPracticeWordListDialog"
+  />
+
+  <ShufflePracticeSettingDialog
+      v-model="showShufflePracticeSettingDialog"
+      @ok="onShufflePracticeSettingOk"/> -->
 </template>

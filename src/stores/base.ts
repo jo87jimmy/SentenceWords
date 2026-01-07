@@ -140,7 +140,7 @@ export const useBaseStore = defineStore('base', { // 定義名為 'base' 的 Sto
                             Object.assign(data, res.data) // 合併數據
                         }
                     }
-                    this.setState(data) // 更新 State
+                    this.setState({ ...data, load: true }) // 更新 State
                     // 為了效能，過濾掉通用字典數據後再存回 IndexedDB
                     set(SAVE_DICT_KEY.key, JSON.stringify({ val: shakeCommonDict(this.$state), version: SAVE_DICT_KEY.version })) // 儲存數據
                 } catch (e) { // 捕獲錯誤

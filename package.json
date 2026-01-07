@@ -30,8 +30,10 @@
     "@iconify-json/bx": "^1.2.2",
     "@iconify-json/eos-icons": "^1.2.4",
     "@iconify-json/fluent": "^1.2.36",
+    "@iconify-json/material-symbols": "^1.2.50",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify-json/ph": "^1.2.2",
+    "@iconify-json/ri": "^1.2.7",
     "@iconify-json/simple-icons": "^1.2.65",
     "@iconify-json/system-uicons": "^1.2.4",
     "@types/lodash-es": "^4.17.12",
@@ -50,3 +52,4 @@
     "vite": "npm:rolldown-vite@7.2.5"
   }
 }
+
