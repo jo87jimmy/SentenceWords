@@ -20,8 +20,7 @@ let min = ref(0)
 
 watch(() => model.value, (n) => {
   if (n) {
-    debugger
-    const nVal = Math.floor(store.sdict.lastLearnIndex / 3)
+    const nVal = Math.floor(store.sdict.lastLearnIndex / 2)
     num.value = nVal > 50 ? 50 : nVal
     min.value = num.value < 10 ? num.value : 10
   }

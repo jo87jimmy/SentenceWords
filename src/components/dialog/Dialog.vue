@@ -156,7 +156,7 @@ async function cancel() {
                 fullScreen?'full':'window'
             ]"
       >
-        <Tooltip title="关闭">
+        <Tooltip title="關閉">
           <IconFluentDismiss20Regular @click="close"
                                       v-if="showClose"
                                       class="close cursor-pointer"
