@@ -348,7 +348,7 @@ async function next(isTyping: boolean = true) {
           setTimeout(() => localStorage.removeItem(PracticeSaveWordKey.key), 300)
           return;
         }
-
+        debugger
         //開始默寫之前
         if (statStore.step === 7) {
           return goNextStep(shuffle(taskWords.write), WordPracticeType.Dictation, '開始默寫之前')
@@ -398,6 +398,7 @@ async function next(isTyping: boolean = true) {
       }
     }
   }
+  debugger
   savePracticeData()
 }
 

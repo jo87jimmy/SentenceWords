@@ -19,6 +19,7 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
             { path: 'dict-detail', component: DictDetail },
             { path: 'practice-words/:id', component: PracticeWords },
             { path: 'word-test/:id', component: WordTest },
+
         ]
     }
 ]

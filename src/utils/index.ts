@@ -1,5 +1,6 @@
 import dayjs from 'dayjs' // 引入 dayjs 日期處理庫
-import { getDefaultSettingState, type SettingState } from "@/stores/setting.ts"; // 引入獲取預設設定狀態的函數
+import { getDefaultSettingState, type SettingState } from "@/stores/setting.ts";
+import { cloneDeep as _cloneDeep } from "lodash-es"; // 引入獲取預設設定狀態的函數
 import { AppEnv, RESOURCE_PATH, SAVE_SETTING_KEY, SAVE_DICT_KEY } from "@/config/env.ts"; // 引入環境變數及儲存鍵名配置
 import { type BaseState, getDefaultBaseState, useBaseStore } from "@/stores/base.ts"; // 引入基礎狀態及 Base Store
 import { useRouter } from "vue-router"; // 引入 Vue Router
@@ -286,7 +287,9 @@ export function resourceWrap(resource: string, version?: number) { // 資源路�
 }
 
 export function cloneDeep<T>(val: T) { // 深拷貝函數，泛型 T 確保類型安全
-    return JSON.parse(JSON.stringify(val)) // 使用 JSON 序列化反序列化進行深拷貝 (注意：無法處理 Date, RegExp, Function 等)
+    // return JSON.parse(JSON.stringify(val)) // 使用 JSON 序列化反序列化進行深拷貝 (注意：無法處理 Date, RegExp, Function 等)
+    // 使用 lodash 的 cloneDeep，可以處理循環引用和各種特殊物件
+    return _cloneDeep(val)
 }
 // 獲取完成天數
 export function _getAccomplishDays(total: number, dayNumber: number) { // 計算根據每日學習量，完成所有項目所需的天數

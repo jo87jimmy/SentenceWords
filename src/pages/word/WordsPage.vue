@@ -86,6 +86,7 @@ let currentStudy = ref({ // 當前學習內容的統計數據
 
 // 開始練習函數
 function startPractice() {
+    debugger
   if (store.sdict.id) { // 如果有選擇字典
     if (!store.sdict.words.length) { // 如果字典為空
       return Toast.warning('沒有單字可學習！') // 提示
@@ -102,7 +103,7 @@ function startPractice() {
     // 把是否是第一次設置為 false
     settingStore.first = false
     // 跳轉到練習頁面
-    nav('practice-words/' + store.sdict.id, {}, {taskWords: currentStudy})
+    nav('practice-words/' + store.sdict.id, {}, {taskWords: currentStudy.value})
   } else {
     window.umami?.track('no-dict') // 埋點：無字典
     Toast.warning('請先選擇一本詞典') // 提示
