@@ -93,8 +93,7 @@ function togglePanel() {
 <template>
   <div class="fixed transition-all duration-300 pointer-events-none
               bottom-[calc(0.5rem+env(safe-area-inset-bottom))] left-2 right-2 w-auto
-              md:bottom-[calc(0.8rem+env(safe-area-inset-bottom))] md:left-1/2 md:-translate-x-1/2 md:w-[var(--toolbar-width)] md:right-auto">
-    
+              md:bottom-[calc(0.8rem+env(safe-area-inset-bottom))] md:left-1/2 md:-translate-x-1/2 md:w-[var(--toolbar-width,600px)] md:right-auto">
     <div v-tooltip="settingStore.showToolbar?'收起':'展開'" 
          class="absolute -bottom-1 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-300 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-2 transform pointer-events-auto"
          :class="{'rotate-180': !settingStore.showToolbar, '[@media(max-width:767px)]:rotate-180': settingStore.showPanel}"

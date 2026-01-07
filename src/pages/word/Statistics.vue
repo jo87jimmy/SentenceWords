@@ -131,7 +131,7 @@ const encouragementText = computed(() => {
 // 格式化學習時間
 const formattedStudyTime = computed(() => {
   const time = msToHourMinute(statStore.spend)
-  return time.replace('小时', 'h ').replace('分钟', 'm') // 原函數可能返回簡體，這裡直接替換
+  return time.replace('小時', 'h ').replace('分鐘', 'm') // 原函數可能返回簡體，這裡直接替換
 })
 
 calcWeekList(); // 新增：計算本週學習記錄
@@ -274,7 +274,7 @@ calcWeekList(); // 新增：計算本週學習記錄
         <Button 
           @click="$router.back"
           severity="secondary"
-          text
+          outlined
           class="w-full justify-center !flex gap-2"
         >
           <IconFluentHome20Regular class="w-5 h-5"/>

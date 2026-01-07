@@ -5,6 +5,7 @@ import WordsPage from "@/pages/word/WordsPage.vue"; // 引入單字頁面元件 
 import DictList from "@/pages/word/DictList.vue"; // 引入字典列表元件 DictList
 import DictDetail from "@/pages/word/DictDetail.vue";
 import PracticeWords from "@/pages/word/PracticeWords.vue";
+import WordTest from "@/pages/word/WordTest.vue";
 
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
@@ -17,6 +18,7 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
             { path: 'dict-list', component: DictList }, // 定義 /dict-list 路徑，對應 DictList 元件
             { path: 'dict-detail', component: DictDetail },
             { path: 'practice-words/:id', component: PracticeWords },
+            { path: 'word-test/:id', component: WordTest },
         ]
     }
 ]

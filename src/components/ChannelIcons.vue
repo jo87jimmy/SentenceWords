@@ -128,7 +128,7 @@ const sentence = computed(() => {
 </script>
 
 <template>
-  <div class="flex-col center gap-1">
+  <div class="flex-col center gap-1" v-bind="$attrs">
     <!-- 分享学习总结按钮 -->
     <BaseIcon @click="showShareDialog = true"
               class="bounce">
