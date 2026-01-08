@@ -23,7 +23,10 @@ app.use(pinia) // 註冊 Pinia 套件
 app.use(router) // 註冊 Router 套件
 app.use(PrimeVue, { // 註冊 PrimeVue 套件並進行設定
     theme: { // 主題設定
-        preset: Aura // 使用 Aura 主題預設值
+        preset: Aura, // 使用 Aura 主題預設值
+        options: {
+            darkModeSelector: '.dark',
+        }
     }
 })
 app.use(ConfirmationService); // 註冊 ConfirmationService 服務
