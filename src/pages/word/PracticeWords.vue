@@ -691,9 +691,9 @@ useEvents([
   justify-content: space-between;
   align-items: center;
   position: relative;
-  width: 100%;
-  max-width: 600px;
-  min-width: 600px;
+  // width: 100%;
+  // max-width: 600px;
+  // min-width: 600px;
 }
 
 // 移动端适配

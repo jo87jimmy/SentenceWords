@@ -21,8 +21,8 @@
   /* 抗鋸齒 (WebKit) */
   -moz-osx-font-smoothing: grayscale;
   /* 抗鋸齒 (OS X) */
-  --toolbar-width: 800px;
-  --word-panel-margin-left: calc(50% + var(--toolbar-width, 800px) / 2 + 1rem);
+  /* --toolbar-width: 800px;
+  --word-panel-margin-left: calc(50% + var(--toolbar-width, 800px) / 2 + 1rem); */
   /* 元素置中，考慮工具列寬度，再向右留一點間距 */
 }
 

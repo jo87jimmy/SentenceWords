@@ -1,4 +1,4 @@
-<script setup lang = "ts" >
+<script setup lang="ts">
 // 使用 TypeScript 的 setup 語法糖
 </script>
 
