@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import {onMounted, watch} from "vue";
-import {type BaseState, useBaseStore} from "@/stores/base.ts";
-import {useRuntimeStore} from "@/stores/runtime.ts";
-import {useSettingStore} from "@/stores/setting.ts";
+import { onMounted, watch } from "vue";
+import { type BaseState, useBaseStore } from "@/stores/base.ts";
+import { useRuntimeStore } from "@/stores/runtime.ts";
+import { useSettingStore } from "@/stores/setting.ts";
 import useTheme from "@/hooks/theme.ts";
-import {shakeCommonDict} from "@/utils";
-import {get, set} from 'idb-keyval'
+import { shakeCommonDict } from "@/utils";
+import { get, set } from 'idb-keyval'
 
-import {DictId} from "@/types/types.ts";
-import {APP_VERSION, AppEnv, LOCAL_FILE_KEY, Origin, SAVE_DICT_KEY, SAVE_SETTING_KEY} from "@/config/env.ts";
-import {syncSetting} from "@/apis";
-import {useUserStore} from "@/stores/user.ts";
+import { DictId } from "@/types/types.ts";
+import { APP_VERSION, AppEnv, LOCAL_FILE_KEY, Origin, SAVE_DICT_KEY, SAVE_SETTING_KEY } from "@/config/env.ts";
+import { syncSetting } from "@/apis";
+import { useUserStore } from "@/stores/user.ts";
 import MigrateDialog from "@/components/MigrateDialog.vue";
 import { ref } from 'vue';
 const store = useBaseStore()
 const runtimeStore = useRuntimeStore()
 const settingStore = useSettingStore()
 const userStore = useUserStore()
-const {setTheme} = useTheme()
+const { setTheme } = useTheme()
 
 let lastAudioFileIdList: string[] = []
 watch(store.$state, (n: BaseState) => {
   let data = shakeCommonDict(n)
-  set(SAVE_DICT_KEY.key, JSON.stringify({val: data, version: SAVE_DICT_KEY.version}))
+  set(SAVE_DICT_KEY.key, JSON.stringify({ val: data, version: SAVE_DICT_KEY.version }))
 
   //筛选自定义和收藏
   let bookList = data.article.bookList.filter(v => v.custom || [DictId.articleCollect].includes(v.id))
@@ -51,11 +51,11 @@ watch(store.$state, (n: BaseState) => {
 })
 
 watch(() => settingStore.$state, (n) => {
-  set(SAVE_SETTING_KEY.key, JSON.stringify({val: n, version: SAVE_SETTING_KEY.version}))
+  set(SAVE_SETTING_KEY.key, JSON.stringify({ val: n, version: SAVE_SETTING_KEY.version }))
   if (AppEnv.CAN_REQUEST) {
     syncSetting(null, settingStore.$state)
   }
-}, {deep: true})
+}, { deep: true })
 
 async function init() {
   await userStore.init()
@@ -72,7 +72,7 @@ async function init() {
       runtimeStore.isNew = r ? (APP_VERSION.version > Number(r)) : true
     })
   }
-  window.umami?.track('host', {host: window.location.host})
+  window.umami?.track('host', { host: window.location.host })
 }
 
 onMounted(init)
@@ -87,41 +87,9 @@ onMounted(() => {
     }, 1000)
   }
 })
-
-// let transitionName = $ref('go')
-// const route = useRoute()
-// watch(() => route.path, (to, from) => {
-//   return transitionName = ''
-// console.log('watch', to, from)
-// //footer下面的5个按钮，对跳不要用动画
-// let noAnimation = [
-//   '/pc/practice',
-//   '/pc/dict',
-//   '/mobile',
-//   '/'
-// ]
-// if (noAnimation.indexOf(from) !== -1 && noAnimation.indexOf(to) !== -1) {
-//   return transitionName = ''
-// }
-//
-// const toDepth = routes.findIndex(v => v.path === to)
-// const fromDepth = routes.findIndex(v => v.path === from)
-// transitionName = toDepth > fromDepth ? 'go' : 'back'
-// console.log('transitionName', transitionName, toDepth, fromDepth)
-// })
 </script>
 
 <template>
-  <!--  <router-view v-slot="{ Component }">-->
-  <!--    <transition :name="transitionName">-->
-  <!--      <keep-alive :exclude="runtimeStore.excludeRoutes">-->
-  <!--        <component :is="Component"/>-->
-  <!--      </keep-alive>-->
-  <!--    </transition>-->
-  <!--  </router-view>-->
   <router-view></router-view>
-  <MigrateDialog
-    v-model="showTransfer"
-    @ok="init"
-  />
+  <MigrateDialog v-model="showTransfer" @ok="init" />
 </template>

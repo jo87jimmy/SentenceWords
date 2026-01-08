@@ -5,7 +5,7 @@ import Statistics from "@/pages/word/Statistics.vue";
 import { emitter, EventKey, useEvents } from "@/utils/eventBus.ts";
 import { useSettingStore } from "@/stores/setting.ts";
 import { useRuntimeStore } from "@/stores/runtime.ts";
-import { type Dict, type PracticeData,ShortcutKey, type TaskWords, type Word, WordPracticeMode, WordPracticeType } from "@/types/types.ts";
+import { type Dict, type PracticeData, ShortcutKey, type TaskWords, type Word, WordPracticeMode, WordPracticeType } from "@/types/types.ts";
 import { useDisableEventListener, useOnKeyboardEventListener, useStartKeyboardEventListener } from "@/hooks/event.ts";
 import useTheme from "@/hooks/theme.ts";
 import { getCurrentStudyWord, useWordOptions } from "@/hooks/dict.ts";
@@ -37,7 +37,7 @@ const {
 } = useWordOptions()
 const settingStore = useSettingStore()
 const runtimeStore = useRuntimeStore()
-const {toggleTheme} = useTheme()
+const { toggleTheme } = useTheme()
 const router = useRouter()
 const route = useRoute()
 const store = useBaseStore()
@@ -75,7 +75,7 @@ async function loadDict() {
     dict = store.word.bookList.find(v => v.id === dictId)
     let r = await fetch(resourceWrap(DICT_LIST.WORD.ALL))
     let dict_list = await r.json()
-    if (!dict) dict = dict_list.flat().find((v:any) => v.id === dictId) as Dict
+    if (!dict) dict = dict_list.flat().find((v: any) => v.id === dictId) as Dict
     if (dict && dict.id) {
       //如果是不是自定义词典，就请求数据
       if (!dict.custom) dict = await _getDictDataByUrl(dict)
@@ -96,7 +96,7 @@ async function loadDict() {
 
 watch(() => store.load, (n) => {
   if (n && loading) loadDict()
-}, {immediate: true})
+}, { immediate: true })
 
 onMounted(() => {
   //如果是从单词学习主页过来的，就直接使用；否则等待加载
@@ -124,7 +124,7 @@ watchOnce(() => data.words.length, (newVal, oldVal) => {
       tour.addStep({
         id: 'step5',
         text: '這裡可以練習拼寫單字，只需要按下鍵盤上對應的按鍵即可，沒有輸入框！',
-        attachTo: {element: '#word', on: 'bottom'},
+        attachTo: { element: '#word', on: 'bottom' },
         buttons: [
           {
             text: `下一步（5/${TourConfig.total}）`,
@@ -136,7 +136,7 @@ watchOnce(() => data.words.length, (newVal, oldVal) => {
       tour.addStep({
         id: 'step6',
         text: '這裡是文章練習',
-        attachTo: {element: '#article', on: 'top'},
+        attachTo: { element: '#article', on: 'top' },
         buttons: [
           {
             text: `下一步（6/${TourConfig.total}）`,
@@ -255,7 +255,7 @@ watch(() => settingStore.wordPracticeType, (n) => {
       settingStore.translate = false;
       break
   }
-}, {immediate: true})
+}, { immediate: true })
 
 const groupSize = 7
 
@@ -286,7 +286,7 @@ function goNextStep(originList: Word[], mode: WordPracticeType, msg: string) {
   console.log(msg)
   if (list.length) {
     if (toastInstance) toastInstance.close()
-    toastInstance = Toast.info('輸入完成後按空白鍵切換下一個', {duration: 5000})
+    toastInstance = Toast.info('輸入完成後按空白鍵切換下一個', { duration: 5000 })
     data.words = list
     settingStore.wordPracticeType = mode
     data.index = 0
@@ -609,40 +609,24 @@ useEvents([
 </script>
 
 <template>
-  <PracticeLayout
-      v-loading="loading"
-      panelLeft="var(--word-panel-margin-left)">
+  <PracticeLayout v-loading="loading" panelLeft="var(--word-panel-margin-left)">
     <template v-slot:practice>
       <div class="practice-word">
         <div class="absolute z-1 top-4   w-full" v-if="settingStore.showNearWord">
-          <div class="center gap-2 cursor-pointer float-left"
-               @click="prev"
-               v-if="prevWord">
-            <IconFluentArrowLeft16Regular class="arrow" width="22"/>
-            <Tooltip
-                :title="`上一個(${settingStore.shortcutKeyMap[ShortcutKey.Previous]})`"
-            >
+          <div class="flex items-center gap-2 cursor-pointer float-left" @click="prev" v-if="prevWord">
+            <IconFluentArrowLeft16Regular class="arrow" width="22" />
+            <Tooltip :title="`上一個(${settingStore.shortcutKeyMap[ShortcutKey.Previous]})`">
               <div class="word">{{ prevWord.word }}</div>
             </Tooltip>
           </div>
-          <div class="center gap-2 cursor-pointer float-right mr-3"
-               @click="next(false)"
-               v-if="nextWord">
-            <Tooltip
-                :title="`下一個(${settingStore.shortcutKeyMap[ShortcutKey.Next]})`"
-            >
+          <div class="flex items-center gap-2 cursor-pointer float-right mr-4" @click="next(false)" v-if="nextWord">
+            <Tooltip :title="`下一個(${settingStore.shortcutKeyMap[ShortcutKey.Next]})`">
               <div class="word" :class="settingStore.dictation && 'word-shadow'">{{ nextWord.word }}</div>
             </Tooltip>
-            <IconFluentArrowRight16Regular class="arrow" width="22"/>
+            <IconFluentArrowRight16Regular class="arrow" width="22" />
           </div>
         </div>
-        <TypeWord
-            ref="typingRef"
-            :word="word"
-            @wrong="onTypeWrong"
-            @complete="next"
-            @know="onWordKnow"
-        />
+        <TypeWord ref="typingRef" :word="word" @wrong="onTypeWrong" @complete="next" @know="onWordKnow" />
       </div>
     </template>
     <template v-slot:panel>
@@ -652,68 +636,46 @@ useEvents([
           <div class="center gap-space">
             <span>{{ store.sdict.name }} ({{ store.sdict.lastLearnIndex }} / {{ store.sdict.length }})</span>
 
-            <BaseIcon
-                @click="continueStudy"
-                :title="`下一組(${settingStore.shortcutKeyMap[ShortcutKey.NextChapter]})`">
-              <IconFluentArrowRight16Regular class="arrow" width="22"/>
+            <BaseIcon @click="continueStudy" :title="`下一組(${settingStore.shortcutKeyMap[ShortcutKey.NextChapter]})`">
+              <IconFluentArrowRight16Regular class="arrow" width="22" />
             </BaseIcon>
-            <BaseIcon
-                @click="randomWrite"
-                :title="`隨機默寫(${settingStore.shortcutKeyMap[ShortcutKey.RandomWrite]})`">
-              <IconFluentArrowShuffle16Regular class="arrow" width="22"/>
+            <BaseIcon @click="randomWrite" :title="`隨機默寫(${settingStore.shortcutKeyMap[ShortcutKey.RandomWrite]})`">
+              <IconFluentArrowShuffle16Regular class="arrow" width="22" />
             </BaseIcon>
           </div>
         </template>
         <div class="panel-page-item pl-2 border-t border-surface-200 dark:border-surface-700">
-          <WordList
-              v-if="data.words.length"
-              :is-active="settingStore.showPanel"
-              :static="false"
-              :show-word="!settingStore.dictation"
-              :show-translate="settingStore.translate"
-              :list="data.words"
-              :activeIndex="data.index"
-              @click="(val:any) => data.index = val.index"
-          >
-            <template v-slot:suffix="{item,index}">
-              <BaseIcon
-                  :class="!isWordCollect(item)?'collect':'fill'"
-                  @click.stop="toggleWordCollect(item)"
-                  :title="!isWordCollect(item) ? '收藏' : '取消收藏'">
-                <IconFluentStar16Regular v-if="!isWordCollect(item)"/>
-                <IconFluentStar16Filled v-else/>
+          <WordList v-if="data.words.length" :is-active="settingStore.showPanel" :static="false"
+            :show-word="!settingStore.dictation" :show-translate="settingStore.translate" :list="data.words"
+            :activeIndex="data.index" @click="(val: any) => data.index = val.index">
+            <template v-slot:suffix="{ item, index }">
+              <BaseIcon :class="!isWordCollect(item) ? 'collect' : 'fill'" @click.stop="toggleWordCollect(item)"
+                :title="!isWordCollect(item) ? '收藏' : '取消收藏'">
+                <IconFluentStar16Regular v-if="!isWordCollect(item)" />
+                <IconFluentStar16Filled v-else />
               </BaseIcon>
 
-              <BaseIcon
-                  :class="!isWordSimple(item)?'collect':'fill'"
-                  @click.stop="toggleWordSimple(item)"
-                  :title="!isWordSimple(item) ? '標記為已掌握' : '取消標記已掌握'">
-                <IconFluentCheckmarkCircle16Regular v-if="!isWordSimple(item)"/>
-                <IconFluentCheckmarkCircle16Filled v-else/>
+              <BaseIcon :class="!isWordSimple(item) ? 'collect' : 'fill'" @click.stop="toggleWordSimple(item)"
+                :title="!isWordSimple(item) ? '標記為已掌握' : '取消標記已掌握'">
+                <IconFluentCheckmarkCircle16Regular v-if="!isWordSimple(item)" />
+                <IconFluentCheckmarkCircle16Filled v-else />
               </BaseIcon>
             </template>
           </WordList>
-          <Empty v-else/>
+          <Empty v-else />
         </div>
       </Panel>
     </template>
     <template v-slot:footer>
-      <Footer
-          :is-simple="isWordSimple(word)"
-          @toggle-simple="toggleWordSimpleWrapper"
-          :is-collect="isWordCollect(word)"
-          @toggle-collect="toggleWordCollect(word)"
-          @skip="next(false)"
-          @skipStep="skipStep"
-      />
+      <Footer :is-simple="isWordSimple(word)" @toggle-simple="toggleWordSimpleWrapper" :is-collect="isWordCollect(word)"
+        @toggle-collect="toggleWordCollect(word)" @skip="next(false)" @skipStep="skipStep" />
     </template>
   </PracticeLayout>
-  <Statistics v-model="showStatDialog"/>
-  <ConflictNotice v-if="showConflictNotice"/>
+  <Statistics v-model="showStatDialog" />
+  <ConflictNotice v-if="showConflictNotice" />
 </template>
 
 <style scoped lang="scss">
-
 .practice-wrapper {
   width: 100%;
   height: 100vh;
@@ -729,9 +691,9 @@ useEvents([
   justify-content: space-between;
   align-items: center;
   position: relative;
-  width: 100%;
-  max-width: 600px;
-  min-width: 600px;
+  // width: 100%;
+  // max-width: 600px;
+  // min-width: 600px;
 }
 
 // 移动端适配
