@@ -25,6 +25,8 @@
   /* --toolbar-width: 800px;
   --word-panel-margin-left: calc(50% + var(--toolbar-width, 800px) / 2 + 1rem); */
   /* 元素置中，考慮工具列寬度，再向右留一點間距 */
+  --aside-width: 12rem;
+  /* aside寬度 */
 }
 
 a {
