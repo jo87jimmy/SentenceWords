@@ -140,6 +140,7 @@ onUnmounted(() => {
 .pop-confirm-content {
   position: fixed;
   background: var(--color-tooltip-bg);
+  color: var(--color-tooltip-text);
   padding: 1rem;
   border-radius: .6rem;
   transform: translate(-50%, calc(-100% - .6rem));
