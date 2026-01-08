@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch,ref } from "vue";
+import { onMounted, onUnmounted, watch, ref } from "vue";
 import Tooltip from "@/components/base/Tooltip.vue";
 import { useEventListener } from "@/hooks/event.ts";
 
@@ -60,7 +60,7 @@ async function close() {
       return
     }
   }
-  //记录停留时间，避免时间太短，弹框闪烁
+  //紀錄停留時間，避免時間太短，彈框閃爍
   let stayTime = Date.now() - openTime.value;
   let closeTime = 300;
   if (stayTime < 500) {
@@ -89,7 +89,7 @@ watch(() => props.modelValue, n => {
   // console.log('n', n)
   if (n) {
     id = Date.now()
-    runtimeStore.modalList.push({id, close})
+    runtimeStore.modalList.push({ id, close })
     zIndex.value = 999 + runtimeStore.modalList.length
     visible.value = true
   } else {
@@ -101,7 +101,7 @@ onMounted(() => {
   if (props.modelValue === undefined) {
     visible.value = true
     id = Date.now()
-    runtimeStore.modalList.push({id, close})
+    runtimeStore.modalList.push({ id, close })
     zIndex.value = 999 + runtimeStore.modalList.length
   }
 })
@@ -145,27 +145,18 @@ async function cancel() {
 
 <template>
   <Teleport to="body">
-    <div class="modal-root" :style="{'z-index': zIndex}" v-if="visible">
-      <div class="modal-mask"
-           ref="maskRef"
-           v-if="!fullScreen"
-           @click.stop="closeOnClickBg && close()"></div>
-      <div class="modal"
-           ref="modalRef"
-           :class="[
-                fullScreen?'full':'window'
-            ]"
-      >
+    <div class="modal-root" :style="{ 'z-index': zIndex }" v-if="visible">
+      <div class="modal-mask" ref="maskRef" v-if="!fullScreen" @click.stop="closeOnClickBg && close()"></div>
+      <div class="modal" ref="modalRef" :class="[
+        fullScreen ? 'full' : 'window'
+      ]">
         <Tooltip title="關閉">
-          <IconFluentDismiss20Regular @click="close"
-                                      v-if="showClose"
-                                      class="close cursor-pointer"
-                                      width="24"/>
+          <IconFluentDismiss20Regular @click="close" v-if="showClose" class="close cursor-pointer" width="24" />
         </Tooltip>
         <div class="modal-header" v-if="header">
           <div class="title">{{ props.title }}</div>
         </div>
-        <div class="modal-body" :class="{padding}">
+        <div class="modal-body" :class="{ padding }">
           <slot></slot>
           <div v-if="content" class="content max-h-60vh">{{ content }}</div>
         </div>
@@ -175,10 +166,7 @@ async function cancel() {
           </div>
           <div class="right">
             <BaseButton type="info" @click="cancel">{{ cancelButtonText }}</BaseButton>
-            <BaseButton
-              id="dialog-ok"
-                :loading="confirmButtonLoading"
-                @click="ok">{{ confirmButtonText }}
+            <BaseButton id="dialog-ok" :loading="confirmButtonLoading" @click="ok">{{ confirmButtonText }}
             </BaseButton>
           </div>
         </div>
@@ -188,8 +176,6 @@ async function cancel() {
 </template>
 
 <style scoped lang="scss">
-
-
 $modal-mask-bg: rgba(#000, .6);
 $radius: .5rem;
 $time: 0.3s;
@@ -199,6 +185,7 @@ $header-height: 4rem;
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -209,6 +196,7 @@ $header-height: 4rem;
     transform: scale(1.5);
     opacity: 0;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -219,6 +207,7 @@ $header-height: 4rem;
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }

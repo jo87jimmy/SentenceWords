@@ -11,7 +11,8 @@
   color: rgba(255, 255, 255, 0.87);
   /* 設定文字顏色 */
   background-color: #242424;
-  /* 設定背景顏色 */
+  /* 設定tooltip背景顏色 */
+  --color-tooltip-bg: #242424;
 
   font-synthesis: none;
   /* 禁用字體合成 */
