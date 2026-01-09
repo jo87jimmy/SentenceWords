@@ -64,19 +64,17 @@ watch(() => model.value, (n) => {
     <div class="flex flex-col gap-6 text-[var(--p-text-color)]">
       <!-- 模式選擇 -->
       <div class="flex gap-4 h-32 md:h-30">
-        <div 
+        <div
           class="flex-1 border rounded-lg p-4 cursor-pointer transition-colors flex flex-col items-center justify-center text-center"
           :class="tempPracticeMode === 0 ? 'bg-primary text-primary-contrast border-primary' : 'border-surface-300 dark:border-surface-600 hover:border-primary'"
-          @click="tempPracticeMode = 0"
-        >
+          @click="tempPracticeMode = 0">
           <div class="font-bold text-lg mb-2">智能模式</div>
           <div class="text-sm opacity-90">自動規劃學習、複習、聽寫、默寫</div>
         </div>
-        <div 
+        <div
           class="flex-1 border rounded-lg p-4 cursor-pointer transition-colors flex flex-col items-center justify-center text-center"
           :class="tempPracticeMode === 1 ? 'bg-primary text-primary-contrast border-primary' : 'border-surface-300 dark:border-surface-600 hover:border-primary'"
-          @click="tempPracticeMode = 1"
-        >
+          @click="tempPracticeMode = 1">
           <div class="font-bold text-lg mb-2">自由模式</div>
           <div class="text-sm opacity-90">自由練習，系統不強制複習與默寫</div>
         </div>
@@ -87,8 +85,9 @@ watch(() => model.value, (n) => {
         <p class="leading-loose">
           從第 <span class="text-2xl font-bold text-primary mx-1">{{ tempLastLearnIndex }}</span> 個開始，
           每日 <span class="text-2xl font-bold text-primary mx-1">{{ tempPerDayStudyNumber }}</span> 個，
-          預計 <span class="text-2xl font-bold text-primary mx-1">{{ 
-            _getAccomplishDays((runtimeStore.editDict.words?.length || 0) - (tempLastLearnIndex || 0), tempPerDayStudyNumber) 
+          預計 <span class="text-2xl font-bold text-primary mx-1">{{
+            _getAccomplishDays((runtimeStore.editDict.words?.length || 0) - (tempLastLearnIndex || 0),
+              tempPerDayStudyNumber)
           }}</span> 天完成
         </p>
       </div>
@@ -98,16 +97,8 @@ watch(() => model.value, (n) => {
         <span class="font-medium">每日學習</span>
         <div class="flex items-center gap-1">
           <Slider v-model="tempPerDayStudyNumber" :min="10" :max="200" :step="10" class="flex-1" />
-          <InputNumber 
-            v-model="tempPerDayStudyNumber" 
-            :min="10" 
-            :max="200" 
-            :step="10" 
-            :pt="{ input: { class: 'text-center'} }" 
-            showButtons 
-            buttonLayout="horizontal" 
-            :allowEmpty="false"
-          />
+          <InputNumber v-model="tempPerDayStudyNumber" :min="10" :max="200" :step="10"
+            :pt="{ input: { class: 'text-center' } }" showButtons buttonLayout="horizontal" :allowEmpty="false" />
         </div>
       </div>
 
@@ -116,8 +107,9 @@ watch(() => model.value, (n) => {
         <span class="font-medium">學習進度</span>
         <div class="flex flex-col gap-4">
           <div class="flex items-center">
-             <Slider v-model="tempLastLearnIndex" :min="0" :max="runtimeStore.editDict.words?.length || 100" :step="1" class="flex-1" />
-             <span class="w-14 text-right font-mono">{{ tempLastLearnIndex }}</span>
+            <Slider v-model="tempLastLearnIndex" :min="0" :max="runtimeStore.editDict.words?.length || 100" :step="1"
+              class="flex-1" />
+            <span class="w-14 text-right font-mono">{{ tempLastLearnIndex }}</span>
           </div>
           <Button label="從詞典選起始位置" severity="secondary" outlined size="small" @click="show = true" class="w-full" />
         </div>
@@ -128,26 +120,23 @@ watch(() => model.value, (n) => {
     <template #footer>
       <div class="flex items-center justify-between w-full mt-4">
         <div v-if="showLeftOption" class="flex items-center gap-2">
-           <Checkbox v-model="tempDisableShowPracticeSettingDialog" binary inputId="notShowAgain" />
-           <label for="notShowAgain" class="text-sm cursor-pointer select-none text-muted-color" v-tooltip="'可在設定頁面更改'">
-             保持默認，不再顯示
-           </label>
+          <Checkbox v-model="tempDisableShowPracticeSettingDialog" binary inputId="notShowAgain" />
+          <label for="notShowAgain" class="text-sm cursor-pointer select-none text-muted-color" v-tooltip="'可在設定頁面更改'">
+            保持默認，不再顯示
+          </label>
         </div>
         <div class="flex gap-2 ml-auto">
           <Button label="取消" severity="secondary" text @click="model = false" />
-          <Button label="確定" @click="changePerDayStudyNumber" />
+          <Button label="確定" severity="success" @click="changePerDayStudyNumber" />
         </div>
       </div>
     </template>
   </Dialog>
 
-  <ChangeLastPracticeIndexDialog
-    v-model="show"
-    @ok="e => {
-        tempLastLearnIndex = e
-        show = false
-      }"
-  />
+  <ChangeLastPracticeIndexDialog v-model="show" @ok="e => {
+    tempLastLearnIndex = e
+    show = false
+  }" />
 </template>
 
 <style scoped>
