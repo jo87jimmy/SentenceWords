@@ -335,7 +335,8 @@ async function savePracticeSetting() {
               </template>
             </div>
             <div class="flex items-end mt-4"> <!-- 開始按鈕區 -->
-              <Button size="large" class="flex-1" :disabled="!store.sdict.id" :loading="loading" @click="startPractice">
+              <Button size="large" severity="info" class="flex-1" :disabled="!store.sdict.id" :loading="loading"
+                @click="startPractice">
                 <!-- 開始學習按鈕 -->
                 <div class="flex items-center gap-2"> <!-- 內容容器 -->
                   <span class="leading-[2]">{{ isSaveData ? '繼續學習' : '開始學習' }}</span> <!-- 按鈕文字 -->

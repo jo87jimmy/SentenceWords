@@ -68,8 +68,8 @@ let wordForm = ref(getDefaultFormWord())
 let wordFormRef = ref()
 const wordRules = reactive({
   word: [
-    {required: true, message: '請輸入單詞', trigger: 'blur'},
-    {max: 100, message: '名稱不能超過100個字元', trigger: 'blur'},
+    { required: true, message: '請輸入單詞', trigger: 'blur' },
+    { max: 100, message: '名稱不能超過100個字元', trigger: 'blur' },
   ],
 })
 let studyLoading = ref(false)
@@ -138,14 +138,14 @@ function delWord(id: string, isBatch = false) {
 }
 
 const confirmDelete = (event: any, id: string) => {
-    confirm.require({
-        target: event.currentTarget,
-        message: '確認刪除？',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-            delWord(id);
-        }
-    });
+  confirm.require({
+    target: event.currentTarget,
+    message: '確認刪除？',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      delWord(id);
+    }
+  });
 };
 
 function batchDel(ids: string[]) {
@@ -165,7 +165,7 @@ function word2Str(word: any) {
   res.phrases = word.phrases.map((v: any) => (v.c + "\n" + v.cn).replace(/"/g, '')).join('\n\n')
   res.synos = word.synos.map((v: any) => (v.pos + v.cn + "\n" + v.ws.join('/')).replace(/"/g, '')).join('\n\n')
   res.relWords = word.relWords.root ? ('詞根:' + word.relWords.root + '\n\n' +
-      word.relWords.rels.map((v: any) => (v.pos + "\n" + v.words.map((v: any) => (v.c + ':' + v.cn)).join('\n')).replace(/"/g, '')).join('\n\n')) : ''
+    word.relWords.rels.map((v: any) => (v.pos + "\n" + v.words.map((v: any) => (v.c + ':' + v.cn)).join('\n')).replace(/"/g, '')).join('\n\n')) : ''
   res.etymology = word.etymology.map((v: any) => (v.t + '\n' + v.d).replace(/"/g, '')).join('\n\n')
   return res
 }
@@ -207,8 +207,8 @@ onMounted(async () => {
         router.push("/word")
       } else {
         if (!runtimeStore.editDict.words.length
-            && !runtimeStore.editDict.custom
-            && ![DictId.wordCollect, DictId.wordWrong, DictId.wordKnown].includes(runtimeStore.editDict.en_name || runtimeStore.editDict.id)
+          && !runtimeStore.editDict.custom
+          && ![DictId.wordCollect, DictId.wordWrong, DictId.wordKnown].includes(runtimeStore.editDict.en_name || runtimeStore.editDict.id)
         ) {
           loading.value = true
           let r = await _getDictDataByUrl(runtimeStore.editDict)
@@ -218,7 +218,7 @@ onMounted(async () => {
         const book = base.word.bookList.find(book => book.id === runtimeStore.editDict.id)
         if (book) {
           if (AppEnv.CAN_REQUEST) {
-            let res = await detail({id: runtimeStore.editDict.id})
+            let res = await detail({ id: runtimeStore.editDict.id })
             if (res.success) {
               runtimeStore.editDict.statistics = res.data.statistics
               if (res.data.words.length) {
@@ -246,7 +246,7 @@ let showPracticeSettingDialog = ref(false)
 
 const store = useBaseStore()
 const settingStore = useSettingStore()
-const {nav} = useNav()
+const { nav } = useNav()
 
 //todo 可以和首頁合併
 async function startPractice(query = {}) {
@@ -263,7 +263,7 @@ async function startPractice(query = {}) {
     wordPracticeMode: settingStore.wordPracticeMode
   })
   let currentStudy = getCurrentStudyWord()
-  nav('practice-words/' + store.sdict.id, query, {taskWords: currentStudy})
+  nav('practice-words/' + store.sdict.id, query, { taskWords: currentStudy })
 }
 
 async function addMyStudyList() {
@@ -289,16 +289,16 @@ let exportLoading = ref(false)
 let importLoading = ref(false)
 let tableRef = ref()
 
-function importData(e:any) {
+function importData(e: any) {
   let file = e.target.files[0];
   if (!file) return;
 
   let reader = new FileReader();
-  reader.onload = async function (s:any) {
+  reader.onload = async function (s: any) {
     let data = s.target.result;
     importLoading.value = true
     const XLSX = await loadJsLib('XLSX', `${Origin}/libs/xlsx.full.min.js`);
-    let workbook = XLSX.read(data, {type: 'binary'});
+    let workbook = XLSX.read(data, { type: 'binary' });
     let res: any[] = XLSX.utils.sheet_to_json(workbook.Sheets['Sheet1']);
     if (res.length) {
       let words = res.map(v => {
@@ -317,15 +317,15 @@ function importData(e:any) {
               relWords: v['同根詞'] ?? '',
               etymology: v['詞源'] ?? '',
             });
-          } catch (e:any) {
+          } catch (e: any) {
             console.error('導入單詞報錯' + v['單詞'], e.message)
           }
           return data
         }
       }).filter(v => v);
       if (words.length) {
-        let repeat:any[] = []
-        let noRepeat:any[] = []
+        let repeat: any[] = []
+        let noRepeat: any[] = []
         words.map((v: any) => {
           let rIndex = runtimeStore.editDict.words.findIndex(s => s.word === v.word)
           if (rIndex > -1) {
@@ -340,23 +340,23 @@ function importData(e:any) {
 
         if (repeat.length) {
           MessageBox.confirm(
-              '單詞"' + repeat.map(v => v.word).join(', ') + '" 已存在，是否覆蓋原單詞？',
-              '檢測到重複單詞',
-              () => {
-                repeat.map(v => {
-                  const idx = v.index
-                  delete v.index
-                  runtimeStore.editDict.words[idx] = v
-                })
-              },
-              undefined,
-              () => {
-                tableRef.value.closeImportDialog()
-                e.target.value = ''
-                importLoading.value = false
-                syncDictInMyStudyList()
-                Toast.success('導入成功！')
-              }
+            '單詞"' + repeat.map(v => v.word).join(', ') + '" 已存在，是否覆蓋原單詞？',
+            '檢測到重複單詞',
+            () => {
+              repeat.map(v => {
+                const idx = v.index
+                delete v.index
+                runtimeStore.editDict.words[idx] = v
+              })
+            },
+            undefined,
+            () => {
+              tableRef.value.closeImportDialog()
+              e.target.value = ''
+              importLoading.value = false
+              syncDictInMyStudyList()
+              Toast.success('導入成功！')
+            }
           )
         } else {
           tableRef.value.closeImportDialog()
@@ -416,7 +416,7 @@ watch(() => loading.value, (val) => {
     tour.addStep({
       id: 'step3',
       text: '點擊這裡開始學習',
-      attachTo: {element: '#study', on: 'bottom'},
+      attachTo: { element: '#study', on: 'bottom' },
       buttons: [
         {
           text: `下一步（3/${TourConfig.total}）`,
@@ -431,7 +431,7 @@ watch(() => loading.value, (val) => {
     tour.addStep({
       id: 'step4',
       text: '這裡可以選擇學習模式、設置學習數量、修改學習進度',
-      attachTo: {element: '#mode', on: 'bottom'},
+      attachTo: { element: '#mode', on: 'bottom' },
       beforeShowPromise() {
         return new Promise((resolve) => {
           const timer = setInterval(() => {
@@ -447,7 +447,7 @@ watch(() => loading.value, (val) => {
           text: `下一步（4/${TourConfig.total}）`,
           action() {
             tour.next()
-            startPractice({guide: 1})
+            startPractice({ guide: 1 })
           }
         }
       ]
@@ -466,42 +466,23 @@ watch(() => loading.value, (val) => {
   <BasePage>
     <div v-if="showBookDetail" class="card mb-0 dict-detail-card flex flex-col">
       <div class="dict-header flex justify-between items-center relative">
-        <Button 
-          text 
-          rounded 
-          class="dict-back relative z-10 w-8 h-8 p-0" 
-          @click="() => {
-            if (isAdd) {
-              router.back()
-            } else {
-              if (isEdit) isEdit = false
-              else router.back()
-            }
-          }" 
-        >
+        <Button text rounded class="dict-back relative z-10 w-8 h-8 p-0" @click="() => {
+          if (isAdd) {
+            router.back()
+          } else {
+            if (isEdit) isEdit = false
+            else router.back()
+          }
+        }">
           <template #icon>
             <IconFluentChevronLeft28Filled />
           </template>
         </Button>
         <div class="dict-title absolute page-title text-center w-full">{{ runtimeStore.editDict.name }}</div>
         <div class="dict-actions flex gap-2">
-          <Button 
-            :loading="studyLoading || loading" 
-            severity="info"
-            label="編輯"
-            @click="isEdit = true"
-          />
-          <Button 
-            id="study" 
-            :loading="studyLoading || loading" 
-            label="學習"
-            @click="addMyStudyList"
-          />
-          <Button 
-            :loading="studyLoading || loading" 
-            label="測試"
-            @click="startTest"
-          />
+          <Button :loading="studyLoading || loading" severity="info" label="編輯" @click="isEdit = true" />
+          <Button id="study" :loading="studyLoading || loading" label="學習" @click="addMyStudyList" />
+          <Button :loading="studyLoading || loading" label="測試" @click="startTest" />
         </div>
       </div>
       <div class="text-lg">介紹：{{ runtimeStore.editDict.description }}</div>
@@ -509,72 +490,35 @@ watch(() => loading.value, (val) => {
 
       <!-- 移動端標籤頁導航 -->
       <div v-if="isMob && isOperate" class="tab-navigation mb-3">
-        <div
-          class="tab-item"
-          :class="{ active: activeTab === 'list' }"
-          @click="activeTab = 'list'"
-        >
+        <div class="tab-item" :class="{ active: activeTab === 'list' }" @click="activeTab = 'list'">
           單詞列表
         </div>
-        <div
-          class="tab-item"
-          :class="{ active: activeTab === 'edit' }"
-          @click="activeTab = 'edit'"
-        >
+        <div class="tab-item" :class="{ active: activeTab === 'edit' }" @click="activeTab = 'edit'">
           {{ wordForm.id ? '編輯' : '添加' }}單詞
         </div>
       </div>
 
       <div class="flex flex-1 overflow-hidden content-area">
-        <div 
-          class="word-list-section"
-          :class="{ 'mobile-hidden': isMob && isOperate && activeTab !== 'list' }"
-        >
-          <BaseTable
-            ref="tableRef"
-            class="h-full"
-            :list="list"
-            @update:list="e => list = e"
-            :loading="loading"
-            :del="delWord"
-            :batchDel="batchDel"
-            :add="addWord"
-            @importData="importData"
-            @exportData="exportData"
-            :exportLoading="exportLoading"
-            :importLoading="importLoading"
-          >
+        <div class="word-list-section" :class="{ 'mobile-hidden': isMob && isOperate && activeTab !== 'list' }">
+          <BaseTable ref="tableRef" class="h-full" :list="list" @update:list="e => list = e" :loading="loading"
+            :del="delWord" :batchDel="batchDel" :add="addWord" @importData="importData" @exportData="exportData"
+            :exportLoading="exportLoading" :importLoading="importLoading">
             <template #default="{ item, checkbox }">
-              <WordItem
-                :showTransPop="false"
-                :item="item"
-              >
+              <WordItem :showTransPop="false" :item="item">
                 <template #prefix>
-                   <!-- 渲染 Checkbox VNode -->
-                   <VNodeRender :vnode="checkbox(item)" />
+                  <!-- 渲染 Checkbox VNode -->
+                  <VNodeRender :vnode="checkbox(item)" />
                 </template>
                 <template #suffix>
                   <div class='flex flex-col gap-1'>
-                    <Button
-                      text
-                      rounded
-                      severity="secondary"
-                      class="option-icon w-8 h-8 p-0"
-                      @click="editWord(item)"
-                      title="編輯"
-                    >
+                    <Button text rounded severity="secondary" class="option-icon w-8 h-8 p-0" @click="editWord(item)"
+                      title="編輯">
                       <template #icon>
                         <IconFluentTextEditStyle20Regular />
                       </template>
                     </Button>
-                    <Button
-                      text
-                      rounded
-                      severity="secondary"
-                      class="option-icon w-8 h-8 p-0"
-                      title="刪除"
-                      @click="confirmDelete($event, item.id)"
-                    >
+                    <Button text rounded severity="secondary" class="option-icon w-8 h-8 p-0" title="刪除"
+                      @click="confirmDelete($event, item.id)">
                       <template #icon>
                         <DeleteIcon />
                       </template>
@@ -586,21 +530,13 @@ watch(() => loading.value, (val) => {
           </BaseTable>
         </div>
 
-        <div 
-          v-if="isOperate"
-          class="edit-section flex-1 flex flex-col"
-          :class="{ 'mobile-hidden': isMob && activeTab !== 'edit' }"
-        >
+        <div v-if="isOperate" class="edit-section flex-1 flex flex-col"
+          :class="{ 'mobile-hidden': isMob && activeTab !== 'edit' }">
           <div class="common-title">
             {{ wordForm.id ? '修改' : '添加' }}單詞
           </div>
-          <Form
-            class="flex-1 overflow-auto pr-2"
-            ref="wordFormRef"
-            :rules="wordRules"
-            :model="wordForm"
-            label-width="7rem"
-          >
+          <Form class="flex-1 overflow-auto pr-2" ref="wordFormRef" :rules="wordRules" :model="wordForm"
+            label-width="7rem">
             <FormItem label="單詞" prop="word">
               <InputText v-model="wordForm.word" class="w-full" />
             </FormItem>
@@ -611,70 +547,29 @@ watch(() => loading.value, (val) => {
               <InputText v-model="wordForm.phonetic1" class="w-full" />
             </FormItem>
             <FormItem label="翻譯">
-              <Textarea
-                v-model="wordForm.trans"
-                placeholder="一行一個翻譯，前面詞性，後面內容（如n.取消）；多個翻譯請換行"
-                autoResize
-                rows="6"
-                class="w-full"
-              />
+              <Textarea v-model="wordForm.trans" placeholder="一行一個翻譯，前面詞性，後面內容（如n.取消）；多個翻譯請換行" autoResize rows="6"
+                class="w-full" />
             </FormItem>
             <FormItem label="例句">
-              <Textarea
-                v-model="wordForm.sentences"
-                placeholder="一行原文，一行譯文；多個請換兩行"
-                autoResize
-                rows="6"
-                class="w-full"
-              />
+              <Textarea v-model="wordForm.sentences" placeholder="一行原文，一行譯文；多個請換兩行" autoResize rows="6"
+                class="w-full" />
             </FormItem>
             <FormItem label="短語">
-              <Textarea
-                v-model="wordForm.phrases"
-                placeholder="一行原文，一行譯文；多個請換兩行"
-                autoResize
-                rows="6"
-                class="w-full"
-              />
+              <Textarea v-model="wordForm.phrases" placeholder="一行原文，一行譯文；多個請換兩行" autoResize rows="6" class="w-full" />
             </FormItem>
             <FormItem label="同義詞">
-              <Textarea
-                v-model="wordForm.synos"
-                placeholder="請參考已有單詞格式"
-                autoResize
-                rows="6"
-                class="w-full"
-              />
+              <Textarea v-model="wordForm.synos" placeholder="請參考已有單詞格式" autoResize rows="6" class="w-full" />
             </FormItem>
             <FormItem label="同根詞">
-              <Textarea
-                v-model="wordForm.relWords"
-                placeholder="請參考已有單詞格式"
-                autoResize
-                rows="6"
-                class="w-full"
-              />
+              <Textarea v-model="wordForm.relWords" placeholder="請參考已有單詞格式" autoResize rows="6" class="w-full" />
             </FormItem>
             <FormItem label="詞源">
-              <Textarea
-                v-model="wordForm.etymology"
-                placeholder="請參考已有單詞格式"
-                autoResize
-                rows="6"
-                class="w-full"
-              />
+              <Textarea v-model="wordForm.etymology" placeholder="請參考已有單詞格式" autoResize rows="6" class="w-full" />
             </FormItem>
           </Form>
           <div class="flex justify-center items-center gap-4">
-            <Button
-              severity="secondary"
-              label="關閉"
-              @click="closeWordForm"
-            />
-            <Button 
-              label="保存"
-              @click="onSubmitWord"
-            />
+            <Button severity="secondary" label="關閉" @click="closeWordForm" />
+            <Button label="保存" @click="onSubmitWord" />
           </div>
         </div>
       </div>
@@ -682,38 +577,23 @@ watch(() => loading.value, (val) => {
 
     <div v-else class="card mb-0 dict-detail-card">
       <div class="dict-header flex justify-between items-center relative">
-        <Button 
-          icon="i-fluent-arrow-left-24-regular" 
-          text 
-          rounded 
-          class="dict-back z-10" 
-          @click="() => {
-            if (isAdd) {
-              router.back()
-            } else {
-              isEdit = false
-            }
-          }" 
-        />
+        <Button icon="i-fluent-arrow-left-24-regular" text rounded class="dict-back z-10" @click="() => {
+          if (isAdd) {
+            router.back()
+          } else {
+            isEdit = false
+          }
+        }" />
         <div class="dict-title absolute page-title text-center w-full">
           {{ runtimeStore.editDict.id ? '修改' : '創建' }}詞典
         </div>
       </div>
       <div class="flex justify-center items-center">
-        <EditBook
-          :isAdd="isAdd"
-          :isBook="false"
-          @close="formClose"
-          @submit="() => isEdit = isAdd = false"
-        />
+        <EditBook :isAdd="isAdd" :isBook="false" @close="formClose" @submit="() => isEdit = isAdd = false" />
       </div>
     </div>
 
-    <PracticeSettingDialog
-      showLeftOption
-      v-model="showPracticeSettingDialog"
-      @ok="startPractice"
-    />
+    <PracticeSettingDialog showLeftOption v-model="showPracticeSettingDialog" @ok="startPractice" />
     <ConfirmPopup />
   </BasePage>
 </template>
