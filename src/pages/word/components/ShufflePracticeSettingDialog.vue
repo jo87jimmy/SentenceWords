@@ -34,9 +34,9 @@ watch(() => model.value, (n) => {
         <span>隨機復習：<span class="font-bold">{{ store.sdict.name }}</span></span>
         <span class="text-3xl mx-2 lh">{{ num }}</span>個詞
       </div>
-      <div class="flex gap-space">
-        <span>隨機數量</span>
-        <Slider :min="min" :step="10" show-text class="m-1" :max="store.sdict.lastLearnIndex" v-model="num" />
+      <div class="flex gap-space items-center">
+        <span class="whitespace-nowrap">隨機數量：</span>
+        <Slider :min="min" :step="10" show-text class="flex-1 px-3" :max="store.sdict.lastLearnIndex" v-model="num" />
       </div>
     </div>
   </Dialog>
@@ -46,6 +46,12 @@ watch(() => model.value, (n) => {
 .target-modal {
   width: 30rem;
   padding: 0 var(--space);
+  background: #ffffff;
+  border-radius: 0.5rem;
+
+  @media (prefers-color-scheme: dark) {
+    background: #1e1e1e;
+  }
 
   .lh {
     color: rgb(176, 116, 211)
