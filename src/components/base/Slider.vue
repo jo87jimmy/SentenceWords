@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {nextTick, onMounted, ref, watch} from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
   modelValue: number;
@@ -87,6 +87,7 @@ const onMouseDown = (e: MouseEvent) => {
 
 const onTouchStart = (e: TouchEvent) => {
   if (props.disabled) return;
+  if (!e.touches[0]) return;
   updateSliderRect();
   isDragging.value = true;
   setValueFromPosition(e.touches[0].pageX);
@@ -102,6 +103,7 @@ const onMouseMove = (e: MouseEvent) => {
 
 const onTouchMove = (e: TouchEvent) => {
   if (!isDragging.value) return;
+  if (!e.touches[0]) return;
   setValueFromPosition(e.touches[0].pageX);
 };
 
@@ -125,6 +127,13 @@ const onClickTrack = (e: MouseEvent) => {
   setValueFromPosition(e.pageX);
 };
 
+const onClickTrackTouch = (e: TouchEvent) => {
+  if (props.disabled) return;
+  if (!e.touches[0]) return;
+  updateSliderRect();
+  setValueFromPosition(e.touches[0].pageX);
+};
+
 onMounted(() => {
   nextTick(() => {
     updateSliderRect();
@@ -137,37 +146,20 @@ onMounted(() => {
 <template>
   <div class="w-full flex">
     <div class="flex-1">
-      <div
-        ref="sliderRef"
-        class="custom-slider"
-        :class="{ 'is-disabled': disabled }"
-        @mousedown="onClickTrack"
-        @touchstart.prevent="onClickTrack"
-      >
+      <div ref="sliderRef" class="custom-slider" :class="{ 'is-disabled': disabled }" @mousedown="onClickTrack"
+        @touchstart.prevent="onClickTrackTouch">
         <div class="custom-slider__track"></div>
-        <div
-          class="custom-slider__fill"
-          :style="{ width: valueToPercent(currentValue) + '%' }"
-        ></div>
-        <div
-          class="custom-slider__thumb"
-          :style="{ left: valueToPercent(currentValue) + '%' }"
-          @mousedown.stop.prevent="onMouseDown"
-          @touchstart.stop.prevent="onTouchStart"
-          tabindex="0"
-          role="slider"
-          :aria-valuemin="min"
-          :aria-valuemax="max"
-          :aria-valuenow="currentValue"
-          :aria-disabled="disabled"
-        ></div>
+        <div class="custom-slider__fill" :style="{ width: valueToPercent(currentValue) + '%' }"></div>
+        <div class="custom-slider__thumb" :style="{ left: valueToPercent(currentValue) + '%' }"
+          @mousedown.stop.prevent="onMouseDown" @touchstart.stop.prevent="onTouchStart" tabindex="0" role="slider"
+          :aria-valuemin="min" :aria-valuemax="max" :aria-valuenow="currentValue" :aria-disabled="disabled"></div>
       </div>
       <div class="text flex justify-between text-sm color-gray" v-if="showText">
         <span>{{ min }}</span>
         <span>{{ max }}</span>
       </div>
     </div>
-    <div v-if="showValue" class="w-10 pl-5 ">{{ currentValue }}{{ unit}}</div>
+    <div v-if="showValue" class="w-10 pl-5 ">{{ currentValue }}{{ unit }}</div>
   </div>
 </template>
 

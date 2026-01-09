@@ -111,7 +111,7 @@ watch(() => store.load, n => {
       });
       tour.addStep({
         id: 'step1',
-        text: '点击这里选择一本词典开始学习',
+        text: '點擊這裡選擇一本字典開始學習',
         attachTo: {
           element: '#step1',
           on: 'bottom'

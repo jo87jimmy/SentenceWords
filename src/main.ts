@@ -7,6 +7,7 @@ import router from '@/router' // 引入路由設定
 import VueVirtualScroller from 'vue-virtual-scroller' // 引入虛擬捲動庫，用於最佳化長列表效能
 // 讓捲軸正常顯示，需要在 main.ts 中引入它的 CSS 檔案。
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css' // 引入虛擬捲動庫的 CSS 樣式
+import 'shepherd.js/dist/css/shepherd.css' // 引入 Shepherd.js 的 CSS 樣式,用於 tour guide 功能
 import PrimeVue from 'primevue/config'; // 引入 PrimeVue UI 庫的設定
 import Aura from '@primeuix/themes/aura' // 引入 PrimeVue 的 Aura 主題
 import ConfirmationService from 'primevue/confirmationservice'; // 引入 PrimeVue 的確認服務

@@ -12,6 +12,7 @@
   /* 淺色模式文字顏色 */
   background-color: #ffffff;
   /* 淺色模式背景顏色 */
+  --color-second: rgb(247, 247, 247);
 
   /* 設定tooltip背景顏色 (Light) */
   --color-tooltip-bg: #242424;
@@ -41,6 +42,7 @@
   --color-tooltip-bg: #e4e4e7;
   --color-tooltip-text: #242424;
   --color-font-1: rgba(255, 255, 255, 0.87);
+  --color-second: rgb(30, 31, 34);
 }
 
 a {
@@ -99,10 +101,6 @@ button {
   /* 鼠標手勢 */
   transition: border-color 0.25s;
   /* 邊框顏色過渡效果 */
-}
-
-:root.dark button {
-  background-color: #1a1a1a;
 }
 
 button:hover {

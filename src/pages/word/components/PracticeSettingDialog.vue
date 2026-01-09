@@ -126,7 +126,7 @@ watch(() => model.value, (n) => {
           </label>
         </div>
         <div class="flex gap-2 ml-auto">
-          <Button label="取消" severity="secondary" text @click="model = false" />
+          <Button label="取消" severity="secondary" @click="model = false" />
           <Button label="確定" severity="success" @click="changePerDayStudyNumber" />
         </div>
       </div>
