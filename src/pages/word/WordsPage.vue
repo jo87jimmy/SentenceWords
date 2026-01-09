@@ -274,12 +274,12 @@ async function savePracticeSetting() {
               </div>
             </template>
 
-            <div class="flex items-center gap-4 mt-2 flex-1" v-else> <!-- 無字典時顯示 -->
-              <div class="title">請選擇一本詞典開始學習</div> <!-- 提示文字 -->
-              <Button id="step1" severity="primary" size="large" @click="router.push('/dict-list')"> <!-- 選擇詞典按鈕 -->
-                <div class="flex justify-center items-center gap-1"> <!-- 按鈕內容容器 -->
-                  <IconFluentAdd16Regular /> <!-- 圖示 -->
-                  <span>選擇詞典</span> <!-- 文字 -->
+            <div class="flex items-center gap-4 mt-2 flex-1" v-else>
+              <div class="title">請選擇一本詞典開始學習</div>
+              <Button id="step1" severity="primary" size="large" @click="router.push('/dict-list')">
+                <div class="flex justify-center items-center gap-1">
+                  <IconFluentAdd16Regular />
+                  <span>選擇詞典</span>
                 </div>
               </Button>
             </div>

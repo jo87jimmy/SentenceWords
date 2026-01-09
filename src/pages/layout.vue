@@ -30,26 +30,27 @@ function goHome() {
         <div
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200"
           @click="goHome">
-          <IconFluentHome20Regular class="text-2xl shrink-0" />
+          <IconFluentHome20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">首頁</span>
         </div>
+
         <div
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200"
           @click="router.push('/words')">
-          <IconFluentTextUnderlineDouble20Regular class="text-2xl shrink-0" />
+          <IconFluentTextUnderlineDouble20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">單字</span>
         </div>
         <div id="article"
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200"
           @click="router.push('/articles')">
           <!--          <IconPhArticleNyTimes/>-->
-          <IconFluentBookLetter20Regular class="text-2xl shrink-0" />
+          <IconFluentBookLetter20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">文章</span>
         </div>
         <div
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200 relative"
           @click="router.push('/setting')">
-          <IconFluentSettings20Regular class="text-2xl shrink-0" />
+          <IconFluentSettings20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">設定</span>
           <div class="absolute w-2 h-2 bg-red-500 rounded-full"
             :class="!settingStore.sideExpand ? 'top-1 right-1' : 'top-2 right-2'" v-if="runtimeStore.isNew"></div>
@@ -57,23 +58,23 @@ function goHome() {
         <div
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200"
           @click="router.push('/feedback')">
-          <IconFluentCommentEdit20Regular class="text-2xl shrink-0" />
+          <IconFluentCommentEdit20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">回饋</span>
         </div>
         <div
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200"
           @click="router.push('/doc')">
-          <IconFluentDocument20Regular class="text-2xl shrink-0" />
+          <IconFluentDocument20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">資料</span>
         </div>
         <div
           class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200"
           @click="router.push('/qa')">
-          <IconFluentQuestionCircle20Regular class="text-2xl shrink-0" />
+          <IconFluentQuestionCircle20Regular class="text-2xl" />
           <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">說明</span>
         </div>
         <!--        <div class="flex items-center gap-3 p-2.5 my-1 rounded-lg cursor-pointer transition-all duration-300 hover:bg-primary-500 hover:text-white dark:hover:bg-primary-400 group text-surface-700 dark:text-surface-200" @click="router.push('/user')">-->
-        <!--          <IconFluentPerson20Regular class="text-2xl shrink-0" />-->
+        <!--          <IconFluentPerson20Regular class="text-2xl" />-->
         <!--          <span v-if="settingStore.sideExpand" class="whitespace-nowrap font-medium">使用者</span>-->
         <!--        </div>-->
       </div>
