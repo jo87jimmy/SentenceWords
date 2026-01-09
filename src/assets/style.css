@@ -6,13 +6,17 @@
   font-weight: 400;
   /* 設定字體粗細 */
 
-  color-scheme: light dark;
-  /* 啟用淺色和深色模式 */
-  color: rgba(255, 255, 255, 0.87);
-  /* 設定文字顏色 */
-  background-color: #242424;
-  /* 設定tooltip背景顏色 */
+  color-scheme: light;
+  /* 預設為淺色 */
+  color: #213547;
+  /* 淺色模式文字顏色 */
+  background-color: #ffffff;
+  /* 淺色模式背景顏色 */
+
+  /* 設定tooltip背景顏色 (Light) */
   --color-tooltip-bg: #242424;
+  --color-tooltip-text: #ffffff;
+  --color-font-1: #213547;
 
   font-synthesis: none;
   /* 禁用字體合成 */
@@ -29,6 +33,16 @@
   /* aside寬度 */
 }
 
+/* Dark Mode Overrides */
+:root.dark {
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  --color-tooltip-bg: #e4e4e7;
+  --color-tooltip-text: #242424;
+  --color-font-1: rgba(255, 255, 255, 0.87);
+}
+
 a {
   font-weight: 500;
   /* 連結字體粗細 */
@@ -42,6 +56,9 @@ a:hover {
   color: #535bf2;
   /* 連結懸停顏色 */
 }
+
+
+
 
 body {
   margin: 0;
@@ -76,12 +93,16 @@ button {
   /* 按鈕字體粗細 */
   font-family: inherit;
   /* 繼承字體 */
-  background-color: #1a1a1a;
-  /* 按鈕背景色 */
+  background-color: #f9f9f9;
+  /* Light mode button bg */
   cursor: pointer;
   /* 鼠標手勢 */
   transition: border-color 0.25s;
   /* 邊框顏色過渡效果 */
+}
+
+:root.dark button {
+  background-color: #1a1a1a;
 }
 
 button:hover {
@@ -109,23 +130,4 @@ button:focus-visible {
   /* 內邊距 */
   text-align: center;
   /* 文字居中 */
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    /* 淺色模式文字顏色 */
-    background-color: #ffffff;
-    /* 淺色模式背景顏色 */
-  }
-
-  a:hover {
-    color: #747bff;
-    /* 淺色模式連結懸停顏色 */
-  }
-
-  button {
-    background-color: #f9f9f9;
-    /* 淺色模式按鈕背景色 */
-  }
 }

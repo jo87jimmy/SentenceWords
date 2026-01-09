@@ -91,8 +91,8 @@ export default defineComponent({
   z-index: 9999; 
   border-radius: .3rem; 
   padding: 0.4rem .8rem; 
-  color: var(--color-font-1); 
-  background: #242424; 
+  color: var(--color-tooltip-text); 
+  background: var(--color-tooltip-bg); 
   max-width: 22rem; 
   box-shadow: 0 0 6px 1px var(--color-tooltip-shadow); 
 }
