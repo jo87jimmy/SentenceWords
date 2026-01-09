@@ -46,12 +46,8 @@ watch(() => model.value, (n) => {
 .target-modal {
   width: 30rem;
   padding: 0 var(--space);
-  background: #ffffff;
+  background: var(--color-second);
   border-radius: 0.5rem;
-
-  @media (prefers-color-scheme: dark) {
-    background: #1e1e1e;
-  }
 
   .lh {
     color: rgb(176, 116, 211)
