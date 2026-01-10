@@ -18,6 +18,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits<{
   click: [val: { item: Article; index: number }]
   title: [val: { item: Article; index: number }]
+  play: [val: { item: Article; index: number }]
 }>()
 
 let searchKey = ref('')
@@ -108,7 +109,12 @@ defineExpose({ scrollToBottom, scrollToItem })
               <IconFluentStar16Regular v-if="!isArticleCollect(item)" />
               <IconFluentStar16Filled v-else />
             </BaseIcon>
-            <BaseIcon title="可播放音频" v-if="item.audioSrc || item.audioFileId" noBg>
+            <BaseIcon 
+              title="可播放音频" 
+              v-if="item.audioSrc || item.audioFileId" 
+              noBg 
+              @click.stop="emit('play', { item, index })"
+            >
               <IconBxVolumeFull class="opacity-100! color-gray" />
             </BaseIcon>
           </div>

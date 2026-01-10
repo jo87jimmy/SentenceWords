@@ -10,7 +10,7 @@ import { useRuntimeStore } from "@/stores/runtime.ts";
 import BaseButton from "@/components/BaseButton.vue";
 import { useRoute, useRouter } from "vue-router";
 import EditBook from "@/pages/article/components/EditBook.vue";
-import { ref,computed, onMounted } from "vue";
+import { ref,computed, onMounted, nextTick } from "vue";
 import { _dateFormat, _getDictDataByUrl, msToHourMinute, resourceWrap, total, useNav } from "@/utils";
 
 import { getDefaultArticle, getDefaultDict } from "@/types/func.ts";
@@ -38,6 +38,16 @@ const selectArticle = ref<Article>(getDefaultArticle())
 
 function handleCheckedChange(val:any) {
   selectArticle.value = val.item
+}
+
+const articleAudioRef = ref()
+
+function handlePlay(val: any) {
+  selectArticle.value = val.item
+  nextTick(() => {
+    console.log('play', articleAudioRef.value)
+    articleAudioRef.value?.play()
+  })
 }
 
 async function addMyStudyList() {
@@ -210,6 +220,7 @@ function next() {
                   class="h-full overflow-y-auto custom-scrollbar"
                   @title="handleCheckedChange"
                   @click="handleCheckedChange"
+                  @play="handlePlay"
                   :list="runtimeStore.editDict.articles"
                   :active-id="selectArticle.id">
               </ArticleList>
@@ -240,6 +251,7 @@ function next() {
                   <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-gray-50 drop-shadow-sm">{{ selectArticle.title }}</h2>
                   <div class="flex justify-center">
                     <ArticleAudio
+                        ref="articleAudioRef"
                         :article="selectArticle"
                         :autoplay="settingStore.articleAutoPlayNext"
                         @ended="next"/>
