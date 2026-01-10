@@ -142,9 +142,16 @@ function init() {
     wordIndex.value = 0
     stringIndex.value = 0
     //todo 这在直接修改不太合理
-    props.article.sections.map((v) => {
-      v.map((w) => {
-        w.words.map(s => {
+    // props.article.sections.map((v) => {
+    //   v.map((w) => {
+    //     w.words.map(s => {
+    //       s.input = ''
+    //     })
+    //   })
+    // })
+    props.article.sections.forEach((v) => {
+      v.forEach((w) => {
+        w.words.forEach(s => {
           s.input = ''
         })
       })
@@ -373,6 +380,7 @@ const next = () => {
 }
 
 function onTyping(e: KeyboardEvent) {
+  debugger
   if (!props.article.sections.length) return
   if (isTyping || isEnd.value) return;
   isTyping = true;
