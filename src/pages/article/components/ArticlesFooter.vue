@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import { computed } from "vue"
 import { usePracticeStore } from "@/stores/practice.ts";
 import { useSettingStore } from "@/stores/setting.ts";
 import { type Article, ShortcutKey } from "@/types/types.ts";
@@ -38,7 +37,7 @@ function togglePanel() {
   <div class="fixed transition-all duration-300 pointer-events-none
               bottom-[calc(0.5rem+env(safe-area-inset-bottom))] left-2 right-2 w-auto
               md:bottom-[calc(0.8rem+env(safe-area-inset-bottom))] md:left-1/2 md:-translate-x-1/2 md:w-[var(--article-toolbar-width,600px)] md:right-auto z-50">
-    <div v-tooltip="settingStore.showToolbar?'收起':'展开'"
+    <div v-tooltip="settingStore.showToolbar?'收起':'展開'"
          class="absolute -bottom-1 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-300 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 p-2 transform pointer-events-auto"
          :class="{'rotate-180': !settingStore.showToolbar, '[@media(max-width:767px)]:rotate-180': settingStore.showPanel}"
          @click="settingStore.showToolbar = !settingStore.showToolbar">
@@ -54,11 +53,11 @@ function togglePanel() {
             <div class="flex flex-1 overflow-x-auto items-center gap-4 px-2 no-scrollbar md:w-full md:justify-around md:overflow-visible">
               <div class="flex flex-col items-center min-w-max">
                 <div class="text-xs font-bold text-gray-700 dark:text-gray-300 md:text-sm">{{ currentPractice.length }}次/{{ msToMinute(total(currentPractice, 'spend')) }}</div>
-                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">记录</div>
+                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">記錄</div>
               </div>
               <div class="flex flex-col items-center min-w-max">
                 <div class="text-xs font-bold text-gray-700 dark:text-gray-300 md:text-sm">{{ Math.floor(statStore.spend / 1000 / 60) }}m</div>
-                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">时间</div>
+                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">時間</div>
               </div>
               <div class="flex flex-col items-center min-w-max">
                 <div class="text-xs font-bold text-gray-700 dark:text-gray-300 md:text-sm flex items-center gap-0.5">
@@ -67,25 +66,26 @@ function togglePanel() {
                     <IconFluentQuestionCircle20Regular class="w-3 h-3"/>
                     <template #reference>
                       <div>
-                        统计词数{{ settingStore.ignoreSimpleWord ? '不包含' : '包含' }}简单词，不包含已掌握
-                        <div>简单词可在设置 -> 练习设置 -> 简单词过滤中修改</div>
+                        統計詞數{{ settingStore.ignoreSimpleWord ? '不包含' : '包含' }}簡單詞，不包含已掌握
+                        <div>簡單詞可在設定 -> 練習設定 -> 簡單詞過濾中修改</div>
                       </div>
                     </template>
                   </Tooltip>
                 </div>
-                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">总数</div>
+                <div class="text-[10px] text-gray-400 md:text-xs text-center border-t border-gray-200 dark:border-gray-700 w-full mt-0.5 pt-0.5">總數</div>
               </div>
             </div>
 
-            <!-- Audio and Toolbar Icons -->
-            <div class="flex items-center gap-1 md:grid md:grid-cols-8 md:gap-2 md:w-full md:mt-1">
-              <ArticleAudio
+            <!-- Audio -->
+            <ArticleAudio
                 :article="props.article"
                 :autoplay="settingStore.articleAutoPlayNext"
                 @ended="settingStore.articleAutoPlayNext && emit('next')"
                 @update-speed="(speed) => emit('update-speed', speed)"
                 @update-volume="(volume) => emit('update-volume', volume)"
-              ></ArticleAudio>
+            ></ArticleAudio> 
+            <!-- and Toolbar Icons -->
+            <div class="flex justify-between gap-1 md:gap-2 md:w-full md:mt-1">
 
               <SettingDialog type="article"/>
 
@@ -102,20 +102,20 @@ function togglePanel() {
                 <IconFluentArrowBounce20Regular class="transform rotate-180"/>
               </BaseIcon>
               <BaseIcon
-                :title="`播放当前句子(${settingStore.shortcutKeyMap[ShortcutKey.PlayWordPronunciation]})`"
+                :title="`播放當前句子(${settingStore.shortcutKeyMap[ShortcutKey.PlayWordPronunciation]})`"
                 @click="emit('play')">
                 <IconFluentReplay20Regular/>
               </BaseIcon>
               <BaseIcon
                 @click="settingStore.dictation = !settingStore.dictation"
-                :title="`开关默写模式(${settingStore.shortcutKeyMap[ShortcutKey.ToggleDictation]})`"
+                :title="`開關默寫模式(${settingStore.shortcutKeyMap[ShortcutKey.ToggleDictation]})`"
               >
                 <IconFluentEyeOff16Regular v-if="settingStore.dictation"/>
                 <IconFluentEye16Regular v-else/>
               </BaseIcon>
 
               <BaseIcon
-                :title="`开关释义显示(${settingStore.shortcutKeyMap[ShortcutKey.ToggleShowTranslate]})`"
+                :title="`開關釋義顯示(${settingStore.shortcutKeyMap[ShortcutKey.ToggleShowTranslate]})`"
                 @click="settingStore.translate = !settingStore.translate">
                 <IconFluentTranslate16Regular v-if="settingStore.translate"/>
                 <IconFluentTranslateOff16Regular v-else/>

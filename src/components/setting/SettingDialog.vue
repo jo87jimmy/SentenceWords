@@ -17,22 +17,22 @@ const show = ref(false)
 </script>
 
 <template>
-  <Dialog v-model="show" title="设置" padding>
+  <Dialog v-model="show" title="設定" padding>
     <div class="setting text-lg w-200 h-[60vh] text-md flex flex-col">
       <div class="flex flex-1 overflow-hidden">
         <div class="left">
           <div class="tabs">
             <div class="tab" :class="tabIndex === 1 && 'active'" @click="tabIndex = 1" v-if="type === 'word'">
               <IconFluentTextUnderlineDouble20Regular width="20"/>
-              <span>单词设置</span>
+              <span>單詞設定</span>
             </div>
             <div class="tab" :class="tabIndex === 2 && 'active'" @click="tabIndex = 2" v-if="type === 'article'">
               <IconFluentBookLetter20Regular width="20"/>
-              <span>文章设置</span>
+              <span>文章設定</span>
             </div>
             <div class="tab" :class="tabIndex === 0 && 'active'" @click="tabIndex = 0">
               <IconFluentSettings20Regular width="20"/>
-              <span>通用设置</span>
+              <span>通用設定</span>
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@ const show = ref(false)
       </div>
     </div>
   </Dialog>
-  <BaseIcon title="设置" @click="show = true;tabIndex = props.type === 'word' ? 1 : 2">
+  <BaseIcon title="設定" @click="show = true;tabIndex = props.type === 'word' ? 1 : 2">
     <IconFluentSettings20Regular/>
   </BaseIcon>
 </template>

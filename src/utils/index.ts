@@ -9,7 +9,7 @@ import { type Dict, DictId, type DictResource, DictType } from "@/types/types.ts
 import { getDefaultDict, getDefaultWord } from "@/types/func.ts"; // 引入獲取預設字典函數
 import { nextTick } from "vue"; // 引入 Vue 的 nextTick
 import duration from "dayjs/plugin/duration"; // 引入 dayjs 的 duration 插件
-dayjs.extend(duration); // 扩展 dayjs 的功能
+dayjs.extend(duration); // 擴展 dayjs 的功能
 
 // todo 偶爾發現一個報錯，這裡 nextTick 一直不執行
 export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick 函數
@@ -46,7 +46,7 @@ export function _parseLRC(lrc: string): { start: number, end: number, text: stri
 }
 
 export function msToMinute(ms: any) {
-    return `${Math.floor(dayjs.duration(ms).asMinutes())}分钟`;
+    return `${Math.floor(dayjs.duration(ms).asMinutes())}分鐘`;
 }
 
 
@@ -89,11 +89,11 @@ export function msToHourMinute(ms: number) {
     const d = dayjs.duration(ms);
     const hours = d.hours();
     const minutes = d.minutes();
-    if (hours) return `${hours}小时${minutes}分钟`;
-    return `${minutes}分钟`;
+    if (hours) return `${hours}小時${minutes}分鐘`;
+    return `${minutes}分鐘`;
 }
 
-//随机取N个
+//隨機取N個
 export function getRandomN(arr: any[], n: number) {
     const copy = [...arr]
     for (let i = copy.length - 1; i > 0; i--) {
@@ -102,7 +102,7 @@ export function getRandomN(arr: any[], n: number) {
     }
     return copy.slice(0, n)
 }
-//数组分成N份
+//陣列分成N份
 export function splitIntoN(arr: any[], n: number) {
     const result = []
     const len = arr.length
@@ -132,14 +132,14 @@ export function reverse<T>(array: T[]): T[] {
     return array.slice().reverse();
 }
 export function shuffle<T>(array: T[]): T[] {
-    const result = array.slice(); // 复制数组，避免修改原数组
+    const result = array.slice(); // 複製陣列，避免修改原陣列
     for (let i = result.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1)); // 生成 0 ~ i 的随机索引
-        [result[i] as T, result[j] as T] = [result[j] as T, result[i] as T]; // 交换元素
+        const j = Math.floor(Math.random() * (i + 1)); // 生成 0 ~ i 的隨機索引
+        [result[i] as T, result[j] as T] = [result[j] as T, result[i] as T]; // 交換元素
     }
     return result;
 }
-//从字符串里面转换为Word格式
+//從字串裡面轉換為Word格式
 export function convertToWord(raw: any) {
     const safeString = (str: string) => (typeof str === 'string' ? str.trim() : '');
     const safeSplit = (str: string, sep: string) =>
