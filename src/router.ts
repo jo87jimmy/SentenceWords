@@ -7,6 +7,8 @@ import DictDetail from "@/pages/word/DictDetail.vue";
 import PracticeWords from "@/pages/word/PracticeWords.vue";
 import WordTest from "@/pages/word/WordTest.vue";
 
+import ArticlesPage from "@/pages/article/ArticlesPage.vue";
+
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
         path: '/', // 定義根路徑
@@ -19,6 +21,9 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
             { path: 'dict-detail', component: DictDetail },
             { path: 'practice-words/:id', component: PracticeWords },
             { path: 'word-test/:id', component: WordTest },
+
+            { path: 'articles', component: ArticlesPage },
+            { path: 'article', redirect: '/articles' },
 
         ]
     }

@@ -20,6 +20,14 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
+export function total(arr: any[], key: string) {
+    return arr.reduce((a, b) => {
+        a += b[key];
+        return a
+    }, 0);
+}
+
+
 export function jump2Feedback() {
     window.open('todo作者', '_blank');
 }
