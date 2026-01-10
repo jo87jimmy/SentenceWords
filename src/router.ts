@@ -8,6 +8,7 @@ import PracticeWords from "@/pages/word/PracticeWords.vue";
 import WordTest from "@/pages/word/WordTest.vue";
 
 import ArticlesPage from "@/pages/article/ArticlesPage.vue";
+import BookList from "@/pages/article/BookList.vue";
 
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
@@ -24,6 +25,7 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
 
             { path: 'articles', component: ArticlesPage },
             { path: 'article', redirect: '/articles' },
+            { path: 'book-list', component: BookList },
 
         ]
     }
