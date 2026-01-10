@@ -77,7 +77,7 @@ const togglePlay = async () => {
     }
   } catch (err) {
     console.error('播放失败:', err);
-    error.value = '播放失败';
+    error.value = '播放失敗';
   }
 };
 
@@ -139,8 +139,11 @@ const handleEnded = () => {
   emit('ended');
 };
 
-const handleError = () => {
-  error.value = '音频加载失败';
+const handleError = (e: Event) => {
+  const target = e.target as HTMLAudioElement;
+  if (!props.src || (target && target.error?.code === 4 && !target.currentSrc)) return;
+
+  error.value = '音頻加載失敗';
   isLoading.value = false;
 };
 
@@ -353,7 +356,7 @@ const onVolumeSectionEnter = (e: MouseEvent) => {
 // 监听属性变化
 watch(() => props.src, (newSrc) => {
   if (audioRef.value) {
-    // 重置所有状态
+    // 重置所有狀態
     isPlaying.value = false;
     isLoading.value = false;
     currentTime.value = 0;
@@ -364,8 +367,8 @@ watch(() => props.src, (newSrc) => {
       audioRef.value.src = newSrc;
       audioRef.value.load();
     } else {
-      // 如果src为空，清空音频源
-      audioRef.value.src = '';
+      // 如果src為空，清空音頻源
+      audioRef.value.removeAttribute('src');
       audioRef.value.load();
     }
   }
