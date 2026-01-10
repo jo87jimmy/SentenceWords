@@ -2,6 +2,10 @@ import http, { axiosInstance, type AxiosResponse } from "@/utils/http.ts"; // �
 import { type Dict } from "@/types/types.ts"; // 引入 Dict 字典類型定義
 import { cloneDeep } from "@/utils"; // 引入深拷貝工具函數
 
+export function setUserDictProp(params?: any, data?: any) {
+    return http<Dict>('dict/setUserDictProp', remove(data), remove(params), 'post')
+}
+
 function remove(data?: any) { // 移除不必要的數據以減少傳輸量的輔助函數
     if (data) { // 如果數據存在
         let s = cloneDeep(data) // 深拷貝數據，避免修改原物件

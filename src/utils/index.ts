@@ -20,6 +20,47 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
+export function _parseLRC(lrc: string): { start: number, end: number, text: string }[] {
+    const lines = lrc.split("\n").filter(line => line.trim() !== "");
+    const regex = /\[(\d{2}):(\d{2}\.\d{2})\](.*)/;
+    let parsed: any = [];
+
+    for (let i = 0; i < lines.length; i++) {
+        let match = lines[i]!.match(regex);
+        if (match) {
+            let start = parseFloat(match[1]!) * 60 + parseFloat(match[2]!); // 转换成秒
+            let text = match[3]!.trim();
+
+            // 计算结束时间（下一个时间戳）
+            let nextMatch = null;
+            if (i + 1 < lines.length) { // Check if lines[i + 1] exists
+                nextMatch = lines[i + 1]!.match(regex);
+            }
+            let end = nextMatch ? parseFloat(nextMatch[1]!) * 60 + parseFloat(nextMatch[2]!) : null;
+
+            parsed.push({ start, end, text });
+        }
+    }
+
+    return parsed;
+}
+
+export function msToMinute(ms: any) {
+    return `${Math.floor(dayjs.duration(ms).asMinutes())}分钟`;
+}
+
+
+export function throttle<T extends (...args: any[]) => void>(func: T, wait: number) {
+    let lastTime = 0;
+    return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+        const now = Date.now();
+        if (now - lastTime >= wait) {
+            func.apply(this, args);
+            lastTime = now;
+        }
+    };
+}
+
 export function _dateFormat(val: any, format: string = 'YYYY/MM/DD HH:mm'): string {
     if (!val) return ''
     if (String(val).length === 10) {

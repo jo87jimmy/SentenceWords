@@ -11,6 +11,8 @@ import ArticlesPage from "@/pages/article/ArticlesPage.vue";
 import BookDetail from "@/pages/article/BookDetail.vue";
 import BookList from "@/pages/article/BookList.vue";
 
+import PracticeArticles from "@/pages/article/PracticeArticles.vue";
+
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
         path: '/', // 定義根路徑
@@ -28,9 +30,10 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
             { path: 'article', redirect: '/articles' },
             { path: 'book-list', component: BookList },
             { path: 'book-detail', component: BookDetail },
-
+            { path: 'practice-articles/:id', component: PracticeArticles },
+            { path: 'study-article', redirect: '/articles' },
         ]
-    }
+    }, { path: '/batch-edit-article', component: () => import("@/pages/article/BatchEditArticlePage.vue") },
 ]
 
 

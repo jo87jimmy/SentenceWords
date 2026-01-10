@@ -1,8 +1,18 @@
 import { cloneDeep } from 'lodash-es'
-import { type Dict, DictType } from '@/types/types' // 引入 Dict 類型和枚舉
+import { type Dict, DictType, PracticeArticleWordType, type ArticleWord } from '@/types/types' // 引入 Dict 類型和枚舉
 import { shallowReactive } from 'vue' // 引入 shallowReactive，用於優化大型物件的響應式性能
 import { type Word, type Article } from "@/types/types.ts";
 import { nanoid } from "nanoid";
+
+export function getDefaultArticleWord(val: Partial<ArticleWord> = {}): ArticleWord {
+    return getDefaultWord({
+        nextSpace: true,
+        symbolPosition: '',
+        input: '',
+        type: PracticeArticleWordType.Word,
+        ...val
+    }) as ArticleWord
+}
 
 export function getDefaultWord(val: Partial<Word> = {}): Word {
     return {
