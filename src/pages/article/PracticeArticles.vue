@@ -28,15 +28,12 @@ import BaseIcon from "@/components/BaseIcon.vue";
 import Panel from "@/components/Panel.vue";
 import ArticleList from "@/components/list/ArticleList.vue";
 import EditSingleArticleModal from "@/pages/article/components/EditSingleArticleModal.vue";
-import Tooltip from "@/components/base/Tooltip.vue";
 import ConflictNotice from "@/components/ConflictNotice.vue";
 import { useRoute, useRouter } from "vue-router";
 import PracticeLayout from "@/components/PracticeLayout.vue";
-import ArticleAudio from "@/pages/article/components/ArticleAudio.vue";
 import { AppEnv, DICT_LIST, LIB_JS_URL, PracticeSaveArticleKey, TourConfig } from "@/config/env.ts";
 import { addStat, setUserDictProp } from "@/apis";
 import { useRuntimeStore } from "@/stores/runtime.ts";
-import SettingDialog from "@/components/setting/SettingDialog.vue";
 import ArticlesFooter from "@/pages/article/components/ArticlesFooter.vue";
 import { ref } from "vue";
 

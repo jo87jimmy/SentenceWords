@@ -1,6 +1,11 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
+    "lib": [
+      "ESNext", //包含最新的 ECMAScript 功能型別，如 Intl.Segmenter、Array.at() 等新 API
+      "DOM", //瀏覽器 DOM API 的型別定義，如 document、window、HTMLElement、fetch 等
+      "DOM.Iterable" //讓 DOM 集合支援迭代器，如對 NodeList 使用 for...of 或展開運算符
+    ],
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "types": [
       "vite/client", //讓 TypeScript 「讀懂」Vite 項目中一些特有的語法和功能Ex:import.meta.env，import logo from './assets/logo.png'
