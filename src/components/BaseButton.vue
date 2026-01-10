@@ -8,7 +8,7 @@ interface IProps {
   disabled?: boolean
   loading?: boolean
   size?: 'small' | 'normal' | 'large',
-  type?: 'primary' | 'link' | 'info' | 'orange'
+  type?: 'primary' | 'link' | 'info' | 'orange' | 'secondary'
 }
 
 withDefaults(defineProps<IProps>(), {
@@ -43,6 +43,9 @@ defineEmits(['click'])
 
            // Type: Primary
            type === 'primary' ? 'bg-[var(--btn-primary)] text-white hover:opacity-60' : '',
+           
+           // Type: Secondary
+           type === 'secondary' ? 'bg-gray-100 text-gray-900 border border-gray-200 hover:bg-gray-200 dark:bg-zinc-800 dark:text-gray-100 dark:border-zinc-700 dark:hover:bg-zinc-700' : '',
            
            // Type: Link
            type === 'link' ? '!bg-transparent text-white rounded-none border-b-2 border-transparent hover:border-[var(--color-font-2)] !p-0 h-auto' : '',
