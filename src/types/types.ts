@@ -70,6 +70,7 @@ export interface Statistics { // 統計數據介面
     new: number// 新學數量
     review: number// 複習數量
     wrong: number// 錯誤數量
+    title?: string // 文章標題 (文章模式下使用)
 }
 
 export interface PracticeData { // 練習數據介面
@@ -186,6 +187,7 @@ export interface Dict extends DictResource { // 字典介面，繼承自 DictRes
     statistics: Statistics[], // 統計數據
     custom: boolean,// 是否是自定義詞典
     complete: boolean,// 是否學習完成，學完了設為 true，然後 lastLearnIndex 重置
+    cover?: string, // 封面圖片
     // 後端字段
     en_name?: string // 英文名稱
     createdBy?: string // 創建者

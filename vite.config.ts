@@ -38,6 +38,11 @@ export default defineConfig({
         target: 'https://typewords.cc/dicts',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/proxy-dicts/, '')
+      },
+      '/sound': {
+        target: 'https://typewords.cc/sound',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/sound/, '')
       }
     }
   }
