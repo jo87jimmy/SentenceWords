@@ -3,7 +3,7 @@
 import { inject, type Ref, computed } from "vue"
 import { usePracticeStore } from "@/stores/practice.ts";
 import { useSettingStore } from "@/stores/setting.ts";
-import { type PracticeData, ShortcutKey } from "@/types/types.ts";
+import { type PracticeData } from "@/types/types.ts";
 import Button from "primevue/button";
 import ProgressBar from "primevue/progressbar";
 

@@ -28,15 +28,13 @@ import BaseIcon from "@/components/BaseIcon.vue";
 import Panel from "@/components/Panel.vue";
 import ArticleList from "@/components/list/ArticleList.vue";
 import EditSingleArticleModal from "@/pages/article/components/EditSingleArticleModal.vue";
-import Tooltip from "@/components/base/Tooltip.vue";
 import ConflictNotice from "@/components/ConflictNotice.vue";
 import { useRoute, useRouter } from "vue-router";
 import PracticeLayout from "@/components/PracticeLayout.vue";
-import ArticleAudio from "@/pages/article/components/ArticleAudio.vue";
 import { AppEnv, DICT_LIST, LIB_JS_URL, PracticeSaveArticleKey, TourConfig } from "@/config/env.ts";
 import { addStat, setUserDictProp } from "@/apis";
 import { useRuntimeStore } from "@/stores/runtime.ts";
-import SettingDialog from "@/components/setting/SettingDialog.vue";
+import ArticlesFooter from "@/pages/article/components/ArticlesFooter.vue";
 import { ref } from "vue";
 
 const store = useBaseStore()
@@ -45,7 +43,10 @@ const settingStore = useSettingStore()
 const statStore = usePracticeStore()
 const {toggleTheme} = useTheme()
 
-let articleData = ref({
+let articleData = ref<{
+  list: Article[],
+  article: Article
+}>({
   list: [],
   article: getDefaultArticle(),
 })
@@ -56,7 +57,7 @@ let loading = ref<boolean>(false)
 let allWrongWords = new Set()
 let editArticle = ref<Article>(getDefaultArticle())
 let audioRef = ref<HTMLAudioElement>()
-let timer = ref(0)
+let timer: any = 0
 let isFocus = true
 
 function write() {
@@ -85,8 +86,8 @@ function prev() {
 const toggleShowTranslate = () => settingStore.translate = !settingStore.translate
 const toggleDictation = () => settingStore.dictation = !settingStore.dictation
 const togglePanel = () => settingStore.showPanel = !settingStore.showPanel
-const skip = () => typingArticleRef?.nextSentence()
-const collect = () => toggleArticleCollect(articleData.article)
+const skip = () => typingArticleRef.value?.nextSentence()
+const collect = () => toggleArticleCollect(articleData.value.article)
 const shortcutKeyEdit = () => edit()
 
 function toggleConciseMode() {
@@ -95,7 +96,7 @@ function toggleConciseMode() {
 }
 
 function next() {
-  if (store.sbook.lastLearnIndex >= articleData.list.length - 1) {
+  if (store.sbook.lastLearnIndex >= articleData.value.list.length - 1) {
     store.sbook.complete = true
     store.sbook.lastLearnIndex = 0
     //todo 这里应该弹窗
@@ -108,14 +109,14 @@ const route = useRoute()
 
 async function init() {
   // console.log('load好了开始加载')
-  let dict = getDefaultDict()
+  let dict: Dict | undefined = getDefaultDict()
   let dictId = route.params.id
   if (dictId) {
     //先在自己的词典列表里面找，如果没有再在资源列表里面找
     dict = store.article.bookList.find(v => v.id == dictId)
     let r = await fetch(resourceWrap(DICT_LIST.ARTICLE.ALL))
     let book_list = await r.json()
-    if (!dict) dict = book_list.find(v => v.id === dictId) as Dict
+    if (!dict) dict = book_list.find((v:any) => v.id === dictId) as Dict
     if (dict && dict.id) {
       //如果是不是自定义词典，就请求数据
       if (!dict.custom) dict = await _getDictDataByUrl(dict, DictType.article)
@@ -124,7 +125,7 @@ async function init() {
         return Toast.warning('没有文章可学习！')
       }
       await store.changeBook(dict)
-      articleData.list = cloneDeep(store.sbook.articles)
+      articleData.value.list = cloneDeep(store.sbook.articles)
       getCurrentPractice()
       loading.value = false
     } else {
@@ -137,8 +138,10 @@ async function init() {
 
 const initAudio = () => {
   _nextTick(() => {
-    audioRef.volume = settingStore.articleSoundVolume / 100
-    audioRef.playbackRate = settingStore.articleSoundSpeed
+    if(audioRef.value) {
+        audioRef.value.volume = settingStore.articleSoundVolume / 100
+        audioRef.value.playbackRate = settingStore.articleSoundSpeed
+    }
   })
 }
 
@@ -154,11 +157,11 @@ const handleSpeedUpdate = (speed: number) => {
   })
 }
 
-watch([() => store.load, () => loading], ([a, b]) => {
+watch([() => store.load, () => loading.value], ([a, b]) => {
   if (a && b) init()
 }, {immediate: true})
 
-watch(() => articleData?.article?.id, id => {
+watch(() => articleData.value?.article?.id, id => {
   if (id) {
     _nextTick(async () => {
       const Shepherd = await loadJsLib('Shepherd', LIB_JS_URL.SHEPHERD);
@@ -180,7 +183,7 @@ watch(() => articleData?.article?.id, id => {
               settingStore.first = false
               tour.next()
               setTimeout(() => {
-                showConflictNotice = true
+                showConflictNotice.value = true
               }, 1500)
             }
           }
@@ -200,16 +203,16 @@ watch(() => settingStore.$state, (n) => {
 
 onMounted(() => {
   if (store.sbook?.articles?.length) {
-    articleData.list = cloneDeep(store.sbook.articles)
+    articleData.value.list = cloneDeep(store.sbook.articles)
     getCurrentPractice()
   } else {
-    loading = true
+    loading.value = true
   }
 
   if (route.query.guide) {
-    showConflictNotice = false
+    showConflictNotice.value = false
   } else {
-    showConflictNotice = true
+    showConflictNotice.value = true
   }
 })
 
@@ -220,14 +223,14 @@ onUnmounted(() => {
 })
 
 useStartKeyboardEventListener()
-useDisableEventListener(() => loading)
+useDisableEventListener(() => loading.value)
 
 function savePracticeData(init = true, regenerate = true) {
   let d = localStorage.getItem(PracticeSaveArticleKey.key)
   if (d) {
     try {
       let obj = JSON.parse(d)
-      if (obj.val.practiceData.id !== articleData.article.id) {
+      if (obj.val.practiceData.id !== articleData.value.article.id) {
         throw new Error()
       }
       if (init) {
@@ -259,7 +262,7 @@ function savePracticeData(init = true, regenerate = true) {
           sentenceIndex: 0,
           wordIndex: 0,
           stringIndex: 0,
-          id: articleData.article.id
+          id: articleData.value.article.id
         },
         statStoreData: statStore.$state,
       }
@@ -273,10 +276,10 @@ function setArticle(val: Article) {
   statStore.startDate = Date.now()
   statStore.spend = 0
   allWrongWords = new Set()
-  articleData.list[store.sbook.lastLearnIndex] = val
-  articleData.article = val
-  let ignoreList = [store.allIgnoreWords, store.knownWords][settingStore.ignoreSimpleWord ? 0 : 1]
-  articleData.article.sections.map((v, i) => {
+  articleData.value.list[store.sbook.lastLearnIndex] = val
+  articleData.value.article = val
+  let ignoreList = (settingStore.ignoreSimpleWord ? store.allIgnoreWords : store.knownWords) || []
+  articleData.value.article.sections.map((v) => {
     v.map((w) => {
       w.words.map(s => {
         if (!ignoreList.includes(s.word.toLowerCase()) && s.type === PracticeArticleWordType.Word) {
@@ -295,7 +298,9 @@ function setArticle(val: Article) {
     }
   }, 1000)
 
-  _nextTick(typingArticleRef?.init)
+  _nextTick(() => {
+      typingArticleRef.value?.init && typingArticleRef.value.init()
+  })
 }
 
 async function complete() {
@@ -306,8 +311,8 @@ async function complete() {
 
   //todo 有空了改成实时保存
   let data: Partial<Statistics> & { title: string, articleId: number } = {
-    articleId: articleData.article.id,
-    title: articleData.article.title,
+    articleId: articleData.value.article.id ?? 0,
+    title: articleData.value.article.title,
     spend: statStore.spend,
     startDate: statStore.startDate,
     total: statStore.total,
@@ -319,7 +324,7 @@ async function complete() {
     index: store.sbook.lastLearnIndex,
     custom: store.sbook.custom,
     complete: store.sbook.complete,
-    title: articleData.article.title,
+    title: articleData.value.article.title,
     spend: Number(statStore.spend / 1000 / 60).toFixed(1),
     s: ''
   }
@@ -348,7 +353,7 @@ async function complete() {
 
 function getCurrentPractice() {
   emitter.emit(EventKey.resetWord)
-  let currentArticle = articleData.list[store.sbook.lastLearnIndex]
+  let currentArticle = articleData.value.list[store.sbook.lastLearnIndex]
   let article = getDefaultArticle(currentArticle)
   if (article.sections.length) {
     setArticle(article)
@@ -361,7 +366,7 @@ function getCurrentPractice() {
 function saveArticle(val: Article) {
   console.log('saveArticle', val, JSON.stringify(val.lrcPosition))
   console.log('saveArticle', val.textTranslate)
-  showEditArticle = false
+  showEditArticle.value = false
   let rIndex = store.sbook.articles.findIndex(v => v.id === val.id)
   if (rIndex > -1) {
     store.sbook.articles[rIndex] = cloneDeep(val)
@@ -373,9 +378,9 @@ function saveArticle(val: Article) {
   }
 }
 
-function edit(val: Article = articleData.article) {
-  editArticle = val
-  showEditArticle = true
+function edit(val: Article = articleData.value.article) {
+  editArticle.value = val
+  showEditArticle.value = true
 }
 
 function wrong(word: Word) {
@@ -402,7 +407,7 @@ function nextWord(word: ArticleWord) {
 }
 
 async function changeArticle(val: ArticleItem) {
-  let rIndex = articleData.list.findIndex(v => v.id === val.item.id)
+  let rIndex = articleData.value.list.findIndex(v => v.id === val.item.id)
   if (rIndex > -1) {
     store.sbook.lastLearnIndex = rIndex
     getCurrentPractice()
@@ -418,7 +423,7 @@ async function changeArticle(val: ArticleItem) {
 }
 
 const handlePlayNext = (nextArticle: Article) => {
-  let rIndex = articleData.list.findIndex(v => v.id === nextArticle.id)
+  let rIndex = articleData.value.list.findIndex(v => v.id === nextArticle.id)
   if (rIndex > -1) {
     store.sbook.lastLearnIndex = rIndex
     getCurrentPractice()
@@ -431,21 +436,21 @@ const {
 } = useArticleOptions()
 
 function play() {
-  typingArticleRef?.play()
+  typingArticleRef.value?.play()
 }
 
 function show() {
-  typingArticleRef?.showSentence()
+  typingArticleRef.value?.showSentence()
 }
 
 function onKeyUp() {
-  typingArticleRef?.hideSentence()
+  typingArticleRef.value?.hideSentence()
 }
 
 async function onKeyDown(e: KeyboardEvent) {
   switch (e.key) {
     case 'Backspace':
-      typingArticleRef.del()
+      typingArticleRef.value?.del()
       break
   }
 }
@@ -486,17 +491,17 @@ onUnmounted(() => {
 
 const {playSentenceAudio} = usePlaySentenceAudio()
 
-function play2(e) {
+function play2(e: any) {
   _nextTick(() => {
     if (settingStore.articleSound || e.handle) {
-      playSentenceAudio(e.sentence, audioRef)
+      playSentenceAudio(e.sentence, audioRef.value)
     }
   })
 }
 
 const currentPractice = computed(() => {
   if (store.sbook.statistics?.length) {
-    return store.sbook.statistics.filter((v: any) => v.title === articleData.article.title)
+    return store.sbook.statistics.filter((v: any) => v.title === articleData.value.article.title)
   }
   return []
 })
@@ -522,9 +527,15 @@ provide('currentPractice', currentPractice)
     <template v-slot:panel>
       <Panel :style="{width:'var(--article-panel-width)'}">
         <template v-slot:title>
+          <div class="center gap-space">
             <span>{{
                 store.sbook.name
               }} ({{ store.sbook.lastLearnIndex + 1 }} / {{ articleData.list.length }})</span>
+
+            <BaseIcon @click="next" :title="`下一組(${settingStore.shortcutKeyMap[ShortcutKey.NextChapter]})`">
+              <IconFluentArrowRight16Regular class="arrow" width="22" />
+            </BaseIcon>
+          </div>
         </template>
         <div class="panel-page-item pl-4">
           <ArticleList
@@ -539,96 +550,17 @@ provide('currentPractice', currentPractice)
       </Panel>
     </template>
     <template v-slot:footer>
-      <div class="footer">
-        <Tooltip :title="settingStore.showToolbar?'收起':'展开'">
-          <IconFluentChevronLeft20Filled
-            @click="settingStore.showToolbar = !settingStore.showToolbar"
-            class="arrow"
-            :class="!settingStore.showToolbar && 'down'"
-            color="#999"/>
-        </Tooltip>
-        <div class="bottom">
-          <div class="flex justify-between items-center gap-2">
-            <div class="stat">
-              <div class="row">
-                <div class="num">{{ currentPractice.length }}次/{{ msToMinute(total(currentPractice, 'spend')) }}</div>
-                <div class="line"></div>
-                <div class="name">记录</div>
-              </div>
-              <div class="row">
-                <div class="num">{{ Math.floor(statStore.spend / 1000 / 60) }}分钟</div>
-                <div class="line"></div>
-                <div class="name">时间</div>
-              </div>
-              <div class="row">
-                <div class="num center gap-1">
-                  {{ statStore.total }}
-                  <Tooltip>
-                    <IconFluentQuestionCircle20Regular width="18"/>
-                    <template #reference>
-                      <div>
-                        统计词数{{ settingStore.ignoreSimpleWord ? '不包含' : '包含' }}简单词，不包含已掌握
-                        <div>简单词可在设置 -> 练习设置 -> 简单词过滤中修改</div>
-                      </div>
-                    </template>
-                  </Tooltip>
-                </div>
-                <div class="line"></div>
-                <div class="name">单词总数</div>
-              </div>
-            </div>
-            <ArticleAudio
-              ref="audioRef"
-              :article="articleData.article"
-              :autoplay="settingStore.articleAutoPlayNext"
-              @ended="settingStore.articleAutoPlayNext && next()"
-              @update-speed="handleSpeedUpdate"
-              @update-volume="handleVolumeUpdate"
-            ></ArticleAudio>
-            <div class="flex flex-col items-center justify-center gap-1">
-              <div class="flex gap-2 center">
-                <SettingDialog type="article"/>
-
-                <BaseIcon
-                  :title="`下一句(${settingStore.shortcutKeyMap[ShortcutKey.Next]})`"
-                  @click="skip">
-                  <IconFluentArrowBounce20Regular class="transform-rotate-180"/>
-                </BaseIcon>
-                <BaseIcon
-                  :title="`播放当前句子(${settingStore.shortcutKeyMap[ShortcutKey.PlayWordPronunciation]})`"
-                  @click="play">
-                  <IconFluentReplay20Regular/>
-                </BaseIcon>
-                <BaseIcon
-                  @click="settingStore.dictation = !settingStore.dictation"
-                  :title="`开关默写模式(${settingStore.shortcutKeyMap[ShortcutKey.ToggleDictation]})`"
-                >
-                  <IconFluentEyeOff16Regular v-if="settingStore.dictation"/>
-                  <IconFluentEye16Regular v-else/>
-                </BaseIcon>
-
-                <BaseIcon
-                  :title="`开关释义显示(${settingStore.shortcutKeyMap[ShortcutKey.ToggleShowTranslate]})`"
-                  @click="settingStore.translate = !settingStore.translate">
-                  <IconFluentTranslate16Regular v-if="settingStore.translate"/>
-                  <IconFluentTranslateOff16Regular v-else/>
-                </BaseIcon>
-
-                <!--              <BaseIcon-->
-                <!--                  :title="`编辑(${settingStore.shortcutKeyMap[ShortcutKey.EditArticle]})`"-->
-                <!--                  icon="tabler:edit"-->
-                <!--                  @click="emitter.emit(ShortcutKey.EditArticle)"-->
-                <!--              />-->
-                <BaseIcon
-                  @click="settingStore.showPanel = !settingStore.showPanel"
-                  :title="`面板(${settingStore.shortcutKeyMap[ShortcutKey.TogglePanel]})`">
-                  <IconFluentTextListAbcUppercaseLtr20Regular/>
-                </BaseIcon>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ArticlesFooter
+        :article="articleData.article"
+        :is-collect="isArticleCollect(articleData.article)"
+        :current-practice="currentPractice"
+        @collect="collect"
+        @skip="skip"
+        @play="play"
+        @next="next"
+        @update-speed="handleSpeedUpdate"
+        @update-volume="handleVolumeUpdate"
+      />
     </template>
   </PracticeLayout>
 
@@ -642,65 +574,6 @@ provide('currentPractice', currentPractice)
 </template>
 
 <style scoped lang="scss">
-
-.footer {
-  width: var(--article-toolbar-width);
-
-  .bottom {
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    border-radius: .6rem;
-    background: var(--color-second);
-    padding: .5rem var(--space);
-    z-index: 2;
-    border: 1px solid var(--color-item-border);
-    box-shadow: var(--shadow);
-
-    .stat {
-      margin-top: .5rem;
-      display: flex;
-      justify-content: space-around;
-      gap: var(--stat-gap);
-
-      .row {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: .3rem;
-        color: gray;
-
-        .num, .name {
-          word-break: keep-all;
-          padding: 0 .4rem;
-        }
-
-        .line {
-          height: 1px;
-          width: 100%;
-          background: var(--color-sub-gray);
-        }
-      }
-    }
-  }
-
-  .arrow {
-    position: absolute;
-    top: -40%;
-    left: 50%;
-    cursor: pointer;
-    transition: all .5s;
-    transform: rotate(-90deg);
-    padding: .5rem;
-    font-size: 1.2rem;
-
-    &.down {
-      top: -70%;
-      transform: rotate(90deg);
-    }
-  }
-}
-
 // 移动端适配
 @media (max-width: 768px) {
   // 优化练习区域布局
@@ -740,59 +613,6 @@ provide('currentPractice', currentPractice)
 
     .article-content {
       margin-top: 2rem; // 为固定标题留出空间
-    }
-  }
-
-  .footer {
-    width: 100%;
-
-    .bottom {
-      padding: 0.3rem 0.5rem 0.5rem 0.5rem;
-      border-radius: 0.4rem;
-
-      .stat {
-        margin-top: 0.3rem;
-        gap: 0.2rem;
-        flex-direction: row;
-        overflow-x: auto;
-
-        .row {
-          min-width: 3.5rem;
-          gap: 0.2rem;
-
-          .num {
-            font-size: 0.8rem;
-            font-weight: bold;
-          }
-
-          .name {
-            font-size: 0.7rem;
-          }
-        }
-      }
-
-      .flex.flex-col.items-center.justify-center.gap-1 {
-        .flex.gap-2.center {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 0.4rem;
-
-          .base-icon {
-            padding: 0.3rem;
-            font-size: 1rem;
-            min-height: 44px;
-            min-width: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-        }
-      }
-    }
-
-    .arrow {
-      font-size: 1rem;
-      padding: 0.3rem;
     }
   }
 }
