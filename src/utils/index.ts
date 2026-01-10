@@ -20,6 +20,15 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
+export function _dateFormat(val: any, format: string = 'YYYY/MM/DD HH:mm'): string {
+    if (!val) return ''
+    if (String(val).length === 10) {
+        val = val * 1000
+    }
+    const d = new Date(Number(val))
+    return dayjs(d).format(format)
+}
+
 export function total(arr: any[], key: string) {
     return arr.reduce((a, b) => {
         a += b[key];

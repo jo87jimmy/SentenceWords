@@ -55,11 +55,11 @@ const searchList = computed<any[]>(() => {
       <div class="flex items-center relative gap-2">
         <BackIcon class="z-2" @Click='router.back'/>
         <div class="flex flex-1 gap-4" v-if="showSearchInput">
-          <BaseInput prefix-icon placeholder="请输入书籍名称/缩写/类别" v-model="searchKey" class="flex-1" autofocus clearable/>
+          <BaseInput prefix-icon placeholder="請輸入書籍名稱/縮寫/類別" v-model="searchKey" class="flex-1" autofocus clearable/>
           <BaseButton @click="showSearchInput = false, searchKey = ''">取消</BaseButton>
         </div>
         <div class="py-1 flex flex-1 justify-end" v-else>
-          <span class="page-title absolute w-full center">书籍列表</span>
+          <span class="page-title absolute w-full center">書籍列表</span>
           <BaseIcon @click="showSearchInput = true"
                     class="z-1">
             <IconFluentSearch24Regular/>
@@ -73,7 +73,7 @@ const searchList = computed<any[]>(() => {
             :list="searchList"
             quantifier="篇"
             :select-id="'-1'"/>
-        <Empty v-else text="没有相关书籍"/>
+        <Empty v-else text="沒有相關書籍"/>
       </div>
       <div class="w-full mt-2" v-else>
         <DictList

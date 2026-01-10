@@ -12,6 +12,8 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ArticleList: typeof import('./src/components/list/ArticleList.vue')['default']
+    Audio: typeof import('./src/components/base/Audio.vue')['default']
     BackIcon: typeof import('./src/components/BackIcon.vue')['default']
     BaseButton: typeof import('./src/components/BaseButton.vue')['default']
     BaseIcon: typeof import('./src/components/BaseIcon.vue')['default']
@@ -36,6 +38,7 @@ declare module 'vue' {
     IconBxVolume: typeof import('~icons/bx/volume')['default']
     IconBxVolumeFull: typeof import('~icons/bx/volume-full')['default']
     IconBxVolumeLow: typeof import('~icons/bx/volume-low')['default']
+    IconBxVolumeMute: typeof import('~icons/bx/volume-mute')['default']
     IconEosIconsLoading: typeof import('~icons/eos-icons/loading')['default']
     IconFluentAdd16Regular: typeof import('~icons/fluent/add16-regular')['default']
     IconFluentAdd20Regular: typeof import('~icons/fluent/add20-regular')['default']
@@ -139,6 +142,8 @@ declare module 'vue' {
 
 // For TSX support
 declare global {
+  const ArticleList: typeof import('./src/components/list/ArticleList.vue')['default']
+  const Audio: typeof import('./src/components/base/Audio.vue')['default']
   const BackIcon: typeof import('./src/components/BackIcon.vue')['default']
   const BaseButton: typeof import('./src/components/BaseButton.vue')['default']
   const BaseIcon: typeof import('./src/components/BaseIcon.vue')['default']
@@ -163,6 +168,7 @@ declare global {
   const IconBxVolume: typeof import('~icons/bx/volume')['default']
   const IconBxVolumeFull: typeof import('~icons/bx/volume-full')['default']
   const IconBxVolumeLow: typeof import('~icons/bx/volume-low')['default']
+  const IconBxVolumeMute: typeof import('~icons/bx/volume-mute')['default']
   const IconEosIconsLoading: typeof import('~icons/eos-icons/loading')['default']
   const IconFluentAdd16Regular: typeof import('~icons/fluent/add16-regular')['default']
   const IconFluentAdd20Regular: typeof import('~icons/fluent/add20-regular')['default']

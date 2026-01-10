@@ -1,7 +1,7 @@
-// import { cloneDeep } from '@/utils/index' // 引入深拷貝函數 (暫時註釋)
+import { cloneDeep } from 'lodash-es'
 import { type Dict, DictType } from '@/types/types' // 引入 Dict 類型和枚舉
 import { shallowReactive } from 'vue' // 引入 shallowReactive，用於優化大型物件的響應式性能
-import { type Word } from "@/types/types.ts";
+import { type Word, type Article } from "@/types/types.ts";
 import { nanoid } from "nanoid";
 
 export function getDefaultWord(val: Partial<Word> = {}): Word {
@@ -53,3 +53,22 @@ export function getDefaultDict(val: Partial<Dict> = {}): Dict { // 獲取預設�
 
     }
 }
+
+export function getDefaultArticle(val: Partial<Article> = {}): Article {
+    return {
+        id: undefined,
+        title: '',
+        titleTranslate: '',
+        text: '',
+        textTranslate: '',
+        newWords: [],
+        sections: [],
+        audioSrc: '',
+        audioFileId: '',
+        lrcPosition: [],
+        questions: [],
+        nameList: [],
+        ...cloneDeep(val)
+    }
+}
+
