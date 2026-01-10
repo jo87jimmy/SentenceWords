@@ -1,25 +1,24 @@
 <script setup lang="ts">
-import { inject, onMounted, onUnmounted, watch, ref, computed } from "vue"
-import type { Article, ArticleWord, Sentence, Word } from "@/types/types";
-import { PracticeArticleWordType, ShortcutKey } from "@/types/types";
-import { useBaseStore } from "@/stores/base";
-import { useSettingStore } from "@/stores/setting";
-import { usePlayBeep, usePlayKeyboardAudio, usePlayWordAudio } from "@/hooks/sound";
-import { emitter, EventKey, useEvents } from "@/utils/eventBus";
-import { _dateFormat, _nextTick, isMobile, msToHourMinute, total } from "@/utils";
+import {ref,computed,inject, onMounted, onUnmounted, watch} from "vue"
+import {type Article, type ArticleWord, PracticeArticleWordType, type Sentence, ShortcutKey, type Word} from "@/types/types.ts";
+import {useBaseStore} from "@/stores/base.ts";
+import {useSettingStore} from "@/stores/setting.ts";
+import {usePlayBeep, usePlayKeyboardAudio, usePlayWordAudio} from "@/hooks/sound.ts";
+import {emitter, EventKey, useEvents} from "@/utils/eventBus.ts";
+import {_dateFormat, _nextTick, isMobile, msToHourMinute, total} from "@/utils";
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
 import BaseButton from "@/components/BaseButton.vue";
 import QuestionForm from "@/pages/article/components/QuestionForm.vue";
-import { getDefaultArticle, getDefaultWord } from "@/types/func";
-import Toast from '@/components/base/toast/Toast'
+import {getDefaultArticle, getDefaultWord} from "@/types/func.ts";
+import Toast from '@/components/base/toast/Toast.ts'
 import TypingWord from "@/pages/article/components/TypingWord.vue";
 import Space from "@/pages/article/components/Space.vue";
-import { useWordOptions } from "@/hooks/dict";
+import {useWordOptions} from "@/hooks/dict.ts";
 import nlp from "compromise/three";
-import { nanoid } from "nanoid";
-import { usePracticeStore } from "@/stores/practice";
-import { PracticeSaveArticleKey } from "@/config/env";
+import {nanoid} from "nanoid";
+import {usePracticeStore} from "@/stores/practice.ts";
+import {PracticeSaveArticleKey} from "@/config/env.ts";
 
 interface IProps {
   article: Article,
@@ -50,30 +49,30 @@ const emit = defineEmits<{
   replay: [],
 }>()
 
-const typeArticleRef = ref<HTMLInputElement>()
-const mobileInputRef = ref<HTMLInputElement>()
-const articleWrapperRef = ref<HTMLInputElement | null>(null)
-const sectionIndex = ref(0)
-const sentenceIndex = ref(0)
-const wordIndex = ref(0)
-const stringIndex = ref(0)
-const input = ref('')
-const wrong = ref('')
-//是否是輸入空格
-const isSpace = ref(false)
-const isEnd = ref(false)
-const hoverIndex = ref({
+let typeArticleRef = ref<HTMLDivElement | null>(null)
+let mobileInputRef = ref<HTMLInputElement | null>(null)
+let articleWrapperRef = ref<HTMLDivElement | null>(null)
+let sectionIndex = ref(0)
+let sentenceIndex = ref(0)
+let wordIndex = ref(0)
+let stringIndex = ref(0)
+let input = ref('')
+let wrong = ref('')
+//是否是输入空格
+let isSpace = ref(false)
+let isEnd = ref(false)
+let hoverIndex = ref({
   sectionIndex: -1,
   sentenceIndex: -1,
   wordIndex: -1,
 })
-const cursor = ref({
+let cursor = ref({
   top: 0,
   left: 0,
 })
 
 const currentIndex = computed(() => {
-  return `${sectionIndex.value}${sentenceIndex.value}${wordIndex.value}`
+  return `${sectionIndex}${sentenceIndex}${wordIndex}`
 })
 
 const playBeep = usePlayBeep()
@@ -89,7 +88,7 @@ const settingStore = useSettingStore()
 const statStore = usePracticeStore()
 const isMob = isMobile()
 
-watch([sectionIndex, sentenceIndex, wordIndex, stringIndex], ([a, b, c,]) => {
+watch([() => sectionIndex.value, () => sentenceIndex.value, () => wordIndex.value, () => stringIndex.value], ([a, b, c,]) => {
   localStorage.setItem(PracticeSaveArticleKey.key, JSON.stringify({
     version: PracticeSaveArticleKey.version,
     val: {
@@ -112,13 +111,13 @@ watch(() => settingStore.translate, () => {
   checkTranslateLocation().then(() => checkCursorPosition())
 })
 
-watch(isEnd, n => {
+watch(() => isEnd, n => {
   if (n) {
     _nextTick(() => {
-      typeArticleRef.value?.scrollTo({ top: typeArticleRef.value.scrollHeight, behavior: "smooth" })
+      typeArticleRef.value?.scrollTo({top: typeArticleRef.value.scrollHeight, behavior: "smooth"})
     })
   } else {
-    typeArticleRef.value?.scrollTo({ top: 0, behavior: "smooth" })
+    typeArticleRef.value?.scrollTo({top: 0, behavior: "smooth"})
   }
 })
 
@@ -142,7 +141,7 @@ function init() {
     sentenceIndex.value = 0
     wordIndex.value = 0
     stringIndex.value = 0
-    //todo 這在直接修改不太合理
+    //todo 这在直接修改不太合理
     props.article.sections.map((v) => {
       v.map((w) => {
         w.words.map(s => {
@@ -150,13 +149,12 @@ function init() {
         })
       })
     })
-    typeArticleRef.value?.scrollTo({ top: 0, behavior: "smooth" })
+    typeArticleRef.value?.scrollTo({top: 0, behavior: "smooth"})
   }
   _nextTick(() => {
-    const section = props.article.sections[sectionIndex.value]
-    const sentence = section?.[sentenceIndex.value]
+    const sentence = props.article.sections[sectionIndex.value]?.[sentenceIndex.value]
     if (sentence) {
-      emit('play', { sentence, handle: false })
+      emit('play', {sentence, handle: false})
     }
     if (isNameWord()) next()
   })
@@ -175,22 +173,20 @@ function checkCursorPosition(a = sectionIndex.value, b = sentenceIndex.value, c 
       if (end) {
         // 获取 articleWrapper 的位置
         const articleRect = articleWrapperRef.value?.getBoundingClientRect();
+        if (!articleRect) return;
         const endRect = end.getBoundingClientRect();
-        if (articleRect && typeArticleRef.value) {
-           //如果当前输入位置大于屏幕的0.7高度，就滚动屏幕的1/3
-            if (endRect.y > window.innerHeight * 0.7) {
-              typeArticleRef.value.scrollTo({ top: typeArticleRef.value.scrollTop + window.innerHeight * 0.3, behavior: "smooth" })
-            }
-            // 计算相对位置
-            cursor.value = {
-              top: endRect.top - articleRect.top,
-              left: endRect.left - articleRect.left,
-            };
+        //如果当前输入位置大于屏幕的0.7高度，就滚动屏幕的1/3
+        if (endRect.y > window.innerHeight * 0.7) {
+          typeArticleRef.value?.scrollTo({top: (typeArticleRef.value?.scrollTop ?? 0) + window.innerHeight * 0.3, behavior: "smooth"})
         }
-       
+        // 计算相对位置
+        cursor.value = {
+          top: endRect.top - articleRect.top,
+          left: endRect.left - articleRect.left,
+        };
       }
     }
-  }, )
+  },)
 }
 
 function checkTranslateLocation() {
@@ -203,27 +199,24 @@ function checkTranslateLocation() {
     _nextTick(() => {
       let articleRect = articleWrapperRef.value?.getBoundingClientRect()
       if (!articleRect) {
-         resolve()
-         return
+        resolve()
+        return
       }
       props.article.sections.map((v, i) => {
         v.map((w, j) => {
           let location = i + '-' + j
           let wordClassName = `.word${location}`
           let word = document.querySelector(wordClassName)
-          if(word){
-             let wordRect = word.getBoundingClientRect()
-             let translateClassName = `.translate${location}`
-             let translate: HTMLDivElement | null = document.querySelector(translateClassName)
+          if (!word) return
+          let wordRect = word.getBoundingClientRect()
+          let translateClassName = `.translate${location}`
+          let translate: HTMLDivElement | null = document.querySelector(translateClassName)
+          if (!translate) return
 
-            if (translate && articleRect) {
-                 translate.style.opacity = '1'
-                 translate.style.top = wordRect.top - articleRect.top + 24 + 'px'
-                 // @ts-ignore
-                if(translate.firstChild) (translate.firstChild as HTMLElement).style.width = wordRect.left - articleRect.left + 'px'
-            }
-          }
-         
+          translate.style.opacity = '1'
+          translate.style.top = wordRect.top - articleRect.top + 24 + 'px'
+          // @ts-ignore
+          translate.firstChild.style.width = wordRect.left - articleRect.left + 'px'
           // console.log(word, wordRect.left - articleRect.left)
           // console.log('word-wordRect', wordRect)
         })
@@ -280,16 +273,17 @@ const namePatterns = computed(() => {
 })
 
 const isNameWord = () => {
-  const currentSection = props.article.sections[sectionIndex.value]
+  let currentSection = props.article.sections[sectionIndex.value]
   if (!currentSection) return false
-  const currentSentence = currentSection[sentenceIndex.value]
+  let currentSentence = currentSection[sentenceIndex.value]
   if (!currentSentence) return false
-  const w: ArticleWord | undefined = currentSentence.words[wordIndex.value]
-  return w?.type === PracticeArticleWordType.Word && namePatterns.value.length > 0 && namePatterns.value.includes(normalize(w.word))
+  let w = currentSentence.words[wordIndex.value]
+  if (!w) return false
+  return w.type === PracticeArticleWordType.Word && namePatterns.value.length > 0 && namePatterns.value.includes(normalize(w.word))
 }
 
 let isTyping = false
-//專用鎖，因為這個方法父級要調用
+//专用锁，因为这个方法父级要调用
 let lock = false
 
 function nextSentence() {
@@ -306,12 +300,12 @@ function nextSentence() {
     lock = false
     return
   }
-  //這裡把未輸入的單詞補全，因為刪除時會用到input
+  //这里把未输入的单词补全，因为删除时会用到input
   currentSentence.words.forEach((word) => {
     word.input = word.input + word.word.slice(word.input?.length ?? 0)
   })
 
-  //todo 記得把略過的單詞加上統計裡面去
+  //todo 计得把略过的单词加上统计里面去
   // if (!store.allIgnoreWords.includes(currentWord.word.toLowerCase()) && currentWord.type === PracticeArticleWordType.Word) {
   //   statisticsStore.inputNumber++
   // }
@@ -329,16 +323,16 @@ function nextSentence() {
       emit('complete')
     } else {
       if (isNameWord()) next()
-      const nextSent = props.article.sections[sectionIndex.value]?.[0]
-      if (nextSent) {
-        emit('play', { sentence: nextSent, handle: false })
+      const sentence = props.article.sections[sectionIndex.value]?.[0]
+      if (sentence) {
+        emit('play', {sentence, handle: false})
       }
     }
   } else {
     if (isNameWord()) next()
-    const nextSent = currentSection?.[sentenceIndex.value]
-    if (nextSent) {
-      emit('play', { sentence: nextSent, handle: false })
+    const sentence = currentSection?.[sentenceIndex.value]
+    if (sentence) {
+      emit('play', {sentence, handle: false})
     }
   }
   lock = false
@@ -354,18 +348,18 @@ const next = () => {
   if (!currentSection) return
   let currentSentence = currentSection[sentenceIndex.value]
   if (!currentSentence) return
-  let currentWord: ArticleWord | undefined = currentSentence.words[wordIndex.value]
+  let currentWord = currentSentence.words[wordIndex.value]
   if (!currentWord) return
 
-  // 檢查下一個單詞是否存在
+  // 检查下一个单词是否存在
   if (wordIndex.value + 1 < currentSentence.words.length) {
     wordIndex.value++;
     currentWord = currentSentence.words[wordIndex.value]
-    if (!currentWord) return
-    //這裡把未輸入的單詞補全，因為刪除時會用到input
+    //这里把未输入的单词补全，因为删除时会用到input
     currentSentence.words.slice(0, wordIndex.value).forEach((word, i) => {
       word.input = word.input + word.word.slice(word.input?.length ?? 0)
     })
+    if (!currentWord) return
     if ([PracticeArticleWordType.Symbol, PracticeArticleWordType.Number].includes(currentWord.type) && settingStore.ignoreSymbol) {
       next()
     } else if (isNameWord()) {
@@ -388,7 +382,7 @@ function onTyping(e: KeyboardEvent) {
     if (!currentSection) return
     let currentSentence = currentSection[sentenceIndex.value]
     if (!currentSentence) return
-    let currentWord: ArticleWord | undefined = currentSentence.words[wordIndex.value]
+    let currentWord = currentSentence.words[wordIndex.value]
     if (!currentWord) return
     wrong.value = ''
 
@@ -396,7 +390,7 @@ function onTyping(e: KeyboardEvent) {
       if (e.code === 'Space') {
         next()
       } else {
-        // 如果在第一個單詞的最後一位上，不按空格的直接輸入下一個字母的話
+        // 如果在第一个单词的最后一位上， 不按空格的直接输入下一个字母的话
         next()
         isTyping = false
         onTyping(e)
@@ -418,12 +412,11 @@ function onTyping(e: KeyboardEvent) {
       let letter = e.key
       let key = currentWord.word[stringIndex.value]
       // console.log('key', key,)
+      if (!key) return
 
       let isRight = false
       if (settingStore.ignoreCase) {
-        if (key && letter) {
-          isRight = key.toLowerCase() === letter.toLowerCase()
-        }
+        isRight = key.toLowerCase() === letter.toLowerCase()
       } else {
         isRight = key === letter
       }
@@ -437,7 +430,7 @@ function onTyping(e: KeyboardEvent) {
       input.value += letter
       currentWord.input = input.value
       stringIndex.value++
-      //單詞輸入完畢
+      //单词输入完毕
       if (!currentWord.word[stringIndex.value]) {
         input.value = ''
         if (currentWord.nextSpace) {
@@ -459,10 +452,9 @@ function onTyping(e: KeyboardEvent) {
 }
 
 function play() {
-  const currentSection = props.article.sections[sectionIndex.value]
-  const sentence = currentSection?.[sentenceIndex.value]
+  const sentence = props.article.sections[sectionIndex.value]?.[sentenceIndex.value]
   if (sentence) {
-    emit('play', { sentence, handle: true })
+    emit('play', {sentence, handle: true})
   }
 }
 
@@ -501,7 +493,7 @@ function del() {
     let currentSentence = currentSection[sentenceIndex.value]
     if (!currentSentence) return
     if (endWord) wordIndex.value = currentSentence.words.length - 1
-    let currentWord: ArticleWord | undefined = currentSentence.words[wordIndex.value]
+    let currentWord = currentSentence.words[wordIndex.value]
     if (!currentWord) return
     if (endString) {
       checkTranslateLocation()
@@ -519,17 +511,17 @@ function del() {
 }
 
 function showSentence(i1: number = sectionIndex.value, i2: number = sentenceIndex.value, i3: number = wordIndex.value) {
-  hoverIndex.value = { sectionIndex: i1, sentenceIndex: i2, wordIndex: i3 }
+  hoverIndex.value = {sectionIndex: i1, sentenceIndex: i2, wordIndex: i3}
 }
 
 function hideSentence() {
-  hoverIndex.value = { sectionIndex: -1, sentenceIndex: -1, wordIndex: -1 }
+  hoverIndex.value = {sectionIndex: -1, sentenceIndex: -1, wordIndex: -1}
 }
 
 function jump(i: number, j: number, w: number, sentence?: Sentence) {
   sectionIndex.value = i
   sentenceIndex.value = j
-  //todo 這裡有可能是符號，要處理下
+  //todo 这里有可能是符号，要处理下
   wordIndex.value = w
   stringIndex.value = 0
   input.value = wrong.value = ''
@@ -546,12 +538,12 @@ function jump(i: number, j: number, w: number, sentence?: Sentence) {
     })
   })
   if (sentence) {
-    emit('play', { sentence: sentence, handle: false })
+    emit('play', {sentence: sentence, handle: false})
   }
 }
 
 function onContextMenu(e: MouseEvent, sentence: Sentence, i: number, j: number, w: number) {
-  const selectedText = window.getSelection()?.toString();
+  const selectedText = window.getSelection()?.toString() ?? '';
   console.log(selectedText);
   //prevent the browser's default menu
   e.preventDefault();
@@ -561,51 +553,59 @@ function onContextMenu(e: MouseEvent, sentence: Sentence, i: number, j: number, 
     y: e.y,
     items: [
       {
-        label: "收藏單詞",
+        label: "收藏单词",
         onClick: () => {
-          let word = props.article.sections[i]?.[j]?.words[w]
+          const section = props.article.sections[i]
+          if (!section) return
+          const sentence = section[j]
+          if (!sentence) return
+          let word = sentence.words[w]
           if (!word) return
           let text = word.word
           let doc = nlp(text)
-          // 優先判斷是不是動詞
+          // 优先判断是不是动词
           if (doc.verbs().found) {
             text = doc.verbs().toInfinitive().text()
           }
-          // 如果是名詞（複數 → 單數）
+          // 如果是名词（复数 → 单数）
           if (doc.nouns().found) {
             text = doc.nouns().toSingular().text()
           }
           if (!text.length) text = word.word
           console.log('text', text)
-          toggleWordCollect(getDefaultWord({ word: text, id: nanoid() }))
+          toggleWordCollect(getDefaultWord({word: text, id: nanoid()}))
           Toast.success(text + ' 添加成功')
         }
       },
       {
-        label: "複製",
+        label: "复制",
         children: [
           {
-            label: "複製句子",
+            label: "复制句子",
             onClick: () => {
               navigator.clipboard.writeText(sentence.text).then(r => {
-                Toast.success('已複製')
+                Toast.success('已复制')
               })
             }
           },
           {
-            label: "複製單詞",
+            label: "复制单词",
             onClick: () => {
-              let word = props.article.sections[i]?.[j]?.words[w]
+              const section = props.article.sections[i]
+              if (!section) return
+              const sentence = section[j]
+              if (!sentence) return
+              const word = sentence.words[w]
               if (!word) return
-              navigator.clipboard.writeText(word.word).then(() => {
-                Toast.success('已複製')
+              navigator.clipboard.writeText(word.word).then(r => {
+                Toast.success('已复制')
               })
             }
           }
         ]
       },
       {
-        label: "從這開始",
+        label: "从这开始",
         onClick: () => {
           jump(i, j, w + 1, sentence)
         }
@@ -613,14 +613,14 @@ function onContextMenu(e: MouseEvent, sentence: Sentence, i: number, j: number, 
       {
         label: "播放句子",
         onClick: () => {
-          emit('play', { sentence: sentence, handle: true })
+          emit('play', {sentence: sentence, handle: true})
         }
       },
       {
-        label: "語法分析",
+        label: "语法分析",
         onClick: () => {
           navigator.clipboard.writeText(sentence.text).then(r => {
-            Toast.success('已複製！隨後將打開語法分析網站！')
+            Toast.success('已复制！随后将打开语法分析网站！')
             setTimeout(() => {
               window.open('https://enpuz.com/')
             }, 1000)
@@ -628,18 +628,22 @@ function onContextMenu(e: MouseEvent, sentence: Sentence, i: number, j: number, 
         }
       },
       {
-        label: "有道詞典翻譯",
+        label: "有道词典翻译",
         children: [
           {
-            label: "翻譯單詞",
+            label: "翻译单词",
             onClick: () => {
-              let word = props.article.sections[i]?.[j]?.words[w]
+              const section = props.article.sections[i]
+              if (!section) return
+              const sentence = section[j]
+              if (!sentence) return
+              const word = sentence.words[w]
               if (!word) return
               window.open(`https://www.youdao.com/result?word=${word.word}&lang=en`, '_blank')
             }
           },
           {
-            label: "翻譯句子",
+            label: "翻译句子",
             onClick: () => {
               window.open(`https://www.youdao.com/result?word=${sentence.text}&lang=en`, '_blank')
             }
@@ -670,15 +674,16 @@ useEvents([
   [ShortcutKey.UnknownWord, onTyping],
 ])
 
-defineExpose({ showSentence, play, del, hideSentence, nextSentence, init })
+defineExpose({showSentence, play, del, hideSentence, nextSentence, init})
 
 function isCurrent(i: number, j: number, w: number) {
   return `${i}${j}${w}` === currentIndex.value
 }
 
-const showQuestions = ref(false)
+let showQuestions = ref(false)
 
-const currentPractice = inject('currentPractice', []) as any[]
+const currentPractice = inject<{ startDate: Date; spend: number }[]>('currentPractice', [])
+
 </script>
 
 <template>
@@ -710,12 +715,11 @@ const currentPractice = inject('currentPractice', []) as any[]
       ]"
          ref="articleWrapperRef">
       <article>
-        <div class="section" v-for="(section,indexI) in props.article.sections" :key="indexI">
+        <div class="section" v-for="(section,indexI) in props.article.sections">
                 <span class="sentence"
-                      v-for="(sentence,indexJ) in section" :key="indexJ">
+                      v-for="(sentence,indexJ) in section">
                   <span
                     v-for="(word,indexW) in sentence.words"
-                    :key="indexW"
                     @contextmenu="e=>onContextMenu(e,sentence,indexI,indexJ,indexW)"
                     class="word"
                     :class="[(sectionIndex>indexI
@@ -762,7 +766,7 @@ const currentPractice = inject('currentPractice', []) as any[]
         </div>
       </article>
       <div class="translate" v-show="settingStore.translate">
-        <template v-for="(v,indexI) in props.article.sections" :key="indexI">
+        <template v-for="(v,indexI) in props.article.sections">
           <div class="row"
                :class="[
                    `translate${indexI+'-'+indexJ}`,
@@ -772,7 +776,7 @@ const currentPractice = inject('currentPractice', []) as any[]
                         ?'wrote' :
                         ''),
                         ]"
-               v-for="(item,indexJ) in v" :key="indexJ">
+               v-for="(item,indexJ) in v">
             <span class="space"></span>
             <Transition name="fade">
               <span class="text" v-if="item.translate">{{ item.translate }}</span>
@@ -785,7 +789,7 @@ const currentPractice = inject('currentPractice', []) as any[]
 
     <div class="options flex justify-center" v-if="isEnd">
       <BaseButton
-        @click="emit('replay')">重新練習
+        @click="emit('replay')">重新练习
       </BaseButton>
       <BaseButton
         v-if="store.sbook.lastLearnIndex < store.sbook.articles.length - 1"
@@ -794,14 +798,14 @@ const currentPractice = inject('currentPractice', []) as any[]
     </div>
 
     <div class="font-family text-base pr-2 mb-50 mt-10" v-if="currentPractice.length && isEnd">
-      <div class="text-2xl font-bold">學習記錄</div>
-      <div class="mt-1 mb-3">總學習時長：{{ msToHourMinute(total(currentPractice, 'spend')) }}</div>
+      <div class="text-2xl font-bold">学习记录</div>
+      <div class="mt-1 mb-3">总学习时长：{{ msToHourMinute(total(currentPractice, 'spend')) }}</div>
       <div class="item border border-item border-solid mt-2 p-2 bg-[var(--bg-history)] rounded-md flex justify-between"
            :class="i === currentPractice.length-1 && 'color-red!'"
-           v-for="(item,i) in currentPractice" :key="i">
+           v-for="(item,i) in currentPractice">
         <span :class="i === currentPractice.length-1 ? 'color-red':'color-gray'"
         >{{
-            i === currentPractice.length - 1 ? '當前' : i + 1
+            i === currentPractice.length - 1 ? '当前' : i + 1
           }}.&nbsp;&nbsp;{{ _dateFormat(item.startDate) }}</span>
         <span>{{ msToHourMinute(item.spend) }}</span>
       </div>
@@ -809,7 +813,7 @@ const currentPractice = inject('currentPractice', []) as any[]
 
     <template v-if="false">
       <div class="center">
-        <BaseButton @click="showQuestions =! showQuestions">顯示題目</BaseButton>
+        <BaseButton @click="showQuestions =! showQuestions">显示题目</BaseButton>
       </div>
       <div class="toggle" v-if="showQuestions">
         <QuestionForm :questions="article.questions"
