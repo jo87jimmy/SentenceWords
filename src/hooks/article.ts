@@ -326,8 +326,7 @@ export function splitCNArticle2(text: string): string {
 
 export function usePlaySentenceAudio() {
   const playWordAudio = usePlayWordAudio()
-  const settingStore = useSettingStore()
-  let timer = $ref(0)
+  let timer: any = 0
 
   function playSentenceAudio(sentence: Sentence, ref?: HTMLAudioElement) {
     if (sentence.audioPosition?.length && ref && ref.src) {
@@ -335,10 +334,12 @@ export function usePlaySentenceAudio() {
       if (ref.played) {
         ref.pause()
       }
-      let start = sentence.audioPosition[0]
+      let start = sentence.audioPosition[0] || 0
       // ref.volume = settingStore.wordSoundVolume / 100
       ref.currentTime = start
-      ref.play()
+      ref.play()?.catch((e) => {
+        console.warn("Autoplay prevent handled:", e)
+      })
       let end = sentence.audioPosition?.[1]
       // console.log(sentence.audioPosition,(end - start) * 1000)
 
