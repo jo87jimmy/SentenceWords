@@ -220,17 +220,6 @@ let isNewHost = ref(window.location.host === Host)
 
 <template>
   <BasePage>
-    <!-- Warning Banner -->
-    <div class="mb-6 rounded-lg bg-orange-50 border border-orange-100 p-4 flex items-start gap-3 shadow-sm" v-if="!isNewHost">
-      <div class="text-orange-500 mt-0.5">
-        <IconFluentWarning20Regular class="text-xl" />
-      </div>
-      <div class="text-sm text-orange-800 leading-relaxed">
-        新域名已啟用，後續請訪問 <a href="https://typewords.cc/words?from_old_site=1" class="font-medium underline hover:text-orange-900 transition-colors">https://typewords.cc</a>。
-        當前 2study.top 域名將在不久後停止使用。
-      </div>
-    </div>
-
     <!-- Main Dashboard Card -->
     <div class="bg-white dark:bg-zinc-800 rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 dark:border-zinc-700 mb-8 transition-all hover:shadow-md">
       <div class="flex flex-col md:flex-row gap-8 items-start">

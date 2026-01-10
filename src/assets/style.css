@@ -80,26 +80,6 @@ h1 {
   /* 標題行高 */
 }
 
-button {
-  border-radius: 8px;
-  /* 按鈕圓角 */
-  border: 1px solid transparent;
-  /* 按鈕邊框 */
-  padding: 0.6em 1.2em;
-  /* 按鈕內邊距 */
-  font-size: 1em;
-  /* 按鈕字體大小 */
-  font-weight: 500;
-  /* 按鈕字體粗細 */
-  font-family: inherit;
-  /* 繼承字體 */
-  background-color: #f9f9f9;
-  /* Light mode button bg */
-  /* cursor: pointer; */
-  /* 鼠標手勢 */
-  transition: border-color 0.25s;
-  /* 邊框顏色過渡效果 */
-}
 
 button:hover {
   border-color: #646cff;

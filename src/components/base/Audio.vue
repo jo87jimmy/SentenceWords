@@ -413,8 +413,8 @@ defineExpose({ audioRef })
       <button class="play-button" :class="{ 'loading': isLoading }" @click="togglePlay" :disabled="disabled"
         :aria-label="isPlaying ? '暫停' : '播放'">
         <div v-if="isLoading" class="loading-spinner"></div>
-        <IconBxPause v-else-if="isPlaying" class="icon" />
-        <IconBxPlay v-else class="icon" />
+        <IconFluentPause20Regular v-else-if="isPlaying" class="icon" />
+        <IconFluentPlay20Regular v-else class="icon" />
       </button>
 
       <!-- 進度條區域 -->
