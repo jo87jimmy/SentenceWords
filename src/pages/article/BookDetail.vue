@@ -43,7 +43,7 @@ function handleCheckedChange(val:any) {
 async function addMyStudyList() {
   let sbook = runtimeStore.editDict
   if (!sbook.articles.length) {
-    return Toast.warning('没有文章可学习！')
+    return Toast.warning('沒有文章可學習！')
   }
 
   studyLoading.value = true
@@ -113,8 +113,8 @@ const {data: book_list} = useFetch(resourceWrap(DICT_LIST.ARTICLE.ALL)).json()
 
 function reset() {
   MessageBox.confirm(
-      '继续此操作会重置所有文章，并从官方书籍获取最新文章列表，学习记录不会被重置。确认恢复默认吗？',
-      '恢复默认',
+      '繼續此操作會重置所有文章，並從官方書籍獲取最新文章列表，學習記錄不會被重置。確認恢復預設嗎？',
+      '恢復預設',
       async () => {
         let dict = book_list.value.find((v: any) => v.url === runtimeStore.editDict.url) as Dict
         if (dict && dict.id) {
@@ -130,12 +130,12 @@ function reset() {
                 item.lastLearnIndex = item.articles.length - 1
               }
               runtimeStore.editDict = item
-              Toast.success('恢复成功')
+              Toast.success('恢復成功')
               return
             }
           }
         }
-        Toast.error('恢复失败')
+        Toast.error('恢復失敗')
       }
   )
 }
@@ -170,153 +170,150 @@ function next() {
 
 <template>
   <BasePage>
-    <div class="card mb-0 dict-detail-card flex flex-col" v-if="showBookDetail">
-      <div class="dict-header flex justify-between items-center relative">
-        <BackIcon class="dict-back z-2"/>
-        <div class="dict-title absolute text-2xl text-align-center w-full">{{ runtimeStore.editDict.name }}</div>
-        <div class="dict-actions flex">
-          <BaseButton v-if="runtimeStore.editDict.custom && runtimeStore.editDict.url" type="info" @click="reset">
-            恢复默认
-          </BaseButton>
-          <BaseButton :loading="studyLoading||loading" type="info" @click="isEdit = true">编辑</BaseButton>
-          <BaseButton type="info" @click="router.push('batch-edit-article')">文章管理</BaseButton>
-          <BaseButton :loading="studyLoading||loading" @click="addMyStudyList">学习</BaseButton>
-        </div>
-      </div>
-      <div class="flex gap-4 mt-2">
-        <img :src="runtimeStore.editDict?.cover"
-             class="w-30 rounded-md"
-             v-if="runtimeStore.editDict?.cover"
-             alt="">
-        <div class="text-lg">介绍：{{ runtimeStore.editDict.description }}</div>
-      </div>
-      <div class="text-base  " v-if="totalSpend">总学习时长：{{ totalSpend }}</div>
-
-      <div class="line my-3"></div>
-
-      <div class="flex flex-1 overflow-hidden">
-        <div class="left flex-[2] scroll p-0">
-          <ArticleList
-              v-if="runtimeStore.editDict.length"
-              @title="handleCheckedChange"
-              @click="handleCheckedChange"
-              :list="runtimeStore.editDict.articles"
-              :active-id="selectArticle.id">
-          </ArticleList>
-          <Empty v-else/>
-        </div>
-        <div class="right flex-[4] shrink-0 pl-4 overflow-auto">
-          <div v-if="selectArticle.id">
-            <div class="font-family text-base mb-4 pr-2" v-if="currentPractice.length">
-              <div class="text-2xl font-bold">学习记录</div>
-              <div class="mt-1 mb-3">总学习时长：{{ msToHourMinute(total(currentPractice, 'spend')) }}</div>
-              <div
-                  class="item border border-item border-solid mt-2 p-2 bg-[var(--bg-history)] rounded-md flex justify-between"
-                  v-for="i in currentPractice">
-                <span class="color-gray">{{ _dateFormat(i.startDate) }}</span>
-                <span>{{ msToHourMinute(i.spend) }}</span>
-              </div>
-            </div>
-            <div class="en-article-family title text-xl">
-              <div class="text-center text-2xl my-2">
-                <ArticleAudio
-                    :article="selectArticle"
-                    :autoplay="settingStore.articleAutoPlayNext"
-                    @ended="next"/>
-              </div>
-              <div class="text-center text-2xl">{{ selectArticle.title }}</div>
-              <div class="text-2xl" v-if="selectArticle.text">
-                <div class="my-5" v-for="t in selectArticle.text.split('\n\n')">{{ t }}</div>
-              </div>
-            </div>
-            <div class="mt-2">
-              <div class="text-center text-2xl">{{ selectArticle.titleTranslate }}</div>
-              <div class="text-xl" v-if="selectArticle.textTranslate">
-                <div class="my-5" v-for="t in selectArticle.textTranslate.split('\n\n')">{{ t }}</div>
-              </div>
-              <Empty v-else/>
-            </div>
+    <div class="h-[calc(100vh-5rem)] md:h-[calc(100vh-2rem)] flex flex-col gap-4" v-if="showBookDetail">
+      <!-- Header Section -->
+      <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 py-2 shrink-0 border-b border-gray-100 dark:border-zinc-800 pb-4">
+        <div class="flex items-center gap-3 w-full md:w-auto">
+          <BackIcon class="shrink-0"/>
+          <div class="flex flex-col overflow-hidden">
+            <h1 class="text-xl md:text-2xl font-bold truncate text-gray-900 dark:text-gray-100">{{ runtimeStore.editDict.name }}</h1>
+            <p v-if="totalSpend" class="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">總學習時長：{{ totalSpend }}</p>
           </div>
-          <Empty v-else/>
         </div>
-      </div>
+        <div class="flex flex-wrap gap-2 w-full md:w-auto justify-end">
+           <BaseButton v-if="runtimeStore.editDict.custom && runtimeStore.editDict.url" type="secondary" @click="reset" class="!px-3 !py-1 text-sm">
+            恢復預設
+          </BaseButton>
+          <BaseButton :loading="studyLoading||loading" type="secondary" @click="isEdit = true" class="!px-3 !py-1 text-sm">編輯</BaseButton>
+          <BaseButton type="secondary" @click="router.push('batch-edit-article')" class="!px-3 !py-1 text-sm">文章管理</BaseButton>
+          <BaseButton :loading="studyLoading||loading" type="primary" @click="addMyStudyList" class="!px-4 !py-1 text-sm font-medium shadow-md shadow-primary/20">學習</BaseButton>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex flex-col md:flex-row flex-1 gap-4 overflow-hidden min-h-0">
+        
+        <!-- Left Sidebar: Info & List -->
+        <aside class="w-full md:w-80 flex flex-col gap-4 shrink-0 overflow-hidden md:h-full h-[40vh]">
+          <!-- Book Info Card -->
+           <div class="bg-white dark:bg-zinc-900 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm shrink-0 flex gap-3 h-32 md:h-auto">
+             <img :src="runtimeStore.editDict?.cover" v-if="runtimeStore.editDict?.cover" class="w-20 md:w-24 h-full object-cover rounded-lg bg-gray-100 dark:bg-zinc-800 shrink-0" alt="Book Cover">
+             <div class="flex-1 overflow-y-auto custom-scrollbar">
+                <div class="text-xs md:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{{ runtimeStore.editDict.description || '暫無介紹' }}</div>
+             </div>
+           </div>
+
+           <!-- Article List -->
+           <div class="flex-1 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden flex flex-col">
+              <ArticleList
+                  v-if="runtimeStore.editDict.length"
+                  class="h-full overflow-y-auto custom-scrollbar"
+                  @title="handleCheckedChange"
+                  @click="handleCheckedChange"
+                  :list="runtimeStore.editDict.articles"
+                  :active-id="selectArticle.id">
+              </ArticleList>
+              <Empty v-else text="暫無文章" />
+           </div>
+        </aside>
+
+        <!-- Right Content: Article Detail -->
+        <section class="flex-1 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden flex flex-col relative md:h-full h-[60vh]">
+           <div class="h-full overflow-y-auto p-4 md:p-8 custom-scrollbar scroll-smooth" v-if="selectArticle.id">
+              <div class="max-w-3xl mx-auto pb-20">
+                <!-- Learning History -->
+                <div v-if="currentPractice.length" class="mb-8 p-4 bg-gray-50 dark:bg-zinc-800/50 rounded-lg border border-gray-100 dark:border-zinc-700/50">
+                  <div class="flex justify-between items-center mb-3">
+                    <span class="text-sm font-bold text-gray-700 dark:text-gray-200">學習記錄</span>
+                    <span class="text-xs text-gray-500 bg-white dark:bg-zinc-700 px-2 py-0.5 rounded-full border border-gray-200 dark:border-zinc-600">{{ msToHourMinute(total(currentPractice, 'spend')) }}</span>
+                  </div>
+                  <div class="grid grid-cols-1 gap-2 max-h-32 overflow-y-auto pr-1 custom-scrollbar">
+                    <div v-for="i in currentPractice" :key="i.startDate" class="flex justify-between text-xs text-gray-600 dark:text-gray-400 px-2 py-1.5 hover:bg-gray-100 dark:hover:bg-zinc-700 rounded transition-colors">
+                      <span>{{ _dateFormat(i.startDate) }}</span>
+                      <span class="font-mono">{{ msToHourMinute(i.spend) }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Article Header -->
+                <div class="text-center mb-10 sticky top-0 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-sm z-10 py-4 -mt-4 border-b border-transparent transition-all">
+                  <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-gray-50 drop-shadow-sm">{{ selectArticle.title }}</h2>
+                  <div class="flex justify-center">
+                    <ArticleAudio
+                        :article="selectArticle"
+                        :autoplay="settingStore.articleAutoPlayNext"
+                        @ended="next"/>
+                  </div>
+                </div>
+
+                <!-- Article Text -->
+                <article class="prose prose-lg dark:prose-invert max-w-none mb-12">
+                   <div class="text-lg md:text-xl leading-relaxed text-gray-800 dark:text-gray-200 font-serif tracking-wide">
+                      <p v-for="(t, idx) in selectArticle.text?.split('\n\n')" :key="'text-'+idx" class="mb-6 indent-8 text-justify">{{ t }}</p>
+                   </div>
+                </article>
+
+                <!-- Translation -->
+                <div v-if="selectArticle.textTranslate" class="mt-12 pt-8 border-t border-dashed border-gray-200 dark:border-zinc-700">
+                  <h3 class="text-lg font-medium mb-6 text-gray-500 dark:text-gray-400 text-center uppercase tracking-widest">{{ selectArticle.titleTranslate }}</h3>
+                  <div class="text-base md:text-lg leading-loose text-gray-500 dark:text-gray-400 font-light">
+                     <p v-for="(t, idx) in selectArticle.textTranslate?.split('\n\n')" :key="'trans-'+idx" class="mb-4 indent-8 text-justify">{{ t }}</p>
+                  </div>
+                </div>
+              </div>
+           </div>
+           
+           <div v-else class="h-full flex flex-col items-center justify-center text-gray-400">
+              <Empty text="請選擇文章開始學習" />
+           </div>
+        </section>
+
+      </main>
     </div>
 
-    <div class="card mb-0 dict-detail-card" v-else>
-      <div class="dict-header flex justify-between items-center relative">
-        <BackIcon class="dict-back z-2" @click="isAdd ? $router.back():(isEdit = false)"/>
-        <div class="dict-title absolute text-2xl text-align-center w-full">{{ runtimeStore.editDict.id ? '修改' : '创建' }}书籍
-        </div>
+    <!-- Edit/Create Mode -->
+    <div class="h-[calc(100vh-2rem)] flex flex-col" v-else>
+      <div class="flex justify-between items-center py-4 border-b border-gray-200 dark:border-zinc-700 mb-4 px-2">
+         <div class="flex items-center gap-2">
+            <BackIcon class="cursor-pointer hover:text-primary transition-colors" @click="isAdd ? $router.back():(isEdit = false)"/>
+            <span class="text-xl font-bold">{{ runtimeStore.editDict.id ? '修改' : '建立' }}書籍</span>
+         </div>
       </div>
-      <div class="center">
-        <EditBook
-            :is-add="isAdd"
-            :is-book="true"
-            @close="formClose"
-            @submit="isEdit = isAdd = false"
-        />
+      <div class="flex-1 overflow-auto flex justify-center">
+        <div class="w-full max-w-3xl">
+           <EditBook
+              :is-add="isAdd"
+              :is-book="true"
+              @close="formClose"
+              @submit="isEdit = isAdd = false"
+          />
+        </div>
       </div>
     </div>
   </BasePage>
 </template>
 
 <style scoped lang="scss">
-.dict-detail-card {
-  height: calc(100vh - 3rem);
-}
-
-.dict-header {
-  gap: 0.5rem;
-}
-
-.dict-actions {
-  flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-  .dict-detail-card {
-   height: calc(100vh - 2rem);
+/* Custom Scrollbar for better consistency */
+.custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
-
-  .dict-header {
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 0.75rem;
+  &::-webkit-scrollbar-track {
+    background: transparent;
   }
-
-  .dict-header .dict-back {
-    align-self: flex-start;
-  }
-
-  .dict-header .dict-title {
-    position: static !important;
-    width: 100%;
-  }
-
-  .dict-header .dict-actions {
-    width: 100%;
-    justify-content: center;
-    gap: 0.75rem;
-
-    .base-button {
-      flex: 1 0 45%;
-      min-width: 8rem;
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.3);
+    border-radius: 3px;
+    
+    &:hover {
+      background-color: rgba(156, 163, 175, 0.5);
     }
   }
 }
 
-@media (max-width: 480px) {
-  .dict-header .dict-actions {
-    flex-direction: column;
-
-    .base-button {
-      width: 100%;
-      min-width: auto;
-    }
-  }
+:deep(.prose) {
+  min-width: 100%;
 }
-
 </style>
