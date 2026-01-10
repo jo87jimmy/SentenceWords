@@ -43,7 +43,7 @@ const setAudioRefValue = (key: string, value: any) => {
         break
     }
   } else {
-    // 如果audioRef还未初始化，先存起来，等初始化后再设置 => watch监听instance变化
+    // 如果audioRef還未初始化，先存起來，等初始化後再設置 => watch監聽instance變化
     pendingUpdates.value[key] = value
   }
 }
@@ -63,7 +63,7 @@ watch(() => props.article.audioFileId, async () => {
   }
 }, { immediate: true })
 
-// 监听instance变化，设置之前pending的值
+// 監聽instance變化，設置之前pending的值
 watch(instance, (newVal) => {
   if (newVal?.audioRef) {
     Object.entries(pendingUpdates.value).forEach(([key, value]) => {
@@ -73,7 +73,7 @@ watch(instance, (newVal) => {
   }
 }, { immediate: true })
 
-//转发一遍，这里Proxy的默认值不能为{}，可能是vue做了什么
+//轉發一遍，這裡Proxy的預設值不能為{}，可能是vue做了什麼
 defineExpose(new Proxy({
   currentTime: 0,
   played: false,
@@ -102,8 +102,10 @@ defineExpose(new Proxy({
 </script>
 
 <template>
+  <!-- 使用遠端音訊來源：當文章有設定 audioSrc (URL) 時，直接使用該 URL 播放 -->
   <Audio v-bind="$attrs" ref="instance" v-if="props.article.audioSrc" :src="props.article.audioSrc"
     @ended="emit('ended')" @update-volume="handleVolumeUpdate" @update-speed="handleSpeedUpdate" />
+  <!-- 使用本地音訊檔案：當文章沒有 audioSrc 但有 audioFileId 時，從 IndexedDB 讀取本地檔案播放 -->
   <Audio v-bind="$attrs" ref="instance" v-else-if="file" :src="file" @ended="emit('ended')"
     @update-volume="handleVolumeUpdate" @update-speed="handleSpeedUpdate" />
 </template>
