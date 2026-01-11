@@ -20,6 +20,10 @@ export function _nextTick(cb: () => void, time?: number) { // 封裝 nextTick �
     }
 }
 
+export async function sleep(time: number) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
 export function _parseLRC(lrc: string): { start: number, end: number, text: string }[] {
     const lines = lrc.split("\n").filter(line => line.trim() !== "");
     const regex = /\[(\d{2}):(\d{2}\.\d{2})\](.*)/;

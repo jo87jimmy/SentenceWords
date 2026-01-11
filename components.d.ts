@@ -12,6 +12,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    About: typeof import('./src/components/About.vue')['default']
     ArticleList: typeof import('./src/components/list/ArticleList.vue')['default']
     ArticleSettting: typeof import('./src/components/setting/ArticleSettting.vue')['default']
     Audio: typeof import('./src/components/base/Audio.vue')['default']
@@ -76,6 +77,7 @@ declare module 'vue' {
     IconFluentClock24Regular: typeof import('~icons/fluent/clock24-regular')['default']
     IconFluentCommentEdit20Regular: typeof import('~icons/fluent/comment-edit20-regular')['default']
     IconFluentCopy20Regular: typeof import('~icons/fluent/copy20-regular')['default']
+    IconFluentDatabasePerson20Regular: typeof import('~icons/fluent/database-person20-regular')['default']
     IconFluentDelete20Regular: typeof import('~icons/fluent/delete20-regular')['default']
     IconFluentDismiss20Regular: typeof import('~icons/fluent/dismiss20-regular')['default']
     IconFluentDismissCircle16Regular: typeof import('~icons/fluent/dismiss-circle16-regular')['default']
@@ -86,6 +88,7 @@ declare module 'vue' {
     IconFluentEye16Regular: typeof import('~icons/fluent/eye16-regular')['default']
     IconFluentEyeOff16Regular: typeof import('~icons/fluent/eye-off16-regular')['default']
     IconFluentHome20Regular: typeof import('~icons/fluent/home20-regular')['default']
+    IconFluentKeyboardLayoutFloat20Regular: typeof import('~icons/fluent/keyboard-layout-float20-regular')['default']
     IconFluentLockClosed20Regular: typeof import('~icons/fluent/lock-closed20-regular')['default']
     IconFluentMail20Regular: typeof import('~icons/fluent/mail20-regular')['default']
     IconFluentMyLocation20Regular: typeof import('~icons/fluent/my-location20-regular')['default']
@@ -93,6 +96,7 @@ declare module 'vue' {
     IconFluentPaddingLeft20Regular: typeof import('~icons/fluent/padding-left20-regular')['default']
     IconFluentPause20Regular: typeof import('~icons/fluent/pause20-regular')['default']
     IconFluentPen20Regular: typeof import('~icons/fluent/pen20-regular')['default']
+    IconFluentPerson20Regular: typeof import('~icons/fluent/person20-regular')['default']
     IconFluentPhone20Regular: typeof import('~icons/fluent/phone20-regular')['default']
     IconFluentPlay20Regular: typeof import('~icons/fluent/play20-regular')['default']
     IconFluentQuestionCircle20Regular: typeof import('~icons/fluent/question-circle20-regular')['default']
@@ -110,6 +114,7 @@ declare module 'vue' {
     IconFluentStar20Filled: typeof import('~icons/fluent/star20-filled')['default']
     IconFluentStarAdd16Regular: typeof import('~icons/fluent/star-add16-regular')['default']
     IconFluentTarget20Regular: typeof import('~icons/fluent/target20-regular')['default']
+    IconFluentTextBulletListSquare20Regular: typeof import('~icons/fluent/text-bullet-list-square20-regular')['default']
     IconFluentTextEditStyle20Regular: typeof import('~icons/fluent/text-edit-style20-regular')['default']
     IconFluentTextListAbcUppercaseLtr20Regular: typeof import('~icons/fluent/text-list-abc-uppercase-ltr20-regular')['default']
     IconFluentTextUnderlineDouble20Regular: typeof import('~icons/fluent/text-underline-double20-regular')['default']
@@ -160,6 +165,7 @@ declare module 'vue' {
 
 // For TSX support
 declare global {
+  const About: typeof import('./src/components/About.vue')['default']
   const ArticleList: typeof import('./src/components/list/ArticleList.vue')['default']
   const ArticleSettting: typeof import('./src/components/setting/ArticleSettting.vue')['default']
   const Audio: typeof import('./src/components/base/Audio.vue')['default']
@@ -224,6 +230,7 @@ declare global {
   const IconFluentClock24Regular: typeof import('~icons/fluent/clock24-regular')['default']
   const IconFluentCommentEdit20Regular: typeof import('~icons/fluent/comment-edit20-regular')['default']
   const IconFluentCopy20Regular: typeof import('~icons/fluent/copy20-regular')['default']
+  const IconFluentDatabasePerson20Regular: typeof import('~icons/fluent/database-person20-regular')['default']
   const IconFluentDelete20Regular: typeof import('~icons/fluent/delete20-regular')['default']
   const IconFluentDismiss20Regular: typeof import('~icons/fluent/dismiss20-regular')['default']
   const IconFluentDismissCircle16Regular: typeof import('~icons/fluent/dismiss-circle16-regular')['default']
@@ -234,6 +241,7 @@ declare global {
   const IconFluentEye16Regular: typeof import('~icons/fluent/eye16-regular')['default']
   const IconFluentEyeOff16Regular: typeof import('~icons/fluent/eye-off16-regular')['default']
   const IconFluentHome20Regular: typeof import('~icons/fluent/home20-regular')['default']
+  const IconFluentKeyboardLayoutFloat20Regular: typeof import('~icons/fluent/keyboard-layout-float20-regular')['default']
   const IconFluentLockClosed20Regular: typeof import('~icons/fluent/lock-closed20-regular')['default']
   const IconFluentMail20Regular: typeof import('~icons/fluent/mail20-regular')['default']
   const IconFluentMyLocation20Regular: typeof import('~icons/fluent/my-location20-regular')['default']
@@ -241,6 +249,7 @@ declare global {
   const IconFluentPaddingLeft20Regular: typeof import('~icons/fluent/padding-left20-regular')['default']
   const IconFluentPause20Regular: typeof import('~icons/fluent/pause20-regular')['default']
   const IconFluentPen20Regular: typeof import('~icons/fluent/pen20-regular')['default']
+  const IconFluentPerson20Regular: typeof import('~icons/fluent/person20-regular')['default']
   const IconFluentPhone20Regular: typeof import('~icons/fluent/phone20-regular')['default']
   const IconFluentPlay20Regular: typeof import('~icons/fluent/play20-regular')['default']
   const IconFluentQuestionCircle20Regular: typeof import('~icons/fluent/question-circle20-regular')['default']
@@ -258,6 +267,7 @@ declare global {
   const IconFluentStar20Filled: typeof import('~icons/fluent/star20-filled')['default']
   const IconFluentStarAdd16Regular: typeof import('~icons/fluent/star-add16-regular')['default']
   const IconFluentTarget20Regular: typeof import('~icons/fluent/target20-regular')['default']
+  const IconFluentTextBulletListSquare20Regular: typeof import('~icons/fluent/text-bullet-list-square20-regular')['default']
   const IconFluentTextEditStyle20Regular: typeof import('~icons/fluent/text-edit-style20-regular')['default']
   const IconFluentTextListAbcUppercaseLtr20Regular: typeof import('~icons/fluent/text-list-abc-uppercase-ltr20-regular')['default']
   const IconFluentTextUnderlineDouble20Regular: typeof import('~icons/fluent/text-underline-double20-regular')['default']
