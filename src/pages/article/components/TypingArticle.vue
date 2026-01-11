@@ -237,11 +237,10 @@ function checkTranslateLocation() {
           let translateClassName = `.translate${location}`
           let translate: HTMLDivElement | null = document.querySelector(translateClassName)
           if (!translate) return
-
           translate.style.opacity = '1'
-          translate.style.top = wordRect.top - articleRect.top + 24 + 'px'
+          translate.style.top = wordRect.top - articleRect.top + wordRect.height + 'px'
           // @ts-ignore
-          translate.firstChild.style.width = wordRect.left - articleRect.left + 'px'
+          // translate.firstChild.style.width = wordRect.left - articleRect.left + 'px'
           // console.log(word, wordRect.left - articleRect.left)
           // console.log('word-wordRect', wordRect)
         })
@@ -772,7 +771,7 @@ const currentPractice = inject<{ startDate: Date; spend: number }[]>('currentPra
       ]"
          ref="articleWrapperRef">
       <article>
-        <!-- 核心文章渲染區域 -->
+        <!-- 文章打字區域-->
         <div class="section" v-for="(section,indexI) in props.article.sections">
                 <span class="sentence"
                       v-for="(sentence,indexJ) in section">
@@ -901,8 +900,8 @@ const currentPractice = inject<{ startDate: Date; spend: number }[]>('currentPra
   color: grey;
 }
 
-$translate-lh: 3.2;
-$article-lh: 2.4;
+$translate-lh: 0.5;
+$article-lh: 2.5;
 
 .typing-article {
   height: 100%;
