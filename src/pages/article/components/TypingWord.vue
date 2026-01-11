@@ -87,7 +87,7 @@ const list = computed(() => {
   <template v-for="(item, i) in list" :key="i">
     <span v-if="item.type === 'word-complete'">{{ item.val }}</span>
     <span v-else-if="item.type === 'word-end'" :class="['word-end', isHide]">{{ item.val }}</span>
-    <span v-else-if="item.type === 'input-right'" :class="isTyping ? 'input-right' : ''">{{ item.val }}</span>
+    <span v-else-if="item.type === 'input-right'" class="input-right">{{ item.val }}</span>
     <span v-else-if="item.type === 'input-wrong'" class="input-wrong">{{ item.val }}</span>
     <Space v-else-if="item.type === 'space'" :isWrong="true" />
   </template>
@@ -96,15 +96,14 @@ const list = computed(() => {
 
 <style scoped lang="scss">
 .input-right {
-  // background-color: var(--color-select-bg);
-  color: blue;
-  background-color: aquamarine;
+  color:green !important;
+  background-color: var(--color-select-bg) !important;
   border-radius: 2px;
 }
 
 .input-wrong {
-  color: red;
-  background-color: #fee2e2;
+  color: red !important;
+  background-color: #fee2e2 !important;
   border-radius: 2px;
 }
 
