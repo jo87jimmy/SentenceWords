@@ -1,32 +1,13 @@
-<template>
-  <template v-for="(item, i) in list" :key="i">
-    <span v-if="item.type === 'word-complete'">{{ item.val }}</span>
-    <span 
-      v-else-if="item.type === 'word-end'" 
-      class="word-end"
-      :class="isHide"
-    >{{ item.val }}</span>
-    <span 
-      v-else-if="item.type === 'input-right'" 
-      :class="{ 'input-right': props.isTyping }"
-    >{{ item.val }}</span>
-    <span 
-      v-else-if="item.type === 'input-wrong'" 
-      class="input-wrong"
-    >{{ item.val }}</span>
-    <Space v-else-if="item.type === 'space'" :is-wrong="true" />
-  </template>
-</template>
-
-<script setup lang="ts">
-import { useSettingStore } from "@/stores/setting"; // .ts extension is optional in imports usually, but if user uses it, keep consistent or cleaner.
+<script setup lang="tsx">
+import {useSettingStore} from "@/stores/setting.ts";
 import Space from "@/pages/article/components/Space.vue";
-import { PracticeArticleWordType } from "@/types/types";
-import type { ArticleWord } from "@/types/types";
+import { PracticeArticleWordType } from "@/types/types.ts";
 import { computed } from "vue";
+//引入这个编译就报错
+// import {ArticleWord} from "@/types/types.ts";
 
 const props = defineProps<{
-  word: ArticleWord,
+  word: any,
   isTyping: boolean,
 }>()
 const settingStore = useSettingStore()
@@ -44,6 +25,10 @@ const list = computed(() => {
   let t: any[] = []
   let right = ''
   let wrong = ''
+  // Guard against undefined word or input
+  if (!props.word || props.word.input == null || props.word.word == null) {
+    return t
+  }
   if (props.word.input.length) {
     if (props.word.input.length === props.word.word.length) {
       if (settingStore.ignoreCase ? props.word.input.toLowerCase() === props.word.word.toLowerCase() : props.word.input === props.word.word) {
@@ -51,13 +36,13 @@ const list = computed(() => {
         return t
       }
     }
-    props.word.input.split('').forEach((k: string, i: number) => {
+    props.word.input.split('').forEach((k:any, i:any) => {
       if (k === ' ') {
         right = wrong = ''
         t.push({type: 'space'})
       }
       else {
-        if (compare(k, props.word.word[i] || '')) {
+        if (compare(k, props.word.word[i])) {
           right += k
           wrong = ''
           if (t.length) {
@@ -95,7 +80,18 @@ const list = computed(() => {
   }
   return t
 })
+
 </script>
+
+<template>
+  <template v-for="(item, i) in list" :key="i">
+    <span v-if="item.type === 'word-complete'">{{ item.val }}</span>
+    <span v-else-if="item.type === 'word-end'" :class="['word-end', isHide]">{{ item.val }}</span>
+    <span v-else-if="item.type === 'input-right'" :class="isTyping ? 'input-right' : ''">{{ item.val }}</span>
+    <span v-else-if="item.type === 'input-wrong'" class="input-wrong">{{ item.val }}</span>
+    <Space v-else-if="item.type === 'space'" :isWrong="true" />
+  </template>
+</template>
 
 
 <style scoped lang="scss">

@@ -10,8 +10,9 @@ import WordTest from "@/pages/word/WordTest.vue";
 import ArticlesPage from "@/pages/article/ArticlesPage.vue";
 import BookDetail from "@/pages/article/BookDetail.vue";
 import BookList from "@/pages/article/BookList.vue";
-
 import PracticeArticles from "@/pages/article/PracticeArticles.vue";
+
+import Setting from "@/pages/setting/Setting.vue";
 
 export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表，類型為 RouteRecordRaw 陣列
     {
@@ -32,6 +33,8 @@ export const routes: RouteRecordRaw[] = [ // 定義應用程式的路由列表�
             { path: 'book-detail', component: BookDetail },
             { path: 'practice-articles/:id', component: PracticeArticles },
             { path: 'study-article', redirect: '/articles' },
+
+            { path: 'setting', component: Setting },
         ]
     }, { path: '/batch-edit-article', component: () => import("@/pages/article/BatchEditArticlePage.vue") },
 ]

@@ -45,5 +45,8 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/sound/, '')
       }
     }
+  },
+  define: {
+    LATEST_COMMIT_HASH: JSON.stringify("510ad3f3fff16039bb35741625faa8b1151cf2b40"),
   }
 })

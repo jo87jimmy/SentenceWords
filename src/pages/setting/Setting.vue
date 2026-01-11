@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue";
+import { nextTick, ref, watch ,computed} from "vue";
 import { useSettingStore } from "@/stores/setting.ts";
 import { getShortcutKey, useEventListener } from "@/hooks/event.ts";
 import { checkAndUpgradeSaveDict, checkAndUpgradeSaveSetting, cloneDeep, loadJsLib, sleep } from "@/utils";
@@ -31,26 +31,25 @@ const emit = defineEmits<{
   toggleDisabledDialogEscKey: [val: boolean]
 }>()
 
-const tabIndex = $ref(0)
+const tabIndex = ref(0)
 const settingStore = useSettingStore()
 const runtimeStore = useRuntimeStore()
 const store = useBaseStore()
-
-//@ts-ignore
+//在Setting顯示，最後一次提交 (Commit) 的哈希值 (Hash)，用於顯示版本號(除錯使用)
 const gitLastCommitHash = ref(LATEST_COMMIT_HASH);
 
-let editShortcutKey = $ref('')
+let editShortcutKey = ref('')
 
-const disabledDefaultKeyboardEvent = $computed(() => {
-  return editShortcutKey && tabIndex === 3
+const disabledDefaultKeyboardEvent = computed(() => {
+  return editShortcutKey.value && tabIndex.value === 3
 })
 
-watch(() => disabledDefaultKeyboardEvent, v => {
+watch(() => disabledDefaultKeyboardEvent.value, v => {
   emit('toggleDisabledDialogEscKey', !!v)
 })
 
 // 监听编辑快捷键状态变化，自动聚焦输入框
-watch(() => editShortcutKey, (newVal) => {
+watch(() => editShortcutKey.value, (newVal) => {
   if (newVal) {
     // 使用nextTick确保DOM已更新
     nextTick(() => {
@@ -59,8 +58,9 @@ watch(() => editShortcutKey, (newVal) => {
   }
 })
 
-useEventListener('keydown', (e: KeyboardEvent) => {
-  if (!disabledDefaultKeyboardEvent) return
+useEventListener('keydown', (evt: Event) => {
+  const e = evt as KeyboardEvent
+  if (!disabledDefaultKeyboardEvent.value) return
 
   // 确保阻止浏览器默认行为
   e.preventDefault()
@@ -75,9 +75,9 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   //   return ElMessage.warning('设备失败！')
   // }
 
-  if (editShortcutKey) {
+  if (editShortcutKey.value) {
     if (shortcutKey === 'Delete') {
-      settingStore.shortcutKeyMap[editShortcutKey] = ''
+      settingStore.shortcutKeyMap[editShortcutKey.value] = ''
     } else {
       // 忽略单独的修饰键
       if (shortcutKey === 'Ctrl+' || shortcutKey === 'Alt+' || shortcutKey === 'Shift+' ||
@@ -86,24 +86,24 @@ useEventListener('keydown', (e: KeyboardEvent) => {
       }
 
       for (const [k, v] of Object.entries(settingStore.shortcutKeyMap)) {
-        if (v === shortcutKey && k !== editShortcutKey) {
-          settingStore.shortcutKeyMap[editShortcutKey] = DefaultShortcutKeyMap[editShortcutKey]
-          return Toast.warning('快捷键重复！')
+        if (v === shortcutKey && k !== editShortcutKey.value) {
+          settingStore.shortcutKeyMap[editShortcutKey.value] = DefaultShortcutKeyMap[editShortcutKey.value as keyof typeof DefaultShortcutKeyMap]
+          return Toast.warning('快捷鍵重複！')
         }
       }
-      settingStore.shortcutKeyMap[editShortcutKey] = shortcutKey
+      settingStore.shortcutKeyMap[editShortcutKey.value] = shortcutKey
     }
   }
 })
 
 function handleInputBlur() {
   // 输入框失焦时结束编辑状态
-  editShortcutKey = ''
+  editShortcutKey.value = ''
 }
 
 function handleBodyClick() {
-  if (editShortcutKey) {
-    editShortcutKey = ''
+  if (editShortcutKey.value) {
+    editShortcutKey.value = ''
   }
 }
 
@@ -119,44 +119,44 @@ function focusShortcutInput() {
 
 // 快捷键中文名称映射
 function getShortcutKeyName(key: string): string {
-  const shortcutKeyNameMap = {
-    'ShowWord': '显示单词',
-    'EditArticle': '编辑文章',
-    'Next': '下一个',
-    'Previous': '上一个',
-    'ToggleSimple': '切换已掌握状态',
-    'ToggleCollect': '切换收藏状态',
-    'NextChapter': '下一组',
-    'PreviousChapter': '上一组',
-    'RepeatChapter': '重复本组',
-    'DictationChapter': '默写本组',
-    'PlayWordPronunciation': '播放发音',
-    'ToggleShowTranslate': '切换显示翻译',
-    'ToggleDictation': '切换默写模式',
-    'ToggleTheme': '切换主题',
-    'ToggleConciseMode': '切换简洁模式',
-    'TogglePanel': '切换面板',
-    'RandomWrite': '随机默写',
-    'NextRandomWrite': '继续随机默写',
-    'KnowWord': '认识单词',
-    'UnknownWord': '不认识单词',
+  const shortcutKeyNameMap: Record<string, string> = {
+    'ShowWord': '顯示單字',
+    'EditArticle': '編輯文章',
+    'Next': '下一個',
+    'Previous': '上一個',
+    'ToggleSimple': '切換已掌握狀態',
+    'ToggleCollect': '切換收藏狀態',
+    'NextChapter': '下一組',
+    'PreviousChapter': '上一組',
+    'RepeatChapter': '重複本組',
+    'DictationChapter': '默寫本組',
+    'PlayWordPronunciation': '播放發音',
+    'ToggleShowTranslate': '切換顯示翻譯',
+    'ToggleDictation': '切換默寫模式',
+    'ToggleTheme': '切換主題',
+    'ToggleConciseMode': '切換簡潔模式',
+    'TogglePanel': '切換面板',
+    'RandomWrite': '隨機默寫',
+    'NextRandomWrite': '繼續隨機默寫',
+    'KnowWord': '認識單字',
+    'UnknownWord': '不認識單字',
   }
 
   return shortcutKeyNameMap[key] || key
 }
 
 function resetShortcutKeyMap() {
-  editShortcutKey = ''
+  editShortcutKey.value = ''
   settingStore.shortcutKeyMap = cloneDeep(DefaultShortcutKeyMap)
-  Toast.success('恢复成功')
+  Toast.success('恢復成功')
 }
 
-let importLoading = $ref(false)
+let importLoading = ref(false)
 
 const { loading: exportLoading, exportData } = useExport()
 
 function importJson(str: string, notice: boolean = true) {
-  importLoading = true
+  importLoading.value = true
   let obj = {
     version: -1,
     val: {
@@ -203,33 +203,33 @@ function importJson(str: string, notice: boolean = true) {
         //todo 上报
       }
     }
-    notice && Toast.success('导入成功！')
+    notice && Toast.success('匯入成功！')
   } catch (err) {
-    return Toast.error('导入失败！')
+    return Toast.error('匯入失敗！')
   } finally {
-    importLoading = false
+    importLoading.value = false
   }
 }
 
 let timer = -1
 async function beforeImport() {
-  importLoading = true
-  await exportData('已自动备份数据', 'TypeWords数据备份.zip')
+  importLoading.value = true
+  await exportData('已自動備份資料', 'SentenceWords資料備份.zip')
   await sleep(1500)
-  let d: HTMLDivElement = document.querySelector('#import')
-  d.click()
-  timer = setTimeout(()=>importLoading = false, 1000)
+  const d = document.querySelector('#import') as HTMLInputElement | null
+  d?.click()
+  timer = window.setTimeout(()=>importLoading.value = false, 1000)
 }
 
-async function importData(e) {
+async function importData(e: any) {
   clearTimeout(timer)
-  importLoading = true
+  importLoading.value = true
   let file = e.target.files[0]
-  if (!file) return importLoading = false
+  if (!file) return importLoading.value = false
   if (file.name.endsWith(".json")) {
     let reader = new FileReader();
     reader.onload = function (v) {
-      let str: any = v.target.result;
+      let str: any = v.target?.result;
       if (str) {
         importJson(str)
       }
@@ -242,7 +242,7 @@ async function importData(e) {
 
       const dataFile = zip.file("data.json");
       if (!dataFile) {
-        return Toast.error("缺少 data.json，导入失败");
+        return Toast.error("缺少 data.json，匯入失敗");
       }
 
       const mp3Folder = zip.folder("mp3");
@@ -263,21 +263,21 @@ async function importData(e) {
       const str = await dataFile.async("string");
       importJson(str, false)
 
-      Toast.success("导入成功！");
+      Toast.success("匯入成功！");
     } catch (e) {
-      Toast.error(e?.message || e || '导入失败')
+      Toast.error((e as any)?.message || e || '匯入失敗')
     } finally {
-      importLoading = false
+      importLoading.value = false
     }
   } else {
-    Toast.error("不支持的文件类型");
+    Toast.error("不支援的檔案類型");
   }
-  importLoading = false
+  importLoading.value = false
 }
 
-let isNewHost = $ref(window.location.host === Host)
+let isNewHost = ref(window.location.host === Host)
 
-let showTransfer = $ref(false)
+let showTransfer = ref(false)
 
 function transferOk() {
   setTimeout(() => {
@@ -289,30 +289,30 @@ function transferOk() {
 <template>
   <BasePage>
     <div class="setting text-md card flex flex-col" style="height: calc(100vh - 3rem);">
-      <div class="page-title text-align-center">设置</div>
+      <div class="page-title text-align-center">設定</div>
       <div class="flex flex-1 overflow-hidden gap-4">
         <div class="left">
           <div class="tabs">
             <div class="tab" :class="tabIndex === 0 && 'active'" @click="tabIndex = 0">
               <IconFluentSettings20Regular width="20"/>
-              <span>通用设置</span>
+              <span>一般設定</span>
             </div>
             <div class="tab" :class="tabIndex === 1 && 'active'" @click="tabIndex = 1">
               <IconFluentTextUnderlineDouble20Regular width="20"/>
-              <span>单词设置</span>
+              <span>單字設定</span>
             </div>
             <div class="tab" :class="tabIndex === 2 && 'active'" @click="tabIndex = 2">
               <IconFluentBookLetter20Regular width="20"/>
-              <span>文章设置</span>
+              <span>文章設定</span>
             </div>
             <div class="tab" :class="tabIndex === 4 && 'active'" @click="tabIndex = 4">
               <IconFluentDatabasePerson20Regular width="20"/>
-              <span>数据管理</span>
+              <span>資料管理</span>
             </div>
 
             <div class="tab" :class="tabIndex === 3 && 'active'" @click="tabIndex = 3">
               <IconFluentKeyboardLayoutFloat20Regular width="20"/>
-              <span>快捷键设置</span>
+              <span>快捷鍵設定</span>
             </div>
 
             <div class="tab" :class="tabIndex === 5 && 'active'" @click="()=>{
@@ -321,12 +321,12 @@ function transferOk() {
             set(APP_VERSION.key,APP_VERSION.version)
           }">
               <IconFluentTextBulletListSquare20Regular width="20"/>
-              <span>更新日志</span>
+              <span>更新日誌</span>
               <div class="red-point" v-if="runtimeStore.isNew"></div>
             </div>
             <div class="tab" :class="tabIndex === 6 && 'active'" @click="tabIndex = 6">
               <IconFluentPerson20Regular width="20"/>
-              <span>关于</span>
+              <span>關於</span>
             </div>
           </div>
         </div>
@@ -341,21 +341,21 @@ function transferOk() {
           <div class="body" v-if="tabIndex === 3">
             <div class="row">
               <label class="main-title">功能</label>
-              <div class="wrapper">快捷键(点击可修改)</div>
+              <div class="wrapper">快捷鍵(點擊可修改)</div>
             </div>
             <div class="scroll">
               <div class="row" v-for="item of Object.entries(settingStore.shortcutKeyMap)">
                 <label class="item-title">{{ getShortcutKeyName(item[0]) }}</label>
                 <div class="wrapper" @click="editShortcutKey = item[0]">
                   <div class="set-key" v-if="editShortcutKey === item[0]">
-                    <input ref="shortcutInput" :value="item[1]?item[1]:'未设置快捷键'" readonly type="text"
+                    <input ref="shortcutInput" :value="item[1]?item[1]:'未設定快捷鍵'" readonly type="text"
                            @blur="handleInputBlur">
-                    <span @click.stop="editShortcutKey = ''">按键盘进行设置，<span
-                        class="text-red!">设置完成点击这里</span></span>
+                    <span @click.stop="editShortcutKey = ''">按鍵盤進行設定，<span
+                        class="text-red!">設定完成點擊這裡</span></span>
                   </div>
                   <div v-else>
                     <div v-if="item[1]">{{ item[1] }}</div>
-                    <span v-else>未设置快捷键</span>
+                    <span v-else>未設定快捷鍵</span>
                   </div>
                 </div>
               </div>
@@ -363,28 +363,28 @@ function transferOk() {
             <div class="row">
               <label class="item-title"></label>
               <div class="wrapper">
-                <BaseButton @click="resetShortcutKeyMap">恢复默认</BaseButton>
+                <BaseButton @click="resetShortcutKeyMap">恢復預設</BaseButton>
               </div>
             </div>
           </div>
 
           <div v-if="tabIndex === 4">
             <div>
-              所有用户数据
-              <b class="text-red">保存在本地浏览器中</b>。如果您需要在不同的设备、浏览器上使用 {{ APP_NAME }}，
-              您需要手动进行数据导出和导入
+              所有使用者資料
+              <b class="text-red">保存在本地瀏覽器中</b>。如果您需要在不同的裝置、瀏覽器上使用 {{ APP_NAME }}，
+              您需要手動進行資料匯出和匯入
             </div>
-            <BaseButton :loading="exportLoading" size="large" class="mt-3" @click="exportData()">导出数据备份(ZIP)</BaseButton>
-            <div class="text-gray text-sm mt-2">💾 导出的ZIP文件包含所有学习数据，可在其他设备上导入恢复</div>
+            <BaseButton :loading="exportLoading" size="large" class="mt-3" @click="exportData()">匯出資料備份(ZIP)</BaseButton>
+            <div class="text-gray text-sm mt-2">💾 匯出的ZIP檔案包含所有學習資料，可在其他裝置上匯入恢復</div>
 
             <div class="line mt-15 mb-3"></div>
 
-            <div>请注意，导入数据将<b class="text-red"> 完全覆盖 </b>当前所有数据，请谨慎操作。执行导入操作时，会先自动备份当前数据到您的电脑中，供您随时恢复
+            <div>請注意，匯入資料將<b class="text-red"> 完全覆蓋 </b>當前所有資料，請謹慎操作。執行匯入操作時，會先自動備份當前資料到您的電腦中，供您隨時恢復
             </div>
             <div class="flex gap-space mt-3">
               <BaseButton size="large"
                           @click="beforeImport"
-                          :loading="importLoading">导入数据恢复</BaseButton>
+                          :loading="importLoading">匯入資料恢復</BaseButton>
               <input type="file"
                      id="import"
                      class="w-0 h-0 opacity-0"
@@ -394,10 +394,10 @@ function transferOk() {
 
             <template v-if="isNewHost">
               <div class="line my-3"></div>
-              <div>请注意，如果本地已有使用记录，请先备份当前数据，迁移数据后将<b class="text-red"> 完全覆盖 </b>当前所有数据，请谨慎操作。
+              <div>請注意，如果本地已有使用記錄，請先備份當前資料，遷移資料後將<b class="text-red"> 完全覆蓋 </b>當前所有資料，請謹慎操作。
               </div>
               <div class="flex gap-space mt-3">
-                <BaseButton @click="showTransfer = true">迁移 2study.top 网站数据</BaseButton>
+                <BaseButton @click="showTransfer = true">遷移 2study.top 網站資料</BaseButton>
               </div>
             </template>
           </div>

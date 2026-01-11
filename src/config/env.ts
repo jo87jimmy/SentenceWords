@@ -94,5 +94,7 @@ export const LIB_JS_URL = { // 第三方 JS 庫的 URL 設定
     SHEPHERD: import.meta.env.MODE === 'development' ? // Shepherd.js 導覽庫的路徑
         'https://cdn.jsdelivr.net/npm/shepherd.js@14.5.1/dist/esm/shepherd.mjs' // 開發環境使用 CDN
         : Origin + '/libs/Shepherd.14.5.1.mjs', // 生產環境使用本地資源
-    SNAPDOM: `${Origin}/libs/snapdom.min.js` // Snapdom 庫的 URL
+    SNAPDOM: `${Origin}/libs/snapdom.min.js`, // Snapdom 庫的 URL
+    JSZIP: `${Origin}/libs/jszip.min.js`,
+    XLSX: `${Origin}/libs/xlsx.full.min.js`,
 }

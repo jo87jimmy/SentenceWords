@@ -18,6 +18,7 @@ declare global {
             containsSpace: boolean
         }
     }
+    const LATEST_COMMIT_HASH: string
 }
 
 console.json = function (v: any, space = 0) {

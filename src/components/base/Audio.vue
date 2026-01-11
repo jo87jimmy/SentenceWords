@@ -29,13 +29,13 @@ const emit = defineEmits<{
 
 const attrs = useAttrs();
 
-// 音频元素引用
+// 音頻元素引用
 const audioRef = ref<HTMLAudioElement>();
 const progressBarRef = ref<HTMLDivElement>();
 const volumeBarRef = ref<HTMLDivElement>();
 const volumeFillRef = ref<HTMLElement>();
 
-// 状态管理
+// 狀態管理
 const isPlaying = ref(false);
 const isLoading = ref(false);
 const duration = ref(0);
@@ -45,11 +45,11 @@ const volume = ref(props.volume);
 const playbackRate = ref<number>(props.playbackRate);
 const isDragging = ref(false);
 const isVolumeDragging = ref(false);
-const isVolumeHovering = ref(false); // 添加音量控制hover状态变量
+const isVolumeHovering = ref(false); // 添加音量控制hover狀態變數
 const volumePosition = ref('top') // 音量控制位置，'top'或'down'
 const error = ref('');
 
-// 计算属性
+// 計算屬性
 const progress = computed(() => {
   return duration.value > 0 ? (currentTime.value / duration.value) * 100 : 0;
 });
@@ -76,7 +76,7 @@ const togglePlay = async () => {
       await audioRef.value.play();
     }
   } catch (err) {
-    console.error('播放失败:', err);
+    console.error('播放失敗:', err);
     error.value = '播放失敗';
   }
 };
@@ -105,7 +105,7 @@ const changePlaybackRate = () => {
   emit('update-speed', playbackRate.value);
 };
 
-// 事件处理
+// 事件處理
 const handleLoadStart = () => {
   isLoading.value = true;
 };
@@ -165,7 +165,7 @@ const handleRateChange = () => {
   }
 };
 
-// 进度条处理
+// 進度條處理
 const handleProgressMouseDown = (event: MouseEvent) => {
   if (!audioRef.value || !progressBarRef.value || props.disabled) return;
 
@@ -176,19 +176,19 @@ const handleProgressMouseDown = (event: MouseEvent) => {
   const startX = event.clientX;
   const startY = event.clientY;
   let hasMoved = false;
-  let lastPosition = 0; // 记录最后的位置
-  const moveThreshold = 3; // 移动阈值，超过这个距离才认为是拖拽
+  let lastPosition = 0; // 記錄最後的位置
+  const moveThreshold = 3; // 移動閾值，超過這個距離才認為是拖曳
 
-  // 获取DOM元素引用
+  // 獲取DOM元素引用
   const progressFill = progressBarRef.value.querySelector('.progress-fill') as HTMLElement;
   const progressThumb = progressBarRef.value.querySelector('.progress-thumb') as HTMLElement;
 
-  // 立即跳转到点击位置
+  // 立即跳轉到點擊位置
   const clickX = event.clientX - rect.left;
   const percentage = Math.max(0, Math.min(1, clickX / rect.width));
   const newTime = percentage * duration.value;
 
-  // 直接更新DOM样式
+  // 直接更新DOM樣式
   if (progressFill && progressThumb) {
     progressFill.style.width = `${percentage * 100}%`;
     progressThumb.style.left = `${percentage * 100}%`;
@@ -209,7 +209,7 @@ const handleProgressMouseDown = (event: MouseEvent) => {
 
     if (!hasMoved) return;
 
-    // 禁用过渡动画
+    // 禁用過渡動畫
     if (progressFill && progressThumb) {
       progressFill.style.transition = 'none';
       progressThumb.style.transition = 'none';
@@ -220,13 +220,13 @@ const handleProgressMouseDown = (event: MouseEvent) => {
     const percentage = Math.max(0, Math.min(1, clickX / rect.width));
     const newTime = percentage * duration.value;
 
-    // 直接更新DOM样式，不使用响应式变量
+    // 直接更新DOM樣式，不使用響應式變數
     if (progressFill && progressThumb) {
       progressFill.style.width = `${percentage * 100}%`;
       progressThumb.style.left = `${percentage * 100}%`;
     }
 
-    // 只更新响应式变量用于时间显示，不用于样式
+    // 只更新響應式變數用於時間顯示，不用於樣式
     currentTime.value = newTime;
     lastPosition = newTime;
   };
@@ -234,13 +234,13 @@ const handleProgressMouseDown = (event: MouseEvent) => {
   const handleMouseUp = () => {
     isDragging.value = false;
 
-    // 恢复过渡动画
+    // 恢復過渡動畫
     if (progressFill && progressThumb) {
       progressFill.style.transition = '';
       progressThumb.style.transition = '';
     }
 
-    // 如果是拖拽，在结束时更新audio元素到最终位置
+    // 如果是拖曳，在結束時更新audio元素到最終位置
     if (hasMoved && audioRef.value) {
       audioRef.value.currentTime = lastPosition;
     }
@@ -253,7 +253,7 @@ const handleProgressMouseDown = (event: MouseEvent) => {
   document.addEventListener('mouseup', handleMouseUp);
 };
 
-// 音量控制处理
+// 音量控制處理
 const handleVolumeMouseDown = (event: MouseEvent) => {
   if (!audioRef.value || !volumeBarRef.value || props.disabled) return;
 
@@ -264,16 +264,16 @@ const handleVolumeMouseDown = (event: MouseEvent) => {
   const startX = event.clientX;
   const startY = event.clientY;
   let hasMoved = false;
-  let lastVolume = 0; // 记录最后音量
-  const moveThreshold = 3; // 超过这个距离才认为是拖拽
+  let lastVolume = 0; // 記錄最後音量
+  const moveThreshold = 3; // 超過這個距離才認為是拖曳
 
   const volumeFill = volumeFillRef.value;
 
-  // 计算点击位置对应音量百分比（最上 100%，最下 0%）
+  // 計算點擊位置對應音量百分比（最上 100%，最下 0%）
   const clickY = event.clientY - rect.top;
   const percentage = 1 - Math.max(0, Math.min(1, clickY / rect.height));
 
-  // 更新 UI 与音量
+  // 更新 UI 與音量
   if (volumeFill) {
     volumeFill.style.height = `${percentage * 100}%`;
   }
@@ -283,7 +283,7 @@ const handleVolumeMouseDown = (event: MouseEvent) => {
   lastVolume = percentage;
   isVolumeDragging.value = true;
 
-  // 鼠标移动时调整音量
+  // 滑鼠移動時調整音量
   const handleMouseMove = (e: MouseEvent) => {
     const deltaX = Math.abs(e.clientX - startX);
     const deltaY = Math.abs(e.clientY - startY);
@@ -294,7 +294,7 @@ const handleVolumeMouseDown = (event: MouseEvent) => {
 
     if (!hasMoved) return;
 
-    // 禁用过渡动画
+    // 禁用過渡動畫
     if (volumeFill) {
       volumeFill.style.transition = 'none';
     }
@@ -314,11 +314,11 @@ const handleVolumeMouseDown = (event: MouseEvent) => {
     }
   };
 
-  // 鼠标释放时结束拖动
+  // 滑鼠釋放時結束拖動
   const handleMouseUp = () => {
     isVolumeDragging.value = false;
 
-    // 恢复过渡动画
+    // 恢復過渡動畫
     if (volumeFill) {
       volumeFill.style.transition = '';
     }
@@ -337,7 +337,7 @@ const handleVolumeMouseDown = (event: MouseEvent) => {
   document.addEventListener('mouseup', handleMouseUp);
 };
 
-// 音量控制鼠标移入事件，自动调整音量控制条位置
+// 音量控制滑鼠移入事件，自動調整音量控制條位置
 const onVolumeSectionEnter = (e: MouseEvent) => {
   isVolumeHovering.value = true;
   const section = e.target as HTMLElement
@@ -353,7 +353,7 @@ const onVolumeSectionEnter = (e: MouseEvent) => {
 }
 
 
-// 监听属性变化
+// 監聽屬性變化
 watch(() => props.src, (newSrc) => {
   if (audioRef.value) {
     // 重置所有狀態
@@ -400,32 +400,28 @@ defineExpose({ audioRef })
 
 <template>
   <div class="custom-audio" :class="{ 'disabled': disabled || error, 'has-error': error }" v-bind="attrs">
-    <!-- 隐藏的原生audio元素 -->
+    <!-- 隱藏的原生audio元素 -->
     <audio ref="audioRef" :src="src" preload="auto" :autoplay="autoplay" :loop="loop" :controls="false"
       @loadstart="handleLoadStart" @loadeddata="handleLoadedData" @loadedmetadata="handleLoadedMetadata"
       @canplaythrough="handleCanPlayThrough" @play="handlePlay" @pause="handlePause" @ended="handleEnded"
       @error="handleError" @timeupdate="handleTimeUpdate" @volumechange="handleVolumeChange"
       @ratechange="handleRateChange" />
 
-    <!-- 自定义控制界面 -->
+    <!-- 自定義控制介面 -->
     <div class="audio-container">
-      <!-- 播放/暂停按钮 -->
+      <!-- 播放/暫停按鈕 -->
       <button class="play-button" :class="{ 'loading': isLoading }" @click="togglePlay" :disabled="disabled"
-        :aria-label="isPlaying ? '暂停' : '播放'">
+        :aria-label="isPlaying ? '暫停' : '播放'">
         <div v-if="isLoading" class="loading-spinner"></div>
-        <svg v-else-if="isPlaying" class="icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-        </svg>
-        <svg v-else class="icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z" />
-        </svg>
+        <IconFluentPause20Regular v-else-if="isPlaying" class="icon" />
+        <IconFluentPlay20Regular v-else class="icon" />
       </button>
 
-      <!-- 进度条区域 -->
+      <!-- 進度條區域 -->
       <div class="progress-section">
-        <!-- 时间显示 -->
+        <!-- 時間顯示 -->
         <span class="time-display">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>
-        <!-- 进度条 -->
+        <!-- 進度條 -->
         <div class="progress-container" @mousedown="handleProgressMouseDown" ref="progressBarRef">
           <div class="progress-track">
             <div class="progress-fill" :style="{ width: progress + '%' }"></div>
@@ -438,13 +434,13 @@ defineExpose({ audioRef })
       <!-- 音量控制 -->
       <div class="volume-section" @mouseenter="onVolumeSectionEnter" @mouseleave="isVolumeHovering = false">
         <button class="volume-button" tabindex="-1" @click="toggleMute" :disabled="disabled"
-          :aria-label="volume > 0 ? '静音' : '取消静音'">
+          :aria-label="volume > 0 ? '靜音' : '取消靜音'">
           <IconBxVolumeMute v-if="volume === 0" class="icon"></IconBxVolumeMute>
           <IconBxVolumeLow v-else-if="volume < 0.5" class="icon"></IconBxVolumeLow>
           <IconBxVolumeFull v-else class="icon"></IconBxVolumeFull>
         </button>
 
-        <!-- 音量下拉控制条 -->
+        <!-- 音量下拉控制條 -->
         <div class="volume-dropdown" :class="[{ 'active': isVolumeHovering || isVolumeDragging }, volumePosition]">
           <div class="volume-container" @mousedown="handleVolumeMouseDown" ref="volumeBarRef">
             <div class="volume-track">
@@ -464,7 +460,7 @@ defineExpose({ audioRef })
       </button>
     </div>
 
-    <!-- 错误信息 -->
+    <!-- 錯誤訊息 -->
     <div v-if="error" class="error-message">{{ error }}</div>
   </div>
 </template>
@@ -743,7 +739,7 @@ defineExpose({ audioRef })
   border-radius: var(--audio-border-radius);
 }
 
-// 动画
+// 動畫
 @keyframes spin {
   0% {
     transform: rotate(0deg);
