@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import {computed, nextTick, onBeforeUnmount, onMounted, provide, ref, useAttrs, useSlots, VNode, watch} from 'vue';
+import {computed, nextTick, onBeforeUnmount, onMounted, provide, ref, useAttrs, useSlots, type VNode, watch} from 'vue';
 import {useWindowClick} from "@/hooks/event.ts";
-
 interface Option {
   label: string;
   value: any;
@@ -78,7 +77,7 @@ const selectOption = (value: any, label: string) => {
   isOpen.value = false;
 };
 
-let selectValue = $ref(props.modelValue);
+let selectValue = ref(props.modelValue);
 
 provide('selectValue', selectValue);
 provide('selectHandler', selectOption);
@@ -101,13 +100,13 @@ watch(() => props.modelValue, (newValue) => {
     let slot = slots.default();
     let list = [];
     if (slot.length === 1) {
-      list = Array.from(slot[0].children as Array<VNode>);
+      list = Array.from((slot[0]?.children || []) as Array<VNode>);
     } else {
       list = slot;
     }
-    const option = list.find(opt => opt.props.value === newValue);
-    if (option) {
-      selectedOption.value = option.props;
+    const option = list.find(opt => opt.props?.value === newValue);
+    if (option && option.props) {
+      selectedOption.value = option.props as unknown as Option;
     }
     return;
   }

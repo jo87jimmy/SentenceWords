@@ -35,8 +35,7 @@ const tabIndex = ref(0)
 const settingStore = useSettingStore()
 const runtimeStore = useRuntimeStore()
 const store = useBaseStore()
-
-//@ts-ignore
+//在Setting顯示，最後一次提交 (Commit) 的哈希值 (Hash)，用於顯示版本號(除錯使用)
 const gitLastCommitHash = ref(LATEST_COMMIT_HASH);
 
 let editShortcutKey = ref('')

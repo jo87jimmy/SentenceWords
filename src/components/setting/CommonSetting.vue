@@ -11,13 +11,13 @@ import Slider from "@/components/base/Slider.vue";
 import SettingItem from "@/pages/setting/SettingItem.vue";
 import { useSettingStore } from "@/stores/setting.ts";
 import { useBaseStore } from "@/stores/base.ts";
-
+import { ref,computed } from "vue";
 const settingStore = useSettingStore()
 const store = useBaseStore()
 
-const simpleWords = $computed({
+const simpleWords = computed({
   get: () => store.simpleWords.join(','),
-  set: v => {
+  set: (v:string) => {
     try {
       store.simpleWords = v.split(',');
     } catch (e) {
@@ -96,7 +96,7 @@ const simpleWords = $computed({
             <span>{{ item.label }}</span>
             <VolumeIcon
                 :time="100"
-                @click="usePlayAudio(getAudioFileUrl(item.value)[0])"/>
+                @click="usePlayAudio(getAudioFileUrl(item.value)[0]!)"/>
           </div>
         </Option>
       </Select>
