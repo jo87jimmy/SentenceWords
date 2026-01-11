@@ -741,10 +741,12 @@ const currentPractice = inject<{ startDate: Date; spend: number }[]>('currentPra
                         ''),
                         indexW === 0 && `word${indexI}-${indexJ}`,
                         ]">
+                    <!-- 懸停事件：滑鼠移入顯示高亮，移出隱藏 -->
                     <span class="word-wrap"
                           @mouseenter="showSentence(indexI,indexJ,indexW)"
                           @mouseleave="hideSentence"
                           :class="[
+                           /* 判定是否為當前懸停的單詞，是則添加 hover-show 類 */
                            hoverIndex.sectionIndex === indexI && hoverIndex.sentenceIndex === indexJ && hoverIndex.wordIndex === indexW
                           &&'hover-show',
                           word.type === PracticeArticleWordType.Number && 'font-family text-xl'
@@ -912,7 +914,7 @@ $article-lh: 2.4;
         display: none !important;
       }
     }
-
+    /* 懸停時顯示高亮 */
     .hover-show {
       border-radius: 0.2rem;
       background-color: #bbf7d0 !important;
