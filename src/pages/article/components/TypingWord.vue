@@ -3,7 +3,7 @@ import {useSettingStore} from "@/stores/setting.ts";
 import Space from "@/pages/article/components/Space.vue";
 import { PracticeArticleWordType } from "@/types/types.ts";
 import { computed } from "vue";
-//引入这个编译就报错
+// 引入這個編譯就報錯
 // import {ArticleWord} from "@/types/types.ts";
 
 const props = defineProps<{
@@ -12,20 +12,23 @@ const props = defineProps<{
 }>()
 const settingStore = useSettingStore()
 
+// 比較字元，根據設置決定是否忽略大小寫
 function compare(a: string, b: string) {
   return settingStore.ignoreCase ? a.toLowerCase() === b.toLowerCase() : a === b
 }
 
+// 聽寫模式下隱藏單詞
 const isHide = computed(() => {
   if (settingStore.dictation && props.word.type === PracticeArticleWordType.Word) return 'hide'
   return ''
 })
 
+// 計算單詞顯示列表 (正確部分、錯誤部分、剩餘部分)
 const list = computed(() => {
   let t: any[] = []
   let right = ''
   let wrong = ''
-  // Guard against undefined word or input
+  // 防止單詞或輸入為 undefined
   if (!props.word || props.word.input == null || props.word.word == null) {
     return t
   }
@@ -75,7 +78,7 @@ const list = computed(() => {
       t.push({type: 'word-end', val: props.word.word.slice(props.word.input.length)})
     }
   } else {
-    //word-end这个class用于光标定位，光标会定位到第一个word-end的位置
+    // word-end 這個 class 用於遊標定位，遊標會定位到第一個 word-end 的位置
     t.push({type: 'word-end', val: props.word.word})
   }
   return t
@@ -87,7 +90,7 @@ const list = computed(() => {
   <template v-for="(item, i) in list" :key="i">
     <span v-if="item.type === 'word-complete'">{{ item.val }}</span>
     <span v-else-if="item.type === 'word-end'" :class="['word-end', isHide]">{{ item.val }}</span>
-    <span v-else-if="item.type === 'input-right'" :class="isTyping ? 'input-right' : ''">{{ item.val }}</span>
+    <span v-else-if="item.type === 'input-right'" class="input-right">{{ item.val }}</span>
     <span v-else-if="item.type === 'input-wrong'" class="input-wrong">{{ item.val }}</span>
     <Space v-else-if="item.type === 'space'" :isWrong="true" />
   </template>
@@ -96,11 +99,15 @@ const list = computed(() => {
 
 <style scoped lang="scss">
 .input-right {
-  color: var(--color-select-bg);
+  color:green !important;
+  background-color: var(--color-select-bg) !important;
+  border-radius: 2px;
 }
 
 .input-wrong {
-  @apply color-red
+  color: red !important;
+  background-color: #fee2e2 !important;
+  border-radius: 2px;
 }
 
 .hide {
