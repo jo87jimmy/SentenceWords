@@ -742,7 +742,7 @@ const currentPractice = inject<{ startDate: Date; spend: number }[]>('currentPra
                         indexW === 0 && `word${indexI}-${indexJ}`,
                         ]">
                     <span class="word-wrap"
-                          @mouseenter="settingStore.allowWordTip && showSentence(indexI,indexJ,indexW)"
+                          @mouseenter="showSentence(indexI,indexJ,indexW)"
                           @mouseleave="hideSentence"
                           :class="[
                            hoverIndex.sectionIndex === indexI && hoverIndex.sentenceIndex === indexJ && hoverIndex.wordIndex === indexW
@@ -915,8 +915,7 @@ $article-lh: 2.4;
 
     .hover-show {
       border-radius: 0.2rem;
-      //background: var(--color-select-bg);
-      @apply bg-green!;
+      background-color: #bbf7d0 !important;
 
       :deep(.hide) {
         opacity: 1 !important;
