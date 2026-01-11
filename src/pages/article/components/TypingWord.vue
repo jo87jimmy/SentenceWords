@@ -96,11 +96,16 @@ const list = computed(() => {
 
 <style scoped lang="scss">
 .input-right {
-  color: var(--color-select-bg);
+  // background-color: var(--color-select-bg);
+  color: blue;
+  background-color: aquamarine;
+  border-radius: 2px;
 }
 
 .input-wrong {
-  @apply color-red
+  color: red;
+  background-color: #fee2e2;
+  border-radius: 2px;
 }
 
 .hide {

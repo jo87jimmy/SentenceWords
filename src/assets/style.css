@@ -26,6 +26,7 @@
   --article-panel-width: 20rem;
   --article-panel-margin-left: calc(50% + var(--article-width) / 2 + 1rem);
 
+  --color-select-bg: #bbf7d0;
   /* --en-article-family: Georgia, sans-serif;
   --zh-article-family: "Songti SC", "SimSun", "Noto Serif CJK SC", serif; */
 
